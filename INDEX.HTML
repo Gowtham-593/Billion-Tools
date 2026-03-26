@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kadhai Shorts — Episode List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;0,900;1,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* ── Phone shell ── */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: #212121;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    }
+
+    /* ── Video background ── */
+    .video-bg {
+      position: absolute;
+      inset: 0;
+      height: 420px;
+      background: url('https://www.figma.com/api/mcp/asset/33c1e744-c3a5-4612-a871-e558b88b8898') center/cover no-repeat;
+    }
+
+    /* ── Status bar ── */
+    .status-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 14px 20px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+      z-index: 10;
+    }
+    .status-time { font-size: 12px; color: #fff; }
+    .status-icons { display: flex; gap: 5px; align-items: center; }
+    .status-icons svg { width: 15px; height: 15px; fill: #fff; }
+
+    /* ── Top controls bar ── */
+    .top-controls {
+      position: absolute;
+      top: 38px; left: 0; right: 0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    .btn-back { background: none; border: none; cursor: pointer; color: #fff; display: flex; align-items: center; }
+    .btn-back svg { width: 24px; height: 24px; }
+    .speed-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer; color: #fff; font-size: 16px;
+      font-family: 'Roboto', sans-serif;
+    }
+    .speed-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+    /* ── Side action buttons ── */
+    .side-actions {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-40%);
+      display: flex; flex-direction: column; gap: 20px; align-items: center;
+      z-index: 10;
+    }
+    .side-action {
+      display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
+    }
+    .side-action svg { width: 28px; height: 28px; fill: #fff; }
+    .side-action span { font-size: 11px; color: #fff; text-align: center; }
+
+    /* ── Progress bar ── */
+    .progress-bar-wrap {
+      position: absolute; bottom: 390px; left: 0; right: 0;
+      background: rgba(0,0,0,0.5); padding: 8px 20px 10px; z-index: 10;
+    }
+    .progress-ep-label {
+      font-size: 13px; color: #fff; margin-bottom: 6px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .progress-track { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 18%; background: #cf2e4e; border-radius: 3px; }
+
+    /* ── Dark overlay ── */
+    .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 5; }
+
+    /* ── Bottom sheet ── */
+    .bottom-sheet {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 510px; background: #0f0f0f; border-radius: 24px 24px 0 0;
+      z-index: 20; overflow: hidden;
+    }
+    .drag-handle { width: 45px; height: 3px; background: #5c5c5c; border-radius: 2px; margin: 14px auto 0; }
+
+    /* ── Series info ── */
+    .series-info { padding: 10px 24px 0; }
+    .series-title { font-size: 20px; font-weight: 900; font-style: italic; color: #fff; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin-bottom: 8px; }
+    .series-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .meta-genre { font-size: 16px; color: #929596; }
+    .meta-pill { background: rgba(255,255,255,0.1); color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 5px; }
+    .meta-free-badge {
+      display: flex; align-items: center; gap: 5px;
+      border: 1px solid #be973a; border-radius: 26px; padding: 5px 12px;
+      background: linear-gradient(164deg, rgba(251,215,133,0.2) 33%, rgba(34,25,5,0.2) 121%);
+      font-size: 14px; font-weight: 600; color: #fad889; letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .meta-free-badge .fire-icon { width: 16px; height: 16px; flex-shrink: 0; }
+    .series-desc { font-size: 16px; color: #929596; line-height: 1.6; margin-bottom: 10px; }
+
+    /* Added to list toast */
+    .toast-added {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(207,46,78,0.15); border: 1px solid rgba(207,46,78,0.3);
+      border-radius: 6px; padding: 8px 15px; font-size: 13px; color: #FF6B81; margin-bottom: 14px;
+    }
+    .toast-added svg { width: 15px; height: 15px; fill: #FF6B81; flex-shrink: 0; }
+
+    /* ── Episode list ── */
+    .episode-list { padding: 0 24px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 290px; }
+    .episode-list::-webkit-scrollbar { display: none; }
+    .ep-item { display: flex; align-items: center; gap: 10px; height: 44px; }
+    .ep-thumb { width: 33px; height: 44px; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ep-thumb.free-watched { background: #3a1515; }
+    .ep-thumb.locked { background: #1a1a1a; }
+    .ep-thumb svg { width: 16px; height: 16px; fill: #929596; }
+    .ep-info { flex: 1; min-width: 0; }
+    .ep-title { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+    .ep-title.dimmed { color: #929596; }
+    .ep-meta { display: flex; align-items: center; gap: 5px; }
+    .badge-free { background: #cf2e4e; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
+    .ep-duration { font-size: 12px; color: #929596; }
+    .ep-price { font-size: 13px; font-weight: 500; color: #FF6B81; }
+    .ep-action { flex-shrink: 0; }
+    .ep-action svg { width: 15px; height: 15px; }
+    .ep-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 0 0 2px; }
+
+    /* ── Footer CTA ── */
+    .footer-cta {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      border-top: 1px solid rgba(255,255,255,0.06); padding: 12px 24px 16px;
+      display: flex; align-items: center; justify-content: space-between; background: #0f0f0f;
+    }
+    .footer-text { font-size: 16px; color: #929596; }
+    .footer-text strong { color: #CF2E4E; font-weight: 700; }
+    .unlock-btn {
+      background: linear-gradient(135deg, #F16623 0%, #E71F2C 30%, #991C4A 100%);
+      color: #fff; border: none; border-radius: 10px; padding: 9px 22px;
+      font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Roboto', sans-serif; white-space: nowrap;
+    }
+    .unlock-btn:hover { opacity: 0.9; }
+
+    /* ═══════════════════════════════════════════════════
+       SETTINGS + SLIDER SHEETS
+    ═══════════════════════════════════════════════════ */
+
+    /* Backdrop */
+    .sheet-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 30;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .sheet-backdrop.visible { opacity: 1; pointer-events: all; }
+
+    /* Base sheet panel */
+    .settings-panel {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #0f0f0f;
+      border-radius: 16px 16px 0 0;
+      z-index: 40;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .settings-panel.open { transform: translateY(0); }
+
+    /* Sheet drag handle */
+    .sheet-handle {
+      width: 45px; height: 3px; background: #5c5c5c; border-radius: 2px; margin: 14px auto 0;
+    }
+
+    /* Sheet header row */
+    .sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 14px 14px;
+    }
+    .sheet-header-left { display: flex; align-items: center; gap: 8px; }
+    .sheet-header-left svg { width: 24px; height: 24px; flex-shrink: 0; }
+    .sheet-header-title { font-size: 18px; font-weight: 600; color: #fff; }
+    .sheet-close-btn {
+      background: none; border: none; cursor: pointer;
+      color: #929596; font-size: 18px; line-height: 1; padding: 4px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* Sheet horizontal divider */
+    .sheet-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0; }
+
+    /* Settings rows (the 3-row settings menu) */
+    .settings-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 52px; cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .settings-row:hover { background: rgba(255,255,255,0.04); }
+    .settings-row:active { background: rgba(255,255,255,0.06); }
+    .settings-row-left { display: flex; align-items: center; gap: 10px; }
+    .settings-row-left svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .settings-row-label { font-size: 16px; color: #929596; }
+    .settings-row-value { font-size: 16px; color: #fff; margin-left: 6px; }
+    .settings-row-right { display: flex; align-items: center; gap: 0; }
+    .chevron-icon { width: 20px; height: 20px; }
+
+    /* ── Option rows inside sliders ── */
+    .option-row {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px; padding: 0 20px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.15s ease;
+    }
+    .option-row:hover { background: rgba(255,255,255,0.04); }
+
+    /* ACTIVE state — rectangle background highlight */
+    .option-row.active {
+      background: rgba(207, 46, 78, 0.13);
+    }
+    .option-row.active .option-label { color: #fff; }
+    .option-row.active .option-check { opacity: 1; }
+    .option-row .option-check { opacity: 0; }
+
+    .option-row-left { display: flex; align-items: center; gap: 16px; }
+    .option-check svg { width: 16px; height: 13px; }
+    .option-label { font-size: 16px; color: #929596; }
+    .option-row.active .option-label { color: #fff; }
+
+    /* Premium badge */
+    .premium-badge {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(250, 216, 137, 0.12);
+      border: 1px solid #fad889;
+      border-radius: 4px;
+      padding: 4px 7px 4px 5px;
+      height: 22px;
+    }
+    .premium-badge svg { width: 14px; height: 8px; flex-shrink: 0; }
+    .premium-badge-text { font-size: 9px; font-weight: 600; color: #fad889; letter-spacing: 0.3px; }
+
+    /* ── Premium upsell sheet content ── */
+    .premium-upsell {
+      padding: 0 24px 24px;
+    }
+    .premium-upsell-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 52px; height: 52px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(250,216,137,0.25) 0%, rgba(250,216,137,0.08) 100%);
+      border: 1px solid rgba(250,216,137,0.4);
+      margin-bottom: 14px;
+    }
+    .premium-upsell-icon svg { width: 28px; height: 28px; }
+    .premium-upsell-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .premium-upsell-sub { font-size: 14px; color: #929596; margin-bottom: 20px; line-height: 1.5; }
+    .premium-divider { height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 16px; }
+    .premium-pricing-note { font-size: 14px; color: #929596; text-align: center; margin-bottom: 14px; }
+
+    /* Pricing cards */
+    .pricing-card {
+      border: 2px solid #5c5c5c;
+      border-radius: 10px; padding: 16px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; cursor: pointer;
+      background: linear-gradient(17deg, rgba(72,68,69,0.5) 7%, rgba(143,141,131,0.3) 93%);
+      transition: border-color 0.15s ease;
+    }
+    .pricing-card.featured { border-color: #cf2e4e; background: linear-gradient(161deg, rgba(207,46,78,0.18) 8%, rgba(207,46,78,0.04) 92%); }
+    .pricing-card-left { display: flex; flex-direction: column; gap: 4px; }
+    .pricing-card-title { font-size: 15px; font-weight: 500; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .best-value-pill {
+      background: rgba(207,46,78,0.15); border: 1.5px solid rgba(207,46,78,0.3);
+      border-radius: 10px; padding: 2px 8px;
+      font-size: 11px; font-weight: 600; color: #cf2e4e;
+    }
+    .pricing-card-sub { font-size: 13px; color: #929596; }
+    .pricing-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .pricing-price { font-size: 20px; font-weight: 700; color: #fff; }
+    .pricing-card.featured .pricing-price { color: #cf2e4e; }
+    .pricing-original { font-size: 13px; color: #929596; text-decoration: line-through; }
+    .pricing-unit { font-size: 13px; color: #929596; }
+
+    .referral-row {
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      font-size: 13px; margin-top: 8px;
+    }
+    .referral-grey { color: #929596; }
+    .referral-link { color: #cf2e4e; font-weight: 500; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- Video background -->
+  <div class="video-bg"></div>
+
+  <!-- Dark overlay -->
+  <div class="overlay"></div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-time">6:12 PM</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24"><rect x="1" y="14" width="4" height="6" rx="1"/><rect x="7" y="10" width="4" height="10" rx="1"/><rect x="13" y="6" width="4" height="14" rx="1"/><rect x="19" y="2" width="4" height="18" rx="1" opacity="0.3"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M1.5 8.5C5.1 4.9 9.8 3 12 3s6.9 1.9 10.5 5.5l-2.1 2.1C17.6 7.8 14.9 6 12 6S6.4 7.8 3.6 10.6L1.5 8.5zm4.2 4.2C7.5 10.9 9.7 9.5 12 9.5s4.5 1.4 6.3 3.2l-2.1 2.1c-1.1-1.1-2.6-1.8-4.2-1.8s-3.1.7-4.2 1.8l-2.1-2.1zM12 15a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2" stroke="#fff" stroke-width="1.5" fill="none"/><rect x="4" y="9" width="12" height="6" rx="1" fill="#fff"/><path d="M21 10v4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+
+  <!-- Top controls -->
+  <div class="top-controls">
+    <button class="btn-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="speed-btn" onclick="openSheet('speed-sheet')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5" fill="none"/><polyline points="12,6 12,12 16,14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      Speed
+    </button>
+  </div>
+
+  <!-- Side actions -->
+  <div class="side-actions">
+    <div class="side-action">
+      <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+      <span>43.5k</span>
+    </div>
+    <div class="side-action">
+      <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="18" x2="16" y2="18" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="3" cy="18" r="2" fill="#fff"/></svg>
+      <span>Episodes</span>
+    </div>
+    <div class="side-action">
+      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="6" cy="12" r="3" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="3" stroke="#fff" stroke-width="1.5" fill="none"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="#fff" stroke-width="1.5"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="#fff" stroke-width="1.5"/></svg>
+      <span>Share</span>
+    </div>
+    <!-- More → opens Settings -->
+    <div class="side-action" onclick="openSheet('settings-sheet')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5" fill="#fff"/><circle cx="12" cy="12" r="1.5" fill="#fff"/><circle cx="12" cy="19" r="1.5" fill="#fff"/></svg>
+      <span>More</span>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-ep-label">
+      <span style="font-size:12px; color:#fff;">EP.1 / EP.50</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+  </div>
+
+  <!-- Bottom Sheet -->
+  <div class="bottom-sheet">
+    <div class="drag-handle"></div>
+
+    <div class="series-info">
+      <div class="series-title">Home Turf Hijinks</div>
+      <div class="series-meta">
+        <span class="meta-genre">Comedy</span>
+        <span class="meta-pill">All 50 episodes</span>
+        <span class="meta-free-badge">
+          <svg class="fire-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#fad889" d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+          </svg>
+          First 5 Episodes FREE
+        </span>
+      </div>
+      <p class="series-desc">Three roommates navigate WFH chaos, quirky landlords, and life hacks that never quite work out.</p>
+
+      <div class="toast-added">
+        <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Added to My List! Continue watching to unlock more.
+      </div>
+    </div>
+
+    <!-- Episode list -->
+    <div class="episode-list">
+
+      <div class="ep-item">
+        <div class="ep-thumb free-watched">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title">Ep 1 — "Kitchen Office Hack"</div>
+          <div class="ep-meta"><span class="badge-free">FREE</span><span class="ep-duration">· 3:12</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb free-watched">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title">Ep 2 — "Balcony Chaos"</div>
+          <div class="ep-meta"><span class="badge-free">FREE</span><span class="ep-duration">· 2:58</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb free-watched">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title">Ep 3 — "Landlord Showdown"</div>
+          <div class="ep-meta"><span class="badge-free">FREE</span><span class="ep-duration">· 2:58</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb free-watched">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title">Ep 4 — "Wi-Fi Wars"</div>
+          <div class="ep-meta"><span class="badge-free">FREE</span><span class="ep-duration">· 2:58</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb free-watched">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title">Ep 5 — "Water Purifier Hack"</div>
+          <div class="ep-meta"><span class="badge-free">FREE</span><span class="ep-duration">· 3:25</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="#fff" width="14" height="14"><polygon points="5 3 19 12 5 21"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-divider"></div>
+
+      <div class="ep-item">
+        <div class="ep-thumb locked">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title dimmed">Ep 6 — "YouTube Idea Gone Wrong"</div>
+          <div class="ep-meta"><span class="ep-price">₹2 to unlock</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="1.5" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb locked">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title dimmed">Ep 7 — "Indoor Garden Hack"</div>
+          <div class="ep-meta"><span class="ep-price">₹2 to unlock</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="1.5" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+      </div>
+
+      <div class="ep-item">
+        <div class="ep-thumb locked">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5" fill="none"/><polyline points="8 21 12 17 16 21" stroke="#929596" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="ep-info">
+          <div class="ep-title dimmed">Ep 8 — "Expense Tracker Hack"</div>
+          <div class="ep-meta"><span class="ep-price">₹2 to unlock</span></div>
+        </div>
+        <div class="ep-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="1.5" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+      </div>
+
+    </div><!-- /episode-list -->
+
+    <!-- Footer CTA -->
+    <div class="footer-cta">
+      <span class="footer-text">Unlock full series for just <strong>₹15</strong></span>
+      <button class="unlock-btn">Unlock Series</button>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+  <!-- ═══════════════════════════════════════════════
+       SHEET BACKDROP
+  ═══════════════════════════════════════════════ -->
+  <div id="backdrop" class="sheet-backdrop" onclick="closeAllSheets()"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       SETTINGS SHEET
+  ═══════════════════════════════════════════════ -->
+  <div id="settings-sheet" class="settings-panel">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <span class="sheet-header-title">Settings</span>
+      </div>
+    </div>
+    <div class="sheet-divider"></div>
+
+    <!-- Audio Language row -->
+    <div class="settings-row" onclick="openSubSheet('audio-sheet')">
+      <div class="settings-row-left">
+        <!-- Audio icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18V5l12-2v13" stroke="#929596" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="6" cy="18" r="3" stroke="#929596" stroke-width="1.5"/>
+          <circle cx="18" cy="16" r="3" stroke="#929596" stroke-width="1.5"/>
+        </svg>
+        <span class="settings-row-label">Audio Language:</span>
+        <span class="settings-row-value" id="audio-value">Tamil</span>
+      </div>
+      <div class="settings-row-right">
+        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- Video Quality row -->
+    <div class="settings-row" onclick="openSubSheet('quality-sheet')">
+      <div class="settings-row-left">
+        <!-- HD icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="4" width="20" height="14" rx="2" stroke="#929596" stroke-width="1.5"/>
+          <path d="M8 9v6M16 9v6M8 12h8" stroke="#929596" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M8 21l4-3 4 3" stroke="#929596" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="settings-row-label">Video Quality:</span>
+        <span class="settings-row-value" id="quality-value">Auto</span>
+      </div>
+      <div class="settings-row-right">
+        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- Playback Speed row -->
+    <div class="settings-row" onclick="openSubSheet('speed-sheet')">
+      <div class="settings-row-left">
+        <!-- Clock/speed icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#929596" stroke-width="1.5"/>
+          <polyline points="12,7 12,12 15,14" stroke="#929596" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="settings-row-label">Playback Speed:</span>
+        <span class="settings-row-value" id="speed-value">1.0x</span>
+      </div>
+      <div class="settings-row-right">
+        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="#929596" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       AUDIO LANGUAGE SHEET
+  ═══════════════════════════════════════════════ -->
+  <div id="audio-sheet" class="settings-panel">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18V5l12-2v13" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="6" cy="18" r="3" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="18" cy="16" r="3" stroke="#fff" stroke-width="1.5"/>
+        </svg>
+        <span class="sheet-header-title">Audio Language</span>
+      </div>
+      <button class="sheet-close-btn" onclick="closeSheet('audio-sheet')">✕</button>
+    </div>
+    <div class="sheet-divider"></div>
+
+    <!-- தமிழ் - Tamil (default active) -->
+    <div class="option-row active" data-group="audio" data-value="Tamil" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">தமிழ் - Tamil</span>
+      </div>
+    </div>
+
+    <!-- తెలుగు - Telugu -->
+    <div class="option-row" data-group="audio" data-value="Telugu" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">తెలుగు - Telugu</span>
+      </div>
+    </div>
+
+    <!-- മലയാളം - Malayalam -->
+    <div class="option-row" data-group="audio" data-value="Malayalam" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">മലയാളം - Malayalam</span>
+      </div>
+    </div>
+
+    <!-- ಕನ್ನಡ - Kannada -->
+    <div class="option-row" data-group="audio" data-value="Kannada" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">ಕನ್ನಡ - Kannada</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PLAYBACK SPEED SHEET
+  ═══════════════════════════════════════════════ -->
+  <div id="speed-sheet" class="settings-panel">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <span class="sheet-header-title">Playback Speed</span>
+      </div>
+      <button class="sheet-close-btn" onclick="closeSheet('speed-sheet')">✕</button>
+    </div>
+    <div class="sheet-divider"></div>
+
+    <div class="option-row" data-group="speed" data-value="0.5x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">0.5x</span>
+      </div>
+    </div>
+
+    <div class="option-row" data-group="speed" data-value="0.75x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">0.75x</span>
+      </div>
+    </div>
+
+    <!-- 1x (Normal) — default active -->
+    <div class="option-row active" data-group="speed" data-value="1.0x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">1x (Normal)</span>
+      </div>
+    </div>
+
+    <div class="option-row" data-group="speed" data-value="1.25x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">1.25x</span>
+      </div>
+    </div>
+
+    <div class="option-row" data-group="speed" data-value="1.5x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">1.5x</span>
+      </div>
+    </div>
+
+    <div class="option-row" data-group="speed" data-value="2x" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">2x</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       VIDEO QUALITY SHEET
+  ═══════════════════════════════════════════════ -->
+  <div id="quality-sheet" class="settings-panel">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <span class="sheet-header-title">Video Quality</span>
+      </div>
+      <button class="sheet-close-btn" onclick="closeSheet('quality-sheet')">✕</button>
+    </div>
+    <div class="sheet-divider"></div>
+
+    <!-- Auto — default active -->
+    <div class="option-row active" data-group="quality" data-value="Auto" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">Auto</span>
+      </div>
+    </div>
+
+    <!-- 1080p — PREMIUM -->
+    <div class="option-row" data-group="quality" data-value="1080p" data-premium="true" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">1080p</span>
+      </div>
+      <div class="premium-badge">
+        <svg viewBox="0 0 14 8" fill="#fad889">
+          <path d="M0 7.5h14v.5H0zM1 6.5L0 1.5l3.5 2L7 0l3.5 3.5L14 1.5l-1 5H1z"/>
+        </svg>
+        <span class="premium-badge-text">PREMIUM</span>
+      </div>
+    </div>
+
+    <!-- 720p — PREMIUM -->
+    <div class="option-row" data-group="quality" data-value="720p" data-premium="true" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">720p</span>
+      </div>
+      <div class="premium-badge">
+        <svg viewBox="0 0 14 8" fill="#fad889">
+          <path d="M0 7.5h14v.5H0zM1 6.5L0 1.5l3.5 2L7 0l3.5 3.5L14 1.5l-1 5H1z"/>
+        </svg>
+        <span class="premium-badge-text">PREMIUM</span>
+      </div>
+    </div>
+
+    <!-- 480p -->
+    <div class="option-row" data-group="quality" data-value="480p" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">480p</span>
+      </div>
+    </div>
+
+    <!-- 360p -->
+    <div class="option-row" data-group="quality" data-value="360p" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">360p</span>
+      </div>
+    </div>
+
+    <!-- 240p -->
+    <div class="option-row" data-group="quality" data-value="240p" onclick="selectOption(this)">
+      <div class="option-row-left">
+        <span class="option-check">
+          <svg viewBox="0 0 16 13" fill="none">
+            <polyline points="1,7 5,11 15,1" stroke="#CF2E4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="option-label">240p</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PREMIUM MEMBERSHIP SHEET
+  ═══════════════════════════════════════════════ -->
+  <div id="premium-sheet" class="settings-panel">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <span class="sheet-header-title">Go Premium</span>
+      </div>
+      <button class="sheet-close-btn" onclick="closeSheet('premium-sheet')">✕</button>
+    </div>
+    <div class="sheet-divider"></div>
+
+    <div class="premium-upsell">
+      <div style="height:16px;"></div>
+
+      <div class="premium-upsell-icon">
+        <!-- Crown / HD icon -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M3 18h18v2H3zM3 15L6 6l5 5 4-8 4 8 3-5v9H3z" fill="#fad889" opacity="0.9"/>
+        </svg>
+      </div>
+
+      <div class="premium-upsell-title">Unlock HD Quality</div>
+      <div class="premium-upsell-sub">Watch in crystal-clear <strong style="color:#fad889;">1080p &amp; 720p HD</strong>. Get access to the full series with the best picture quality available.</div>
+
+      <div class="premium-divider"></div>
+      <div class="premium-pricing-note">First 5 episodes free · ₹2 per episode after</div>
+
+      <!-- Unlock episode card -->
+      <div class="pricing-card">
+        <div class="pricing-card-left">
+          <div class="pricing-card-title">Unlock this episode</div>
+          <div class="pricing-card-sub">Access Ep 6 instantly in HD</div>
+        </div>
+        <div class="pricing-card-right">
+          <div class="pricing-price">₹2</div>
+          <div class="pricing-unit">per episode</div>
+        </div>
+      </div>
+
+      <!-- Unlock full series card -->
+      <div class="pricing-card featured">
+        <div class="pricing-card-left">
+          <div class="pricing-card-title">
+            Unlock full series
+            <span class="best-value-pill">Best Value</span>
+          </div>
+          <div class="pricing-card-sub">All 50 episodes · 75% off</div>
+        </div>
+        <div class="pricing-card-right">
+          <div class="pricing-price">₹15</div>
+          <div class="pricing-original">₹60</div>
+        </div>
+      </div>
+
+      <div class="referral-row">
+        <span class="referral-grey">Have referral tickets?</span>
+        <span class="referral-link">Refer friends to earn free episodes →</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+  /* ── State ── */
+  const state = { audio: 'Tamil', quality: 'Auto', speed: '1.0x' };
+
+  /* ── Open a top-level sheet ── */
+  function openSheet(id) {
+    document.getElementById('backdrop').classList.add('visible');
+    document.getElementById(id).classList.add('open');
+  }
+
+  /* ── Open a sub-sheet (from inside settings) ── */
+  function openSubSheet(id) {
+    document.getElementById(id).classList.add('open');
+  }
+
+  /* ── Close a specific sheet ── */
+  function closeSheet(id) {
+    const el = document.getElementById(id);
+    el.classList.remove('open');
+
+    /* Hide backdrop only if no sheet is still open */
+    const anyOpen = document.querySelector('.settings-panel.open');
+    if (!anyOpen) {
+      document.getElementById('backdrop').classList.remove('visible');
+    }
+  }
+
+  /* ── Close all sheets (backdrop tap) ── */
+  function closeAllSheets() {
+    document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('open'));
+    document.getElementById('backdrop').classList.remove('visible');
+  }
+
+  /* ── Select an option inside a slider ── */
+  function selectOption(el) {
+    /* Premium quality option → open premium sheet instead */
+    if (el.dataset.premium === 'true') {
+      openSheet('premium-sheet');
+      return;
+    }
+
+    const group = el.dataset.group;
+    const value = el.dataset.value;
+
+    /* Deselect all rows in this group */
+    document.querySelectorAll(`.option-row[data-group="${group}"]`).forEach(r => r.classList.remove('active'));
+
+    /* Activate clicked row */
+    el.classList.add('active');
+
+    /* Update state + settings display label */
+    state[group] = value;
+    const labelEl = document.getElementById(`${group}-value`);
+    if (labelEl) labelEl.textContent = value;
+  }
+</script>
+
+</body>
+</html>
