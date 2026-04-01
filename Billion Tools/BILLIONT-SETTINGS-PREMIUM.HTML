@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Settings (Premium)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 30px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 16px;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+    .logo span { color: #F16623; }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .hdr-icon {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Back Row ── */
+    .back-row {
+      display: flex; align-items: center; gap: 6px;
+      padding: 16px 24px 4px;
+      cursor: pointer; width: fit-content;
+    }
+
+    .back-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px; color: #282828;
+    }
+
+    /* ── Page Title ── */
+    .page-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 25px; color: #282828;
+      padding: 6px 24px 12px;
+    }
+
+    /* ── Section Header ── */
+    .section-header {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 400; color: #606060;
+      padding: 6px 24px 4px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── Profile Row ── */
+    .profile-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 24px 14px;
+      cursor: pointer;
+    }
+
+    .profile-avatar {
+      width: 54px; height: 54px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+    }
+
+    .profile-info { flex: 1; }
+
+    .profile-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px; color: #282828;
+    }
+
+    .profile-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060; margin-top: 2px;
+    }
+
+    /* ── Dividers ── */
+    .divider { height: 0.5px; background: #E5E5EA; margin: 0 24px; }
+    .divider-section { height: 8px; background: #f7f6ff; margin: 4px 0; }
+
+    /* ── Premium Membership Card ── */
+    .membership-card {
+      margin: 14px 16px 6px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(140deg, #2a1060 0%, #512DA8 55%, #7B52D4 100%);
+      padding: 16px 18px 18px;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+
+    .membership-card::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 130px; height: 130px;
+      background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Top row: badge + plan tag */
+    .mc-top-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .mc-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 12px; color: #fff;
+      letter-spacing: 0.4px;
+    }
+
+    .mc-badge-dot {
+      width: 7px; height: 7px;
+      background: #A3E635; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .mc-plan-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.12);
+      padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* Validity row */
+    .mc-validity-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mc-validity-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: rgba(255,255,255,0.6);
+    }
+
+    .mc-validity-date {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    /* Progress bar */
+    .mc-progress-track {
+      height: 4px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .mc-progress-fill {
+      height: 100%;
+      background: rgba(255,255,255,0.72);
+      border-radius: 2px;
+      width: 82%;
+    }
+
+    .mc-progress-hint {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: rgba(255,255,255,0.45);
+      margin-top: 5px; text-align: right;
+    }
+
+    /* Manage link row */
+    .mc-manage-row {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 5px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .mc-manage-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 13px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ── Settings Row ── */
+    .settings-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 24px; cursor: pointer;
+    }
+
+    .row-icon {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .row-content { flex: 1; }
+
+    .row-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 17px; color: #282828;
+    }
+
+    .row-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060; margin-top: 1px;
+    }
+
+    /* ── Toggle Switch ── */
+    .toggle-switch {
+      position: relative; display: inline-block;
+      width: 50px; height: 29px; flex-shrink: 0;
+    }
+
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #ccc; border-radius: 29px; transition: background 0.2s;
+    }
+
+    .slider:before {
+      content: '';
+      position: absolute;
+      width: 23px; height: 23px;
+      left: 3px; bottom: 3px;
+      background: white; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+
+    .toggle-switch input:checked + .slider { background: #512DA8; }
+    .toggle-switch input:checked + .slider:before { transform: translateX(21px); }
+
+    /* ── Program Row ── */
+    .program-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 24px;
+    }
+
+    .program-name-link {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 15px; color: #512DA8; margin-top: 3px;
+    }
+
+    .program-cohort {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060; margin-top: 2px;
+    }
+
+    /* ── Logout Row ── */
+    .logout-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 24px; cursor: pointer;
+    }
+
+    .logout-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 17px; color: #E53935;
+    }
+
+    /* ── Delete Row ── */
+    .delete-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 24px; cursor: pointer;
+    }
+
+    .delete-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 17px; color: #282828;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Header ── -->
+      <div class="header">
+        <div class="status-bar">
+          <span class="status-time">9:41</span>
+          <div class="status-right">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <rect x="1" y="15" width="3" height="6" rx="1"/>
+              <rect x="6" y="11" width="3" height="10" rx="1"/>
+              <rect x="11" y="7" width="3" height="14" rx="1"/>
+              <rect x="16" y="3" width="3" height="18" rx="1" opacity="0.3"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="header-bar">
+          <span class="logo">Billion<span>T</span>ools</span>
+          <div class="header-actions">
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div class="hdr-icon" style="width:34px;height:34px;">
+              <svg viewBox="0 0 34 34" width="34" height="34">
+                <circle cx="17" cy="17" r="14" fill="#E3DFFF"/>
+                <text x="17" y="22" font-family="serif" font-size="13" font-weight="700" fill="#512DA8" text-anchor="middle">அ</text>
+                <path d="M27 14 L30 17 L27 20" stroke="#512DA8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="30" y="22" font-family="sans-serif" font-size="10" font-weight="700" fill="#512DA8" text-anchor="middle">A</text>
+              </svg>
+            </div>
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+            </div>
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </div>
+            <div class="hdr-icon" style="width:32px;height:32px;">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Scrollable Content ── -->
+      <div class="scroll-area">
+
+        <!-- Back + Title -->
+        <div class="back-row" onclick="history.back()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span class="back-label">Back</span>
+        </div>
+        <div class="page-title">Settings</div>
+
+        <!-- ── General Section ── -->
+        <div class="section-header">General</div>
+
+        <!-- Profile row -->
+        <div class="profile-row">
+          <div class="profile-avatar">
+            <svg viewBox="0 0 54 54" width="54" height="54">
+              <circle cx="27" cy="27" r="27" fill="#c5bcf5"/>
+              <ellipse cx="27" cy="18" rx="13" ry="14" fill="#3d2b1f"/>
+              <circle cx="27" cy="23" r="11" fill="#e8c9a0"/>
+              <rect x="21" y="33" width="12" height="8" rx="4" fill="#e8c9a0"/>
+              <ellipse cx="27" cy="50" rx="16" ry="10" fill="#7c6bb5"/>
+              <path d="M10 54 Q11 40 27 38 Q43 40 44 54Z" fill="#2e2060"/>
+            </svg>
+          </div>
+          <div class="profile-info">
+            <div class="profile-name">Tanisha</div>
+            <div class="profile-email">tanisha@example.com</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ── Premium Membership Card ── -->
+        <a href="BILLIONT-PROFILE-PREMIUM.HTML" class="membership-card">
+          <div class="mc-top-row">
+            <span class="mc-badge">
+              <span class="mc-badge-dot"></span>
+              Premium Member
+            </span>
+            <span class="mc-plan-tag">Yearly Plan</span>
+          </div>
+          <div class="mc-validity-row">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="rgba(255,255,255,0.55)"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            <span class="mc-validity-label">Valid till</span>
+            <span class="mc-validity-date">28 Dec 2026</span>
+          </div>
+          <div class="mc-progress-track">
+            <div class="mc-progress-fill"></div>
+          </div>
+          <div class="mc-progress-hint">2 months remaining</div>
+          <div class="mc-manage-row">
+            <span class="mc-manage-text">Manage Membership</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="rgba(255,255,255,0.8)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+        </a>
+
+        <div class="divider-section"></div>
+
+        <!-- ── Quick Settings Section ── -->
+        <div class="section-header">Quick Settings</div>
+
+        <!-- Language -->
+        <div class="settings-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <div class="row-content">
+            <div class="row-title">Language Selection</div>
+            <div class="row-subtitle">Tamil (Selected)</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Font Size -->
+        <div class="settings-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="#282828">
+              <text x="1" y="19" font-family="sans-serif" font-size="11" font-weight="700">A</text>
+              <text x="10" y="21" font-family="sans-serif" font-size="16" font-weight="700">A</text>
+            </svg>
+          </div>
+          <div class="row-content">
+            <div class="row-title">Font Size</div>
+            <div class="row-subtitle">Small</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Sound -->
+        <div class="settings-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+          </div>
+          <div class="row-content">
+            <div class="row-title">Sound</div>
+            <div class="row-subtitle" id="sound-label">On</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked id="sound-toggle" onchange="updateLabel('sound-toggle','sound-label')">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Notification -->
+        <div class="settings-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+            </svg>
+          </div>
+          <div class="row-content">
+            <div class="row-title">Notification</div>
+            <div class="row-subtitle" id="notif-label">On</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked id="notif-toggle" onchange="updateLabel('notif-toggle','notif-label')">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="divider-section"></div>
+
+        <!-- ── Program & Cohorts ── -->
+        <div class="program-row">
+          <div class="row-icon" style="margin-top:3px;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </div>
+          <div class="row-content">
+            <div class="row-title">Program &amp; Cohorts</div>
+            <div class="program-name-link">New Journey Towards Growth</div>
+            <div class="program-cohort">Cohorts 1: March 2025 – Madurai</div>
+          </div>
+        </div>
+
+        <div class="divider-section"></div>
+
+        <!-- ── Logout ── -->
+        <div class="logout-row">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#E53935">
+            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+          </svg>
+          <span class="logout-text">Logout</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ── Delete Account ── -->
+        <div class="delete-row">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+          <span class="delete-text">Delete Account</span>
+        </div>
+
+      </div><!-- end scroll-area -->
+    </div>
+  </div>
+
+  <script>
+    function updateLabel(toggleId, labelId) {
+      const checked = document.getElementById(toggleId).checked;
+      document.getElementById(labelId).textContent = checked ? 'On' : 'Off';
+    }
+  </script>
+</body>
+</html>

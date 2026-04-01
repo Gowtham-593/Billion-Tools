@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Profile (Premium Member)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      padding: 28px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Demo State Switcher ── */
+    .demo-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #282828;
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+    }
+
+    .demo-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9E9E9E;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    .demo-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .demo-btn.active-state { background: #512DA8; color: #fff; }
+    .demo-btn.expiring-state { background: #D97706; color: #fff; }
+    .demo-btn.expired-state { background: #606060; color: #fff; }
+    .demo-btn.inactive { background: #3A3A3C; color: #9E9E9E; }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right { display: flex; align-items: center; gap: 6px; }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 16px;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+    .logo span { color: #F16623; }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .hdr-icon {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Scroll Area ── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 30px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Back row ── */
+    .back-row {
+      display: flex; align-items: center; gap: 6px;
+      padding: 16px 24px 4px;
+      cursor: pointer; width: fit-content;
+    }
+    .back-label { font-family: 'Inter', sans-serif; font-size: 16px; color: #282828; }
+
+    /* ── Page Title ── */
+    .page-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 25px; color: #282828;
+      padding: 4px 24px 16px;
+    }
+
+    /* ── User Hero ── */
+    .user-hero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px 16px;
+    }
+
+    .user-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2.5px solid #E3DFFF;
+    }
+
+    .user-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 21px; color: #282828;
+    }
+
+    .user-email {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #606060; margin-top: 2px;
+    }
+
+    .user-edit-btn {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 5px;
+      background: #F7F6FF;
+      border: 1px solid #E3DFFF;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 600; color: #512DA8;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── Dividers ── */
+    .divider { height: 0.5px; background: #E5E5EA; margin: 0 24px; }
+    .divider-section { height: 8px; background: #f7f6ff; margin: 4px 0; }
+
+    /* ── Section label ── */
+    .section-header {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 600; color: #606060;
+      padding: 10px 24px 4px;
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
+
+    /* ════════════════════════════════════════
+       PREMIUM STATUS CARD — STATE: ACTIVE
+    ════════════════════════════════════════ */
+    .membership-card {
+      margin: 0 16px 4px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* Active card — purple gradient */
+    .mc-active {
+      background: linear-gradient(140deg, #2a1060 0%, #512DA8 55%, #7B52D4 100%);
+      padding: 18px 18px 20px;
+      position: relative;
+    }
+
+    .mc-active::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 130px; height: 130px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .mc-top-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .mc-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 12px;
+      color: #fff; letter-spacing: 0.5px;
+    }
+
+    .mc-badge-dot {
+      width: 7px; height: 7px;
+      background: #A3E635; border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .mc-plan-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.12);
+      padding: 3px 10px; border-radius: 20px;
+    }
+
+    .mc-validity-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .mc-validity-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: rgba(255,255,255,0.65);
+    }
+
+    .mc-validity-date {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    .mc-progress-track {
+      height: 4px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .mc-progress-fill {
+      height: 100%;
+      background: rgba(255,255,255,0.75);
+      border-radius: 2px;
+      width: 82%; /* ~10 months used out of 12 */
+    }
+
+    .mc-progress-hint {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      margin-top: 5px; text-align: right;
+    }
+
+    /* ── Benefits checklist (active) ── */
+    .mc-benefits {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 14px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .mc-benefit-row {
+      display: flex; align-items: center; gap: 9px;
+    }
+
+    .mc-benefit-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: rgba(255,255,255,0.85);
+    }
+
+    /* ════════════════════════════════════════
+       PREMIUM STATUS CARD — STATE: EXPIRING
+    ════════════════════════════════════════ */
+    .mc-expiring {
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      border-radius: 16px;
+      padding: 16px 18px;
+    }
+
+    .mc-exp-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mc-exp-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #FEF3C7; border: 1px solid #FCD34D;
+      border-radius: 20px; padding: 4px 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 12px; color: #92400E;
+      letter-spacing: 0.4px; white-space: nowrap;
+    }
+
+    .mc-exp-crown {
+      width: 36px; height: 36px;
+      background: #512DA8; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mc-exp-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px; color: #282828;
+      margin-bottom: 3px;
+    }
+
+    .mc-exp-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060; line-height: 1.45;
+    }
+
+    .mc-exp-desc strong { color: #D97706; font-weight: 600; }
+
+    /* Countdown pill */
+    .mc-exp-countdown {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #FEF3C7; border: 1px solid #FCD34D;
+      border-radius: 8px; padding: 7px 12px;
+      font-family: 'Inter', sans-serif; font-size: 12px; color: #92400E;
+      margin-top: 10px; width: 100%;
+    }
+
+    .mc-exp-countdown strong {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #B45309;
+    }
+
+    /* ── What you lose ── */
+    .lose-section {
+      background: #fff;
+      border: 1px solid #E3DFFF;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 12px 16px 0;
+    }
+
+    .lose-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+      margin-bottom: 10px;
+    }
+
+    .lose-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 0;
+      border-bottom: 0.5px solid #F0F0F0;
+    }
+
+    .lose-item:last-child { border-bottom: none; }
+
+    .lose-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px; background: #F7F6FF;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .lose-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #282828; flex: 1;
+    }
+
+    .lose-text span {
+      display: block;
+      font-size: 12px; color: #606060; margin-top: 1px;
+    }
+
+    /* ── Renewal Plan Cards ── */
+    .renewal-section {
+      padding: 16px 16px 0;
+    }
+
+    .renewal-heading {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px; color: #282828;
+      margin-bottom: 12px;
+    }
+
+    .renewal-cards { display: flex; flex-direction: column; gap: 10px; }
+
+    .renewal-card {
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      position: relative;
+    }
+
+    .renewal-card:active { transform: scale(0.99); }
+
+    .rc-yearly {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      box-shadow: 0 4px 16px rgba(81,45,168,0.3);
+    }
+
+    .rc-monthly {
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+    }
+
+    .rc-top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 6px;
+    }
+
+    .rc-name-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    .rc-name-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #282828;
+    }
+
+    .rc-recommended {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 10px; color: #5D4037;
+      background: #FCD34D; padding: 3px 9px; border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    .rc-price-row { display: flex; align-items: baseline; gap: 3px; }
+
+    .rc-price-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 24px; color: #fff;
+    }
+
+    .rc-price-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 24px; color: #282828;
+    }
+
+    .rc-unit-light { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); }
+    .rc-unit-dark  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; }
+
+    .rc-detail-light { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .rc-detail-dark  { font-family: 'Inter', sans-serif; font-size: 12px; color: #606060; margin-top: 2px; }
+
+    .rc-savings {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 11px;
+      padding: 3px 9px; border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* Renew CTA */
+    .renew-cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: calc(100% - 32px);
+      margin: 14px 16px 0;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800; font-size: 17px;
+      border: none; border-radius: 13px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      transition: opacity 0.15s;
+    }
+
+    .renew-cta-btn:active { opacity: 0.88; }
+
+    /* ════════════════════════════════════════
+       PREMIUM STATUS CARD — STATE: EXPIRED
+    ════════════════════════════════════════ */
+    .mc-expired {
+      background: #F9F9F9;
+      border: 1.5px solid #E5E5EA;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin: 0 16px 4px;
+    }
+
+    .mc-exp-status-row {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 10px;
+    }
+
+    .mc-expired-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #F3F3F3; border: 1px solid #D0D0D0;
+      border-radius: 20px; padding: 4px 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 12px; color: #606060;
+    }
+
+    .mc-expired-dot {
+      width: 7px; height: 7px;
+      background: #9E9E9E; border-radius: 50%;
+    }
+
+    .mc-expired-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px; color: #282828;
+      margin-bottom: 4px;
+    }
+
+    .mc-expired-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060; line-height: 1.45;
+    }
+
+    .mc-expired-date {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #9E9E9E;
+      margin-top: 10px;
+    }
+
+    /* Locked features */
+    .locked-section {
+      margin: 12px 16px 0;
+      background: #F9F9F9;
+      border: 1px solid #E5E5EA;
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .locked-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+      margin-bottom: 10px;
+    }
+
+    .locked-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0;
+      border-bottom: 0.5px solid #F0F0F0;
+      opacity: 0.6;
+    }
+
+    .locked-item:last-child { border-bottom: none; }
+
+    .locked-icon-box {
+      width: 34px; height: 34px;
+      border-radius: 10px; background: #F0F0F0;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .locked-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #606060; flex: 1;
+    }
+
+    /* ── Settings rows ── */
+    .settings-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 24px; cursor: pointer;
+    }
+
+    .row-icon {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .row-content { flex: 1; }
+
+    .row-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 17px; color: #282828;
+    }
+
+    /* ── Logout ── */
+    .logout-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 24px; cursor: pointer;
+    }
+
+    .logout-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 17px; color: #E53935;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo State Switcher (outside phone) -->
+  <div class="demo-bar">
+    <span class="demo-label">Preview state:</span>
+    <button class="demo-btn active-state" id="btn-active" onclick="setState('active')">Active Member</button>
+    <button class="demo-btn inactive" id="btn-expiring" onclick="setState('expiring')">Expiring Soon</button>
+    <button class="demo-btn inactive" id="btn-expired" onclick="setState('expired')">Expired</button>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Header ── -->
+      <div class="header">
+        <div class="status-bar">
+          <span class="status-time">9:41</span>
+          <div class="status-right">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <rect x="1" y="15" width="3" height="6" rx="1"/>
+              <rect x="6" y="11" width="3" height="10" rx="1"/>
+              <rect x="11" y="7" width="3" height="14" rx="1"/>
+              <rect x="16" y="3" width="3" height="18" rx="1" opacity="0.3"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </div>
+        </div>
+        <div class="header-bar">
+          <span class="logo">Billion<span>T</span>ools</span>
+          <div class="header-actions">
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div class="hdr-icon" style="width:34px;height:34px;">
+              <svg viewBox="0 0 34 34" width="34" height="34">
+                <circle cx="17" cy="17" r="14" fill="#E3DFFF"/>
+                <text x="17" y="22" font-family="serif" font-size="13" font-weight="700" fill="#512DA8" text-anchor="middle">அ</text>
+                <path d="M27 14 L30 17 L27 20" stroke="#512DA8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="30" y="22" font-family="sans-serif" font-size="10" font-weight="700" fill="#512DA8" text-anchor="middle">A</text>
+              </svg>
+            </div>
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+            </div>
+            <div class="hdr-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </div>
+            <div class="hdr-icon" style="width:32px;height:32px;">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Scrollable Content ── -->
+      <div class="scroll-area" id="scroll-area">
+
+        <!-- Back + Title -->
+        <div class="back-row" onclick="history.back()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span class="back-label">Back</span>
+        </div>
+        <div class="page-title">Profile</div>
+
+        <!-- User Hero -->
+        <div class="user-hero">
+          <div class="user-avatar">
+            <svg viewBox="0 0 64 64" width="64" height="64">
+              <circle cx="32" cy="32" r="32" fill="#c5bcf5"/>
+              <ellipse cx="32" cy="22" rx="15" ry="16" fill="#3d2b1f"/>
+              <circle cx="32" cy="27" r="13" fill="#e8c9a0"/>
+              <rect x="24" y="39" width="16" height="10" rx="5" fill="#e8c9a0"/>
+              <ellipse cx="32" cy="59" rx="20" ry="12" fill="#7c6bb5"/>
+              <path d="M10 64 Q12 48 32 45 Q52 48 54 64Z" fill="#2e2060"/>
+            </svg>
+          </div>
+          <div>
+            <div class="user-name">Tanisha</div>
+            <div class="user-email">tanisha@example.com</div>
+          </div>
+          <button class="user-edit-btn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            Edit
+          </button>
+        </div>
+
+        <div class="divider"></div>
+        <div style="height:14px;"></div>
+
+        <!-- ══════════════════════════════
+             STATE: ACTIVE
+        ══════════════════════════════ -->
+        <div id="state-active">
+
+          <div class="section-header">Membership</div>
+
+          <div class="membership-card" style="margin:8px 16px 0;">
+            <div class="mc-active">
+              <div class="mc-top-row">
+                <span class="mc-badge">
+                  <span class="mc-badge-dot"></span>
+                  Premium Member
+                </span>
+                <span class="mc-plan-tag">Yearly Plan</span>
+              </div>
+              <div class="mc-validity-row">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.6)"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                <span class="mc-validity-label">Valid till</span>
+                <span class="mc-validity-date">28 Dec 2026</span>
+              </div>
+              <div class="mc-progress-track">
+                <div class="mc-progress-fill"></div>
+              </div>
+              <div class="mc-progress-hint">10 months used · 2 months remaining</div>
+              <div class="mc-benefits">
+                <div class="mc-benefit-row">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#A3E635"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  <span class="mc-benefit-text">Premium Courses</span>
+                </div>
+                <div class="mc-benefit-row">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#A3E635"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  <span class="mc-benefit-text">Expert Tools &amp; Frameworks</span>
+                </div>
+                <div class="mc-benefit-row">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#A3E635"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  <span class="mc-benefit-text">Dedicated Learning Path</span>
+                </div>
+                <div class="mc-benefit-row">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#A3E635"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  <span class="mc-benefit-text">Curated Activities</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:4px;"></div>
+          <div class="divider-section"></div>
+
+          <!-- Help, Terms, Privacy, Refund -->
+          <div class="section-header">Support</div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="1" fill="#606060" stroke="none"/></svg></div>
+            <div class="row-content"><div class="row-title">Help &amp; Support</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider"></div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="row-content"><div class="row-title">Terms &amp; Conditions</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider"></div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="row-content"><div class="row-title">Privacy Policy</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider"></div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg></div>
+            <div class="row-content"><div class="row-title">Refund Policy</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider-section"></div>
+          <div class="logout-row">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#E53935"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span class="logout-text">Log Out</span>
+          </div>
+
+        </div><!-- end state-active -->
+
+
+        <!-- ══════════════════════════════
+             STATE: EXPIRING SOON
+        ══════════════════════════════ -->
+        <div id="state-expiring" style="display:none;">
+
+          <div class="section-header">Membership</div>
+
+          <!-- Expiring warning card -->
+          <div class="mc-expiring" style="margin: 8px 16px 0;">
+            <div class="mc-exp-top">
+              <div>
+                <span class="mc-exp-badge">
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="#D97706"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  Ending Soon
+                </span>
+              </div>
+              <div class="mc-exp-crown">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#FFD54F"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+              </div>
+            </div>
+            <div class="mc-exp-title">Your Premium Plan is Ending</div>
+            <div class="mc-exp-desc">
+              Your Yearly plan expires on <strong>28 Dec 2026</strong>. Renew now to keep accessing all your courses, tools, and your learning path without interruption.
+            </div>
+            <div class="mc-exp-countdown">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#B45309"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+              <span><strong>24 days</strong> remaining on your current plan</span>
+            </div>
+          </div>
+
+          <!-- What you will lose -->
+          <div class="lose-section">
+            <div class="lose-title">What stops working after expiry</div>
+            <div class="lose-item">
+              <div class="lose-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+              </div>
+              <div class="lose-text">
+                Premium Courses
+                <span>Structured learning paths for SME growth stages</span>
+              </div>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <div class="lose-item">
+              <div class="lose-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/></svg>
+              </div>
+              <div class="lose-text">
+                Expert Tools &amp; Frameworks
+                <span>Decision templates, operational checklists</span>
+              </div>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <div class="lose-item">
+              <div class="lose-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+              </div>
+              <div class="lose-text">
+                Dedicated Learning Path
+                <span>Personalised journey aligned to your business stage</span>
+              </div>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+          </div>
+
+          <!-- Renewal plan cards -->
+          <div class="renewal-section">
+            <div class="renewal-heading">Choose your renewal plan</div>
+            <div class="renewal-cards">
+
+              <!-- Yearly — Recommended -->
+              <div class="renewal-card rc-yearly">
+                <div class="rc-top">
+                  <span class="rc-name-light">Yearly Plan</span>
+                  <span class="rc-recommended">RECOMMENDED</span>
+                </div>
+                <div class="rc-price-row">
+                  <span class="rc-price-light">₹10,000</span>
+                  <span class="rc-unit-light">/year</span>
+                </div>
+                <div class="rc-detail-light">₹833/month · + Applicable tax</div>
+                <div class="rc-savings">Save ₹2,000 — 2 months free</div>
+              </div>
+
+              <!-- Monthly -->
+              <div class="renewal-card rc-monthly">
+                <div class="rc-top">
+                  <span class="rc-name-dark">Monthly Plan</span>
+                </div>
+                <div class="rc-price-row">
+                  <span class="rc-price-dark">₹1,000</span>
+                  <span class="rc-unit-dark">/month</span>
+                </div>
+                <div class="rc-detail-dark">+ Applicable tax · Cancel anytime</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Renew CTA -->
+          <button class="renew-cta-btn">
+            Renew Now
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </button>
+
+          <div style="height:16px;"></div>
+          <div class="divider-section"></div>
+
+          <!-- Support rows -->
+          <div class="section-header">Support</div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="1" fill="#606060" stroke="none"/></svg></div>
+            <div class="row-content"><div class="row-title">Help &amp; Support</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider-section"></div>
+          <div class="logout-row">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#E53935"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span class="logout-text">Log Out</span>
+          </div>
+
+        </div><!-- end state-expiring -->
+
+
+        <!-- ══════════════════════════════
+             STATE: EXPIRED
+        ══════════════════════════════ -->
+        <div id="state-expired" style="display:none;">
+
+          <div class="section-header">Membership</div>
+
+          <!-- Expired status card -->
+          <div class="mc-expired">
+            <div class="mc-exp-status-row">
+              <span class="mc-expired-badge">
+                <span class="mc-expired-dot"></span>
+                Plan Expired
+              </span>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <div class="mc-expired-title">Your Premium plan has expired</div>
+            <div class="mc-expired-desc">
+              You no longer have access to premium courses, expert tools, and your learning path. Renew to pick up right where you left off.
+            </div>
+            <div class="mc-expired-date">Expired on 28 Dec 2026 · Yearly Plan</div>
+          </div>
+
+          <!-- Locked features -->
+          <div class="locked-section">
+            <div class="locked-title">Locked — Premium only</div>
+
+            <div class="locked-item">
+              <div class="locked-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+              </div>
+              <span class="locked-text">Premium Courses</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C0C0C0"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+
+            <div class="locked-item">
+              <div class="locked-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/></svg>
+              </div>
+              <span class="locked-text">Expert Tools &amp; Frameworks</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C0C0C0"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+
+            <div class="locked-item">
+              <div class="locked-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+              </div>
+              <span class="locked-text">Dedicated Learning Path</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C0C0C0"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+
+            <div class="locked-item">
+              <div class="locked-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#9E9E9E"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+              </div>
+              <span class="locked-text">Curated Activities</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C0C0C0"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+          </div>
+
+          <!-- Renewal plan cards -->
+          <div class="renewal-section">
+            <div class="renewal-heading">Renew your membership</div>
+            <div class="renewal-cards">
+              <div class="renewal-card rc-yearly">
+                <div class="rc-top">
+                  <span class="rc-name-light">Yearly Plan</span>
+                  <span class="rc-recommended">BEST VALUE</span>
+                </div>
+                <div class="rc-price-row">
+                  <span class="rc-price-light">₹10,000</span>
+                  <span class="rc-unit-light">/year</span>
+                </div>
+                <div class="rc-detail-light">₹833/month · + Applicable tax</div>
+                <div class="rc-savings">Save ₹2,000 — 2 months free</div>
+              </div>
+              <div class="renewal-card rc-monthly">
+                <div class="rc-top">
+                  <span class="rc-name-dark">Monthly Plan</span>
+                </div>
+                <div class="rc-price-row">
+                  <span class="rc-price-dark">₹1,000</span>
+                  <span class="rc-unit-dark">/month</span>
+                </div>
+                <div class="rc-detail-dark">+ Applicable tax · Cancel anytime</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Renew CTA -->
+          <button class="renew-cta-btn">
+            Renew Membership
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </button>
+
+          <div style="height:16px;"></div>
+          <div class="divider-section"></div>
+
+          <!-- Support rows -->
+          <div class="section-header">Support</div>
+          <div class="settings-row">
+            <div class="row-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#606060" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="1" fill="#606060" stroke="none"/></svg></div>
+            <div class="row-content"><div class="row-title">Help &amp; Support</div></div>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#606060"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+          <div class="divider-section"></div>
+          <div class="logout-row">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#E53935"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span class="logout-text">Log Out</span>
+          </div>
+
+        </div><!-- end state-expired -->
+
+      </div><!-- end scroll-area -->
+    </div>
+  </div>
+
+  <script>
+    function setState(state) {
+      // Hide all states
+      document.getElementById('state-active').style.display   = 'none';
+      document.getElementById('state-expiring').style.display = 'none';
+      document.getElementById('state-expired').style.display  = 'none';
+
+      // Show requested state
+      document.getElementById('state-' + state).style.display = 'block';
+
+      // Scroll to top
+      document.getElementById('scroll-area').scrollTop = 0;
+
+      // Update demo button styles
+      const buttons = {
+        active:   document.getElementById('btn-active'),
+        expiring: document.getElementById('btn-expiring'),
+        expired:  document.getElementById('btn-expired')
+      };
+
+      Object.keys(buttons).forEach(key => {
+        buttons[key].className = 'demo-btn inactive';
+      });
+
+      const activeMap = {
+        active:   'demo-btn active-state',
+        expiring: 'demo-btn expiring-state',
+        expired:  'demo-btn expired-state'
+      };
+
+      buttons[state].className = activeMap[state];
+    }
+  </script>
+</body>
+</html>

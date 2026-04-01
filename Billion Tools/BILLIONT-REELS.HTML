@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Reels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ══════════════════════════════
+       Phone Shell
+    ══════════════════════════════ */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #0f0f0f;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      border: 1.5px solid #282828;
+    }
+
+    /* ══════════════════════════════
+       Fixed Top Bar — overlays the video
+    ══════════════════════════════ */
+    .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px 14px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.70) 0%, transparent 100%);
+    }
+
+    .top-bar-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;                /* Bold — H2 heading style */
+      font-size: 21px;                 /* H2 Section Heading from design system */
+      color: #fff;
+      letter-spacing: 0;
+    }
+
+    .top-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    /* ══════════════════════════════
+       Reels Scroll Container — vertical snap
+    ══════════════════════════════ */
+    .reels-container {
+      position: absolute;
+      inset: 0;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .reels-container::-webkit-scrollbar { display: none; }
+
+    /* ══════════════════════════════
+       Individual Reel Slide
+    ══════════════════════════════ */
+    .reel-slide {
+      width: 480px;
+      height: 1013px;
+      scroll-snap-align: start;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Full-bleed background (video placeholder) */
+    .reel-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Bottom gradient overlay — ensures info text is readable */
+    .reel-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.20) 0%,
+        transparent 30%,
+        transparent 42%,
+        rgba(0,0,0,0.55) 65%,
+        rgba(0,0,0,0.88) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════
+       Playback Progress Bar
+       Thin line at the very top of each slide
+    ══════════════════════════════ */
+    .reel-progress-track {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: rgba(255,255,255,0.2);
+      z-index: 50;
+    }
+
+    .reel-progress-fill {
+      height: 100%;
+      background: #512DA8;             /* Primary brand color */
+      border-radius: 1px;
+      transition: width 0s linear;
+    }
+
+    /* ══════════════════════════════
+       Right Action Rail
+       Like · Comment · Share · More
+    ══════════════════════════════ */
+    .action-rail {
+      position: absolute;
+      right: 16px;
+      bottom: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      z-index: 30;                       /* always above reel-info and overlays */
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .action-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12px;                 /* Body Text-2 Small */
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* Like animation */
+    .action-btn.liked .like-icon {
+      fill: #E71F2C;
+      stroke: #E71F2C;
+      transform: scale(1.15);
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .like-icon {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      transition: fill 0.15s, stroke 0.15s, transform 0.15s;
+    }
+
+    /* ══════════════════════════════
+       Bottom Info Overlay
+       Positioned left of the action rail
+    ══════════════════════════════ */
+    .reel-info {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 105px;
+      padding: 0 24px;                /* full width — 24px on both sides */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+      transition: opacity 0.18s ease;
+    }
+
+    /* Hide bottom info + action rail when caption is expanded */
+    .reel-slide.caption-open .reel-info  { opacity: 0; pointer-events: none; }
+    .reel-slide.caption-open .action-rail { opacity: 0; pointer-events: none; }
+
+    /* CTA card — white, 13px radius (Button Default iOS from design system) */
+    .reel-cta-card {
+      background: #fff;
+      border-radius: 13px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25); /* Normal Shadow */
+    }
+
+    .reel-cta-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 16px;                 /* Body Text */
+      color: #282828;
+    }
+
+    /* Reel heading */
+    .reel-heading {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: #fff;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+      line-height: 1.2;
+    }
+
+    /* Caption — 1 line, ellipsis only, clickable */
+    .reel-caption {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    /* ── Caption expand: full-screen overlay with bottom sheet ── */
+    .caption-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .caption-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Top dim area — tap to dismiss */
+    .caption-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.60);
+    }
+
+    /* Bottom solid sheet — sits above the navbar */
+    .caption-expanded-box {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #1a1028;
+      border-radius: 20px 20px 0 0;
+      padding: 16px 24px 108px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .caption-drag-handle {
+      width: 36px;
+      height: 4px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      margin: 0 auto 14px;
+    }
+
+    .caption-expanded-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .caption-expanded-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.75;
+    }
+
+    /* Duration / progress bar — inline, below caption, full bleed */
+    .reel-duration-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 0;
+      overflow: hidden;
+      margin-top: 2px;
+      margin-left: -24px;
+      margin-right: -24px;
+    }
+
+    .reel-duration-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 2px;
+      width: 0%;
+    }
+
+    /* Followers social proof row */
+    .followers-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .follower-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.8);
+      margin-right: -7px;
+      flex-shrink: 0;
+    }
+
+    .followers-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+      margin-left: 14px;
+    }
+
+    /* Ad / sponsored label */
+    .ad-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .ad-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ══════════════════════════════
+       Comment Bar — fixed at slide bottom
+    ══════════════════════════════ */
+    .comment-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 66px;
+      background: rgba(10,10,10,0.90);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      padding: 0 16px 10px;
+      z-index: 10;
+    }
+
+    .comment-input-pill {
+      flex: 1;
+      height: 40px;
+      background: rgba(255,255,255,0.10);
+      border: 0.5px solid rgba(255,255,255,0.15); /* Soft border from design system */
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      cursor: text;
+    }
+
+    .comment-placeholder {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ══════════════════════════════
+       Action Sheet (Kebab menu)
+       Dark theme — matches reel dark bg
+    ══════════════════════════════ */
+    .overlay-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .overlay-dim.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .action-sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #1c1c1e;
+      border-radius: 20px 20px 0 0;
+      z-index: 201;
+      transform: translateY(100%);
+      transition: transform 0.30s cubic-bezier(0.32, 0.72, 0, 1);
+      padding-bottom: 28px;
+    }
+    .action-sheet.open { transform: translateY(0); }
+
+    .sheet-drag {
+      width: 40px;
+      height: 4px;
+      background: #3a3a3c;
+      border-radius: 2px;
+      margin: 12px auto 6px;
+    }
+
+    .sheet-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 24px;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    .sheet-item:active { background: rgba(255,255,255,0.04); }
+
+    .sheet-item-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #fff;
+    }
+    .sheet-item.danger .sheet-item-label { color: #FF453A; }
+
+    .sheet-cancel-btn {
+      margin: 10px 20px 0;
+      width: calc(100% - 40px);
+      padding: 14px;
+      background: rgba(255,255,255,0.07);
+      border: none;
+      border-radius: 13px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .sheet-cancel-btn:active { background: rgba(255,255,255,0.14); }
+
+    /* ══════════════════════════════
+       Comment Sheet — slides up 60% of phone
+    ══════════════════════════════ */
+    .comment-sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 620px;
+      background: #1c1c1e;
+      border-radius: 20px 20px 0 0;
+      z-index: 201;
+      transform: translateY(100%);
+      transition: transform 0.30s cubic-bezier(0.32, 0.72, 0, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .comment-sheet.open { transform: translateY(0); }
+
+    .comment-sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 14px;
+      border-bottom: 0.5px solid rgba(255,255,255,0.10); /* Soft border */
+    }
+
+    .comment-sheet-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: #fff;
+    }
+
+    .comment-list {
+      flex: 1;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      padding: 8px 0;
+    }
+    .comment-list::-webkit-scrollbar { display: none; }
+
+    .comment-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 20px;
+    }
+
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .comment-username {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .comment-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      margin-top: 2px;
+      line-height: 1.45;
+    }
+
+    .comment-meta {
+      font-size: 11px;
+      color: #606060;                  /* Grey from design system */
+      margin-top: 4px;
+    }
+
+    .divider-line {
+      height: 0.5px;
+      background: rgba(255,255,255,0.08);
+      margin: 0 20px;
+    }
+
+    .comment-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px 20px;
+      border-top: 0.5px solid rgba(255,255,255,0.10);
+    }
+
+    .comment-text-input {
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+    }
+    .comment-text-input::placeholder { color: rgba(255,255,255,0.35); }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      background: #512DA8;             /* Primary color */
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .send-btn:active { background: #3d1e8a; }
+
+    /* ══════════════════════════════
+       Bottom Navbar — white, same as Home
+    ══════════════════════════════ */
+    .reel-navbar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-top: 1px solid #E3DFFF;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+    }
+
+    .reel-navbar-main {
+      padding: 8px 30px;
+    }
+
+    .reel-nav-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+
+    .reel-nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      min-width: 45px;
+      text-decoration: none;
+    }
+
+    .reel-nav-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .reel-nav-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .reel-nav-tab.active .reel-nav-label {
+      color: #512DA8;
+    }
+
+    .reel-navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 25px;
+      background: #fff;
+    }
+
+    .reel-copy-text {
+      font-family: 'Lato', sans-serif;
+      font-size: 9px;
+      color: #282828;
+    }
+  </style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <!-- ════════════════════════════════
+       Fixed Top Bar
+  ════════════════════════════════ -->
+  <div class="top-bar" style="justify-content:space-between;">
+    <!-- Back arrow: hidden by default, shown via JS when coming from Suggested Reels -->
+    <button class="top-icon-btn" id="backBtn" aria-label="Back" style="visibility:hidden;" onclick="history.back()">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+    </button>
+
+    <!-- Search icon — top right -->
+    <button class="top-icon-btn" aria-label="Search" style="margin-left:auto;">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ════════════════════════════════
+       Reels Scroll Container
+  ════════════════════════════════ -->
+  <div class="reels-container" id="reelsContainer">
+
+    <!-- ╔══════════════════════════╗
+         ║  REEL 1 — Leadership     ║
+         ╚══════════════════════════╝ -->
+    <div class="reel-slide" data-index="0">
+
+      <!-- Background — deep purple gradient with abstract SVG art -->
+      <div class="reel-bg" style="background: linear-gradient(160deg,#120525 0%,#2d1060 30%,#1a0840 65%,#0d051e 100%);">
+        <svg viewBox="0 0 480 1013" width="480" height="1013" style="position:absolute;inset:0;">
+          <defs>
+            <radialGradient id="g1a" cx="50%" cy="38%" r="48%">
+              <stop offset="0%" stop-color="#7040d0" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="g1b" cx="30%" cy="70%" r="40%">
+              <stop offset="0%" stop-color="#a060ff" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="480" height="1013" fill="url(#g1a)"/>
+          <rect width="480" height="1013" fill="url(#g1b)"/>
+
+          <!-- Stylised silhouette — entrepreneur figure -->
+          <ellipse cx="240" cy="310" rx="68" ry="88" fill="#3a1880" opacity="0.7"/>
+          <ellipse cx="240" cy="295" rx="45" ry="60" fill="#5030a0" opacity="0.55"/>
+          <!-- Shoulders / body -->
+          <ellipse cx="240" cy="410" rx="90" ry="70" fill="#2a1060" opacity="0.6"/>
+
+          <!-- Flowing energy lines -->
+          <path d="M40 180 Q180 310 340 200 Q420 280 460 380" stroke="#9060e0" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M20 250 Q200 360 380 260 Q440 330 480 430" stroke="#7040c0" stroke-width="0.8" fill="none" opacity="0.25"/>
+          <path d="M0 340 Q220 420 440 340" stroke="#6030b0" stroke-width="0.6" fill="none" opacity="0.2"/>
+
+          <!-- Orbiting circles (brand indicator) -->
+          <circle cx="240" cy="310" r="110" fill="none" stroke="#8050d0" stroke-width="0.5" opacity="0.3"/>
+          <circle cx="240" cy="310" r="160" fill="none" stroke="#6030b0" stroke-width="0.5" opacity="0.18"/>
+          <circle cx="240" cy="310" r="210" fill="none" stroke="#5020a0" stroke-width="0.4" opacity="0.12"/>
+
+          <!-- Sparkle / star top -->
+          <path d="M240 110 L244 128 L262 132 L244 136 L240 154 L236 136 L218 132 L236 128 Z" fill="#c090ff" opacity="0.5"/>
+          <path d="M370 180 L373 191 L384 194 L373 197 L370 208 L367 197 L356 194 L367 191 Z" fill="#9060e0" opacity="0.4"/>
+          <path d="M110 420 L112 428 L120 430 L112 432 L110 440 L108 432 L100 430 L108 428 Z" fill="#8050d0" opacity="0.35"/>
+        </svg>
+      </div>
+
+      <div class="reel-gradient-overlay"></div>
+
+      <!-- Progress bar — 45% watched -->
+      <div class="reel-progress-track">
+        <div class="reel-progress-fill" style="width:45%;"></div>
+      </div>
+
+      <!-- Right Action Rail: Like · Comment · Share · Save · Kebab -->
+      <div class="action-rail">
+        <button class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" class="like-icon">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-label">1,842</span>
+        </button>
+        <button class="action-btn" onclick="openComments()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">24</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-label">Share</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">Save</span>
+        </button>
+        <button class="action-btn" onclick="openSheet()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff">
+              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Caption expand overlay -->
+      <div class="caption-overlay" id="captionOverlay0">
+        <div class="caption-dim" onclick="collapseCaption(0)"></div>
+        <div class="caption-expanded-box">
+          <div class="caption-drag-handle"></div>
+          <div class="caption-expanded-title">Leadership Mindset for Entrepreneurs</div>
+          <p class="caption-expanded-text">The leadership mindset every entrepreneur must build — from day one to scale. 🚀 Clear vision, consistent habits, and team trust are the three pillars. #entrepreneurship #leadership #billionttools</p>
+        </div>
+      </div>
+
+      <!-- Bottom Info -->
+      <div class="reel-info">
+        <button class="reel-cta-card">
+          <span class="reel-cta-text">Watch Full Course</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+          </svg>
+        </button>
+        <span class="reel-heading">Leadership Mindset for Entrepreneurs</span>
+        <p class="reel-caption" onclick="expandCaption(0)">The leadership mindset every entrepreneur must build — from day one to scale. 🚀 #entrepreneurship #leadership #billionttools</p>
+        <div class="reel-duration-bar" id="durationBar0">
+          <div class="reel-duration-fill" id="durationFill0"></div>
+        </div>
+      </div>
+
+    </div><!-- /reel 1 -->
+
+
+    <!-- ╔══════════════════════════╗
+         ║  REEL 2 — Growth         ║
+         ╚══════════════════════════╝ -->
+    <div class="reel-slide" data-index="1">
+
+      <div class="reel-bg" style="background: linear-gradient(160deg,#031220 0%,#0a2a55 35%,#051830 70%,#020d1a 100%);">
+        <svg viewBox="0 0 480 1013" width="480" height="1013" style="position:absolute;inset:0;">
+          <defs>
+            <radialGradient id="g2" cx="55%" cy="35%" r="50%">
+              <stop offset="0%" stop-color="#2060c0" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="480" height="1013" fill="url(#g2)"/>
+
+          <!-- Growing bar chart -->
+          <rect x="40"  y="640" width="48" height="120" rx="6" fill="#1a4a8a" opacity="0.55"/>
+          <rect x="104" y="590" width="48" height="170" rx="6" fill="#2050a0" opacity="0.55"/>
+          <rect x="168" y="530" width="48" height="230" rx="6" fill="#2a60b8" opacity="0.55"/>
+          <rect x="232" y="460" width="48" height="300" rx="6" fill="#3470d0" opacity="0.6"/>
+          <rect x="296" y="390" width="48" height="370" rx="6" fill="#3a78e0" opacity="0.6"/>
+          <rect x="360" y="340" width="48" height="420" rx="6" fill="#512DA8" opacity="0.65"/>
+
+          <!-- Trend arrow overlay -->
+          <path d="M60 620 L126 570 L190 510 L254 438 L318 368 L384 318" stroke="#6090ff" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="6 3"/>
+
+          <!-- Circle nodes on trend line -->
+          <circle cx="60"  cy="620" r="5" fill="#6090ff" opacity="0.6"/>
+          <circle cx="126" cy="570" r="5" fill="#6090ff" opacity="0.6"/>
+          <circle cx="190" cy="510" r="5" fill="#6090ff" opacity="0.6"/>
+          <circle cx="254" cy="438" r="5" fill="#6090ff" opacity="0.6"/>
+          <circle cx="318" cy="368" r="5" fill="#7080ff" opacity="0.7"/>
+          <circle cx="384" cy="318" r="7" fill="#8090ff" opacity="0.8"/>
+
+          <!-- Top label -->
+          <text x="240" y="220" text-anchor="middle" font-family="Lato" font-size="48" font-weight="900" fill="#2a60b8" opacity="0.18">GROWTH</text>
+          <text x="240" y="270" text-anchor="middle" font-family="Lato" font-size="28" font-weight="700" fill="#1a4a8a" opacity="0.2">STRATEGY</text>
+        </svg>
+      </div>
+
+      <div class="reel-gradient-overlay"></div>
+      <div class="reel-progress-track"><div class="reel-progress-fill" style="width:0%;"></div></div>
+
+      <!-- Right Action Rail: Like · Comment · Share · Save · Kebab -->
+      <div class="action-rail">
+        <button class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" class="like-icon">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-label">3,291</span>
+        </button>
+        <button class="action-btn" onclick="openComments()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">87</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-label">Share</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">Save</span>
+        </button>
+        <button class="action-btn" onclick="openSheet()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff">
+              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Caption expand overlay -->
+      <div class="caption-overlay" id="captionOverlay1">
+        <div class="caption-dim" onclick="collapseCaption(1)"></div>
+        <div class="caption-expanded-box">
+          <div class="caption-drag-handle"></div>
+          <div class="caption-expanded-title">5 Ways to Scale Your Business</div>
+          <p class="caption-expanded-text">5 proven strategies to scale your business from ₹10L to ₹1Cr this year 📈 From delegation to digital marketing — each step mapped with real examples from Indian founders. #growth #startup #businessgrowth</p>
+        </div>
+      </div>
+
+      <!-- No CTA for this reel -->
+      <div class="reel-info">
+        <span class="reel-heading">5 Ways to Scale Your Business</span>
+        <p class="reel-caption" onclick="expandCaption(1)">5 proven strategies to scale your business from ₹10L to ₹1Cr this year 📈 #growth #startup #businessgrowth</p>
+        <div class="reel-duration-bar" id="durationBar1">
+          <div class="reel-duration-fill" id="durationFill1"></div>
+        </div>
+      </div>
+
+    </div><!-- /reel 2 -->
+
+
+    <!-- ╔══════════════════════════╗
+         ║  REEL 3 — Personal Brand ║
+         ╚══════════════════════════╝ -->
+    <div class="reel-slide" data-index="2">
+
+      <div class="reel-bg" style="background: linear-gradient(160deg,#1a0520 0%,#4a1568 35%,#200830 70%,#100518 100%);">
+        <svg viewBox="0 0 480 1013" width="480" height="1013" style="position:absolute;inset:0;">
+          <defs>
+            <radialGradient id="g3" cx="45%" cy="42%" r="52%">
+              <stop offset="0%" stop-color="#9a30c0" stop-opacity="0.58"/>
+              <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="480" height="1013" fill="url(#g3)"/>
+
+          <!-- Woman entrepreneur silhouette (stylised) -->
+          <ellipse cx="240" cy="270" rx="55" ry="70" fill="#6a1a90" opacity="0.65"/>
+          <ellipse cx="240" cy="255" rx="38" ry="52" fill="#8a30b0" opacity="0.5"/>
+          <!-- Hair flowing -->
+          <path d="M190 210 Q160 240 155 300 Q160 240 180 260" fill="#5a1080" opacity="0.4"/>
+          <path d="M290 210 Q320 240 325 300 Q320 240 300 260" fill="#5a1080" opacity="0.4"/>
+          <!-- Body -->
+          <ellipse cx="240" cy="380" rx="75" ry="80" fill="#4a1070" opacity="0.55"/>
+
+          <!-- Brand star bursts -->
+          <path d="M240 90 L245 115 L270 120 L245 125 L240 150 L235 125 L210 120 L235 115 Z" fill="#e090ff" opacity="0.55"/>
+          <path d="M360 170 L364 184 L378 188 L364 192 L360 206 L356 192 L342 188 L356 184 Z" fill="#c060e0" opacity="0.45"/>
+          <path d="M115 310 L118 320 L128 323 L118 326 L115 336 L112 326 L102 323 L112 320 Z" fill="#b040d0" opacity="0.4"/>
+
+          <!-- Radiating lines from center -->
+          <line x1="240" y1="270" x2="240" y2="120" stroke="#c070e8" stroke-width="0.6" opacity="0.2"/>
+          <line x1="240" y1="270" x2="100" y2="200" stroke="#c070e8" stroke-width="0.6" opacity="0.15"/>
+          <line x1="240" y1="270" x2="380" y2="200" stroke="#c070e8" stroke-width="0.6" opacity="0.15"/>
+          <circle cx="240" cy="270" r="100" fill="none" stroke="#9040c0" stroke-width="0.5" opacity="0.25"/>
+          <circle cx="240" cy="270" r="155" fill="none" stroke="#7030a0" stroke-width="0.5" opacity="0.18"/>
+          <circle cx="240" cy="270" r="210" fill="none" stroke="#5a1880" stroke-width="0.4" opacity="0.12"/>
+        </svg>
+      </div>
+
+      <div class="reel-gradient-overlay"></div>
+      <div class="reel-progress-track"><div class="reel-progress-fill" style="width:0%;"></div></div>
+
+      <!-- Right Action Rail: Like · Comment · Share · Save · Kebab -->
+      <div class="action-rail">
+        <button class="action-btn liked" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" class="like-icon" fill="#E71F2C" stroke="#E71F2C" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-label">5,120</span>
+        </button>
+        <button class="action-btn" onclick="openComments()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">156</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-label">Share</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">Save</span>
+        </button>
+        <button class="action-btn" onclick="openSheet()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff">
+              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Reel 3 — NO caption, heading only -->
+      <div class="reel-info">
+        <button class="reel-cta-card">
+          <span class="reel-cta-text">Watch Full Course</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+          </svg>
+        </button>
+        <span class="reel-heading">Building Your Personal Brand</span>
+        <div class="reel-duration-bar" id="durationBar2">
+          <div class="reel-duration-fill" id="durationFill2"></div>
+        </div>
+      </div>
+
+    </div><!-- /reel 3 -->
+
+
+    <!-- ╔═══════════════════════════╗
+         ║  REEL 4 — Team Building   ║
+         ╚═══════════════════════════╝ -->
+    <div class="reel-slide" data-index="3">
+
+      <div class="reel-bg" style="background: linear-gradient(160deg,#041208 0%,#0f3018 35%,#081a10 70%,#030a06 100%);">
+        <svg viewBox="0 0 480 1013" width="480" height="1013" style="position:absolute;inset:0;">
+          <defs>
+            <radialGradient id="g4" cx="50%" cy="38%" r="48%">
+              <stop offset="0%" stop-color="#209050" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="480" height="1013" fill="url(#g4)"/>
+
+          <!-- Network graph — team nodes -->
+          <circle cx="240" cy="280" r="20" fill="#4CAF50" opacity="0.75"/>       <!-- center hub -->
+          <circle cx="130" cy="180" r="13" fill="#2a8a40" opacity="0.6"/>         <!-- node A -->
+          <circle cx="350" cy="180" r="13" fill="#2a8a40" opacity="0.6"/>         <!-- node B -->
+          <circle cx="100" cy="360" r="11" fill="#206030" opacity="0.5"/>         <!-- node C -->
+          <circle cx="380" cy="360" r="11" fill="#206030" opacity="0.5"/>         <!-- node D -->
+          <circle cx="200" cy="420" r="11" fill="#1a5025" opacity="0.45"/>        <!-- node E -->
+          <circle cx="280" cy="420" r="11" fill="#1a5025" opacity="0.45"/>        <!-- node F -->
+
+          <!-- Connecting edges -->
+          <line x1="240" y1="280" x2="130" y2="180" stroke="#4CAF50" stroke-width="1.5" opacity="0.35"/>
+          <line x1="240" y1="280" x2="350" y2="180" stroke="#4CAF50" stroke-width="1.5" opacity="0.35"/>
+          <line x1="240" y1="280" x2="100" y2="360" stroke="#3a9a40" stroke-width="1"  opacity="0.28"/>
+          <line x1="240" y1="280" x2="380" y2="360" stroke="#3a9a40" stroke-width="1"  opacity="0.28"/>
+          <line x1="240" y1="280" x2="200" y2="420" stroke="#2a8a30" stroke-width="1"  opacity="0.22"/>
+          <line x1="240" y1="280" x2="280" y2="420" stroke="#2a8a30" stroke-width="1"  opacity="0.22"/>
+          <!-- Cross edges -->
+          <line x1="130" y1="180" x2="350" y2="180" stroke="#2a7030" stroke-width="0.6" opacity="0.18"/>
+          <line x1="100" y1="360" x2="200" y2="420" stroke="#2a7030" stroke-width="0.6" opacity="0.15"/>
+          <line x1="380" y1="360" x2="280" y2="420" stroke="#2a7030" stroke-width="0.6" opacity="0.15"/>
+
+          <!-- Outer orbit ring -->
+          <circle cx="240" cy="290" r="195" fill="none" stroke="#2a8a40" stroke-width="0.4" opacity="0.2"/>
+
+          <!-- Big faint text -->
+          <text x="240" y="200" text-anchor="middle" font-family="Lato" font-size="50" font-weight="900" fill="#1a6030" opacity="0.14">TEAM</text>
+        </svg>
+      </div>
+
+      <div class="reel-gradient-overlay"></div>
+      <div class="reel-progress-track"><div class="reel-progress-fill" style="width:0%;"></div></div>
+
+      <!-- Right Action Rail: Like · Comment · Share · Save · Kebab -->
+      <div class="action-rail">
+        <button class="action-btn" onclick="toggleLike(this)">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" class="like-icon">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <span class="action-label">2,044</span>
+        </button>
+        <button class="action-btn" onclick="openComments()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">43</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="action-label">Share</span>
+        </button>
+        <button class="action-btn">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="action-label">Save</span>
+        </button>
+        <button class="action-btn" onclick="openSheet()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff">
+              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Caption expand overlay -->
+      <div class="caption-overlay" id="captionOverlay3">
+        <div class="caption-dim" onclick="collapseCaption(3)"></div>
+        <div class="caption-expanded-box">
+          <div class="caption-drag-handle"></div>
+          <div class="caption-expanded-title">Team Collaboration Strategies</div>
+          <p class="caption-expanded-text">Team collaboration secrets that took our startup from 3 people to 50+ in 18 months 🤝 Culture, communication, and clear OKRs — the three things that actually matter. #team #startup #collaboration</p>
+        </div>
+      </div>
+
+      <!-- No CTA for this reel -->
+      <div class="reel-info">
+        <span class="reel-heading">Team Collaboration Strategies</span>
+        <p class="reel-caption" onclick="expandCaption(3)">Team collaboration secrets that took our startup from 3 people to 50+ in 18 months 🤝 #team #startup #collaboration</p>
+        <div class="reel-duration-bar" id="durationBar3">
+          <div class="reel-duration-fill" id="durationFill3"></div>
+        </div>
+      </div>
+
+    </div><!-- /reel 4 -->
+
+  </div><!-- /reels-container -->
+
+
+  <!-- ════════════════════════════════════════
+       Bottom Navbar — dark, Reels tab active
+  ════════════════════════════════════════ -->
+  <nav class="reel-navbar">
+    <div class="reel-navbar-main">
+      <div class="reel-nav-tabs">
+
+        <!-- Home -->
+        <a class="reel-nav-tab" href="BILLIONT-HOME.HTML">
+          <div class="reel-nav-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#282828" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <span class="reel-nav-label">Home</span>
+        </a>
+
+        <!-- Reels — ACTIVE (next to Home) -->
+        <a class="reel-nav-tab active" href="BILLIONT-REELS.HTML">
+          <div class="reel-nav-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8">
+              <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+            </svg>
+          </div>
+          <span class="reel-nav-label" style="color:#512DA8;">Reels</span>
+        </a>
+
+        <!-- Courses -->
+        <a class="reel-nav-tab" href="#">
+          <div class="reel-nav-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <span class="reel-nav-label">Courses</span>
+        </a>
+
+        <!-- Library -->
+        <a class="reel-nav-tab" href="#">
+          <div class="reel-nav-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <span class="reel-nav-label">Library</span>
+        </a>
+
+        <!-- Tools -->
+        <a class="reel-nav-tab" href="#">
+          <div class="reel-nav-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <span class="reel-nav-label">Tools</span>
+        </a>
+
+      </div>
+    </div>
+    <div class="reel-navbar-copy">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+      <span class="reel-copy-text">Billiont Tools 2025</span>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       Kebab / More Options — Action Sheet
+  ════════════════════════════════════════ -->
+  <div class="overlay-dim" id="sheetDim" onclick="closeSheet()"></div>
+  <div class="action-sheet" id="actionSheet">
+    <div class="sheet-drag"></div>
+
+    <button class="sheet-item" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/>
+      </svg>
+      <span class="sheet-item-label">Not Interested</span>
+    </button>
+
+    <button class="sheet-item" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="sheet-item-label">Save Reel</span>
+    </button>
+
+    <button class="sheet-item" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>
+      </svg>
+      <span class="sheet-item-label">Share to Story</span>
+    </button>
+
+    <button class="sheet-item" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+      <span class="sheet-item-label">Copy Link</span>
+    </button>
+
+    <div class="divider-line" style="margin:4px 0;"></div>
+
+    <button class="sheet-item danger" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF453A" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <span class="sheet-item-label">Report</span>
+    </button>
+
+    <button class="sheet-cancel-btn" onclick="closeSheet()">Cancel</button>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       Comment Sheet — slides up from bottom
+  ════════════════════════════════════════ -->
+  <div class="overlay-dim" id="commentDim" onclick="closeComments()"></div>
+  <div class="comment-sheet" id="commentSheet">
+    <div class="sheet-drag" style="background:#3a3a3c;"></div>
+
+    <div class="comment-sheet-head">
+      <span class="comment-sheet-title">Comments</span>
+      <button onclick="closeComments()" style="background:none;border:none;cursor:pointer;padding:4px;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="comment-list">
+
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:linear-gradient(135deg,#512DA8,#8050d0);">AK</div>
+        <div>
+          <div class="comment-username">arjun_k</div>
+          <div class="comment-text">This is exactly what I needed to hear today! 🙌</div>
+          <div class="comment-meta">2h ago &nbsp;·&nbsp; Reply</div>
+        </div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:linear-gradient(135deg,#1040a0,#3a70d0);">SM</div>
+        <div>
+          <div class="comment-username">santhosh_m</div>
+          <div class="comment-text">Sharing this with my entire team right now 💪 The part about daily habits really stuck.</div>
+          <div class="comment-meta">3h ago &nbsp;·&nbsp; Reply</div>
+        </div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:linear-gradient(135deg,#6a1a90,#c060e0);">PK</div>
+        <div>
+          <div class="comment-username">priya_k</div>
+          <div class="comment-text">The consistency point really hit different 🔥 Been following this for 3 months now — results are showing!</div>
+          <div class="comment-meta">5h ago &nbsp;·&nbsp; Reply</div>
+        </div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:linear-gradient(135deg,#1a6a2a,#4CAF50);">MV</div>
+        <div>
+          <div class="comment-username">mohan_v</div>
+          <div class="comment-text">Enrolled in the full course after watching this. Worth every rupee! ✅</div>
+          <div class="comment-meta">6h ago &nbsp;·&nbsp; Reply</div>
+        </div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:linear-gradient(135deg,#2a8a40,#4CAF50);">RN</div>
+        <div>
+          <div class="comment-username">ramya_n</div>
+          <div class="comment-text">More content like this please! 🙏 The billiont team always delivers 💜</div>
+          <div class="comment-meta">8h ago &nbsp;·&nbsp; Reply</div>
+        </div>
+      </div>
+
+    </div><!-- /comment-list -->
+
+    <div class="comment-input-row">
+      <input class="comment-text-input" type="text" placeholder="Add a comment..." />
+      <button class="send-btn" aria-label="Send comment">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div><!-- /comment-sheet -->
+
+</div><!-- /phone -->
+
+<script>
+  /* ════════════════════════════════
+     URL Param Handling
+     ?from=suggested  → show back arrow
+     ?reel=N          → snap to reel N (0-based)
+  ════════════════════════════════ */
+  (function initFromParams() {
+    const params = new URLSearchParams(window.location.search);
+    const from   = params.get('from');
+    const reelN  = parseInt(params.get('reel') || '0', 10);
+
+    // Show back arrow only when coming from suggested reels
+    if (from === 'suggested') {
+      document.getElementById('backBtn').style.visibility = 'visible';
+    }
+
+    // Scroll to the specific reel instantly on load
+    if (reelN > 0) {
+      const target = document.querySelector(`.reel-slide[data-index="${reelN}"]`);
+      if (target) {
+        // Use requestAnimationFrame so layout is ready first
+        requestAnimationFrame(() => {
+          document.getElementById('reelsContainer').scrollTop = reelN * 1013;
+        });
+      }
+    }
+  })();
+
+  /* ════════════════════════════════
+     Caption Expand / Collapse
+  ════════════════════════════════ */
+  function expandCaption(reelIndex) {
+    // Close any open overlays first
+    document.querySelectorAll('.caption-overlay').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.reel-slide').forEach(s => s.classList.remove('caption-open'));
+    const slide   = document.querySelector('.reel-slide[data-index="' + reelIndex + '"]');
+    const overlay = document.getElementById('captionOverlay' + reelIndex);
+    if (slide)   slide.classList.add('caption-open');
+    if (overlay) overlay.classList.add('open');
+  }
+
+  function collapseCaption(reelIndex) {
+    const slide   = document.querySelector('.reel-slide[data-index="' + reelIndex + '"]');
+    const overlay = document.getElementById('captionOverlay' + reelIndex);
+    if (slide)   slide.classList.remove('caption-open');
+    if (overlay) overlay.classList.remove('open');
+  }
+
+  /* ════════════════════════════════
+     Like / Unlike Toggle
+  ════════════════════════════════ */
+  function toggleLike(btn) {
+    const isNowLiked = btn.classList.toggle('liked');
+    const svg = btn.querySelector('.like-icon');
+    const countEl = btn.querySelector('.action-label');
+    const count = parseInt(countEl.textContent.replace(/,/g, ''));
+
+    if (isNowLiked) {
+      svg.setAttribute('fill', '#E71F2C');
+      svg.setAttribute('stroke', '#E71F2C');
+      countEl.textContent = (count + 1).toLocaleString('en-IN');
+    } else {
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', '#fff');
+      countEl.textContent = (count - 1).toLocaleString('en-IN');
+    }
+  }
+
+  /* ════════════════════════════════
+     Kebab Action Sheet
+  ════════════════════════════════ */
+  function openSheet() {
+    document.getElementById('sheetDim').classList.add('open');
+    document.getElementById('actionSheet').classList.add('open');
+  }
+
+  function closeSheet() {
+    document.getElementById('sheetDim').classList.remove('open');
+    document.getElementById('actionSheet').classList.remove('open');
+  }
+
+  /* ════════════════════════════════
+     Comment Sheet
+  ════════════════════════════════ */
+  function openComments() {
+    document.getElementById('commentDim').classList.add('open');
+    document.getElementById('commentSheet').classList.add('open');
+  }
+
+  function closeComments() {
+    document.getElementById('commentDim').classList.remove('open');
+    document.getElementById('commentSheet').classList.remove('open');
+  }
+
+  /* ════════════════════════════════
+     Progress Bar Animation on Snap
+     Runs a simulated playback progress
+     each time a new reel scrolls into view
+  ════════════════════════════════ */
+  const container     = document.getElementById('reelsContainer');
+  const slides        = document.querySelectorAll('.reel-slide');
+  const fills         = document.querySelectorAll('.reel-progress-fill');
+  const durations     = [8000, 10000, 7000, 9000]; // ms per reel
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const idx = parseInt(entry.target.dataset.index);
+      const dur = durations[idx] || 8000;
+
+      // Reset all top progress bars
+      fills.forEach((f, i) => {
+        f.style.transition = 'none';
+        f.style.width = i < idx ? '100%' : '0%';
+      });
+
+      // Reset all bottom duration fills
+      document.querySelectorAll('.reel-duration-fill').forEach((f, i) => {
+        f.style.transition = 'none';
+        f.style.width = '0%';
+      });
+
+      // Animate current top bar + bottom duration bar
+      setTimeout(() => {
+        fills[idx].style.transition = `width ${dur}ms linear`;
+        fills[idx].style.width = '100%';
+
+        const dFill = document.getElementById('durationFill' + idx);
+        if (dFill) {
+          dFill.style.transition = `width ${dur}ms linear`;
+          dFill.style.width = '100%';
+        }
+      }, 60);
+    });
+  }, { root: container, threshold: 0.65 });
+
+  slides.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

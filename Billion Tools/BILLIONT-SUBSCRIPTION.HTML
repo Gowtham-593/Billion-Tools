@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Choose Your Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar (simple, no full logo header) ── */
+    .top-bar {
+      background: #f7f6ff;
+      flex-shrink: 0;
+      padding-bottom: 12px;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 6px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 20px 0;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+    }
+
+    .back-btn span {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .nav-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .premium-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #512DA8;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+    }
+
+    /* ── Scroll Area ── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 110px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Hero Section ── */
+    .hero {
+      background: linear-gradient(145deg, #2a1060 0%, #512DA8 55%, #7B52D4 100%);
+      padding: 28px 24px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    }
+
+    .hero-crown {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 27px;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.4;
+    }
+
+    /* ── Trial Banner ── */
+    .trial-banner {
+      background: #FFF8E1;
+      border: 1.5px solid #FFD54F;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin: 18px 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trial-icon {
+      width: 36px;
+      height: 36px;
+      background: #FFD54F;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .trial-text-main {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #5D4037;
+    }
+
+    .trial-text-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #795548;
+      margin-top: 2px;
+    }
+
+    /* ── Plan Cards ── */
+    .plan-section {
+      padding: 18px 16px 0;
+    }
+
+    .plan-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #606060;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .plan-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Annual Card */
+    .plan-card {
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card:active { transform: scale(0.99); }
+
+    .plan-card.annual {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      box-shadow: 0 6px 20px rgba(81,45,168,0.35);
+    }
+
+    .plan-card.monthly {
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .plan-card.monthly.selected {
+      border-color: #512DA8;
+      box-shadow: 0 4px 16px rgba(81,45,168,0.2);
+    }
+
+    .plan-card.annual.unselected {
+      opacity: 0.5;
+      background: #E3DFFF;
+      box-shadow: none;
+    }
+
+    .plan-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .plan-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+    }
+
+    .plan-name.light { color: #fff; }
+    .plan-name.dark { color: #282828; }
+
+    .best-value-badge {
+      background: #FFD54F;
+      color: #5D4037;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .selected-ring {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #512DA8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .selected-ring.filled {
+      background: #512DA8;
+    }
+
+    .plan-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .plan-price {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+    }
+
+    .plan-price.light { color: #fff; }
+    .plan-price.dark { color: #282828; }
+
+    .plan-price-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+    }
+
+    .plan-price-unit.light { color: rgba(255,255,255,0.7); }
+    .plan-price-unit.dark { color: #606060; }
+
+    .plan-detail {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+    }
+
+    .plan-detail.light { color: rgba(255,255,255,0.75); }
+    .plan-detail.dark { color: #606060; }
+
+    .savings-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* ── Promo Code ── */
+    .promo-section {
+      padding: 18px 16px 0;
+    }
+
+    .promo-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #282828;
+      margin-bottom: 10px;
+    }
+
+    .promo-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .promo-input {
+      flex: 1;
+      height: 46px;
+      border: 1.5px solid #E3DFFF;
+      border-radius: 13px;
+      padding: 0 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #282828;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .promo-input::placeholder {
+      text-transform: none;
+      letter-spacing: 0;
+      color: #aaa;
+    }
+
+    .promo-input:focus { border-color: #512DA8; background: #fff; }
+
+    .promo-apply-btn {
+      height: 46px;
+      padding: 0 20px;
+      background: #512DA8;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .promo-apply-btn:hover { background: #4527A0; }
+
+    .promo-result {
+      margin-top: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      min-height: 18px;
+    }
+
+    .promo-result.success { color: #2E7D32; }
+    .promo-result.error { color: #C62828; }
+
+    /* ── Benefits ── */
+    .benefits-section {
+      padding: 20px 16px 0;
+    }
+
+    .section-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #282828;
+      margin-bottom: 14px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 0.5px solid #f0f0f0;
+    }
+
+    .benefit-item:last-child { border-bottom: none; }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .benefit-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #282828;
+    }
+
+    .benefit-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ── Trust Signals ── */
+    .trust-section {
+      padding: 18px 16px 0;
+      display: flex;
+      gap: 8px;
+    }
+
+    .trust-item {
+      flex: 1;
+      background: #f7f6ff;
+      border-radius: 12px;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .trust-item-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #512DA8;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* ── Sticky CTA ── */
+    .cta-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 14px 16px 20px;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+    }
+
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(81,45,168,0.4);
+      transition: box-shadow 0.15s, transform 0.1s;
+    }
+
+    .cta-btn:active { transform: scale(0.98); }
+
+    .cta-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #9e9e9e;
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* ════ Confirmation Sheet — BillionTools Theme ════ */
+    .store-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(40, 40, 40, 0.55);
+      z-index: 100;
+      display: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .store-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border-radius: 20px 20px 0 0;
+      z-index: 101;
+      display: none;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow: hidden;
+      box-shadow: 0 -4px 24px rgba(81,45,168,0.12);
+    }
+
+    .store-sheet.show { transform: translateY(0); }
+
+    /* ── Handle ── */
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #D0CAEA;
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+
+    /* ── Sheet Header ── */
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px;
+      flex-shrink: 0;
+    }
+
+    .sheet-header-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .sheet-close-btn {
+      width: 30px;
+      height: 30px;
+      background: #E3DFFF;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── App Card ── */
+    .sheet-app-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #F7F6FF;
+      margin: 0 14px;
+      padding: 14px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      border: 1px solid #E3DFFF;
+    }
+
+    .app-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .app-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .app-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .app-tag {
+      display: inline-block;
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── Price Rows ── */
+    .sheet-price-section {
+      padding: 14px 20px;
+      border-top: 0.5px solid #E5E5EA;
+      flex-shrink: 0;
+    }
+
+    .sheet-trial-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .sheet-trial-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .sheet-billing-price {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .sheet-billing-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    /* ── Terms ── */
+    .sheet-terms {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #9E9E9E;
+      line-height: 1.5;
+      padding: 12px 20px 12px;
+      border-top: 0.5px solid #E5E5EA;
+      flex-shrink: 0;
+    }
+
+    .sheet-account {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #9E9E9E;
+      padding: 0 20px 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── Subscribe Button ── */
+    .sheet-subscribe-btn {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 0 14px 28px;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+    }
+
+    .sheet-subscribe-btn:active { opacity: 0.88; }
+
+    /* ════ Success State ════ */
+    .success-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px 32px;
+    }
+
+    .check-wrap {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 14px;
+    }
+
+    .check-circle-bg  { fill: none; stroke: #E8F5E9; stroke-width: 6; }
+
+    .check-circle-ring {
+      fill: none;
+      stroke: #4CAF50;
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      transform-origin: center;
+      transform: rotate(-90deg);
+      transition: stroke-dashoffset 0.5s ease 0.1s;
+    }
+
+    .check-path {
+      fill: none;
+      stroke: #4CAF50;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 55;
+      stroke-dashoffset: 55;
+      transition: stroke-dashoffset 0.4s ease 0.55s;
+    }
+
+    .check-wrap.animate .check-circle-ring { stroke-dashoffset: 0; }
+    .check-wrap.animate .check-path        { stroke-dashoffset: 0; }
+
+    .success-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #282828;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .success-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #606060;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .success-summary {
+      width: 100%;
+      background: #F7F6FF;
+      border-radius: 14px;
+      border: 1px solid #E3DFFF;
+      padding: 4px 16px;
+      margin-bottom: 18px;
+    }
+
+    .ss-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 0.5px solid #E3DFFF;
+    }
+
+    .ss-row:last-child { border-bottom: none; }
+
+    .ss-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+    }
+
+    .ss-value {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #282828;
+    }
+
+    .ss-value.highlight { color: #512DA8; }
+
+    .explore-btn {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Top Bar ── -->
+      <div class="top-bar">
+        <div class="status-bar">
+          <span class="status-time">9:41</span>
+          <div class="status-right">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <rect x="1" y="15" width="3" height="6" rx="1"/>
+              <rect x="6" y="11" width="3" height="10" rx="1"/>
+              <rect x="11" y="7" width="3" height="14" rx="1"/>
+              <rect x="16" y="3" width="3" height="18" rx="1" opacity="0.3"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </div>
+        </div>
+        <div class="nav-row">
+          <button class="back-btn" onclick="window.location.href='BILLIONT-SETTINGS.HTML'">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>Back</span>
+          </button>
+          <span class="nav-title">Choose Your Plan</span>
+          <span class="premium-pill">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="#fff"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+            PREMIUM
+          </span>
+        </div>
+      </div>
+
+      <!-- ── Scrollable Content ── -->
+      <div class="scroll-area">
+
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-crown">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="#FFD54F">
+              <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+            </svg>
+          </div>
+          <div class="hero-title">BillionTools Premium</div>
+          <div class="hero-subtitle">Premium courses, expert tools &amp; curated activities — built exclusively for SME owners and entrepreneurs.</div>
+        </div>
+
+        <!-- Free Trial Banner -->
+        <div class="trial-banner">
+          <div class="trial-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#5D4037">
+              <path d="M20 6h-2.18c.07-.44.18-.88.18-1.36C18 2.05 15.96 0 13.36 0c-1.3 0-2.48.52-3.36 1.45L12 3.46l2.01-2.01A2.5 2.5 0 0 1 15.95 1a2.5 2.5 0 0 1 2.5 2.5A2.5 2.5 0 0 1 15.95 6H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 14H4v-2h16v2zm0-5H4V8h16v7z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trial-text-main">7 Days Free Trial</div>
+            <div class="trial-text-sub">Exclusive for entrepreneurs. Try all premium features at no cost. Cancel before day 7 — you will not be charged.</div>
+          </div>
+        </div>
+
+        <!-- Plan Cards -->
+        <div class="plan-section">
+          <div class="plan-section-label">Select a Plan</div>
+          <div class="plan-cards">
+
+            <!-- Annual Card (default selected) -->
+            <div class="plan-card annual" id="card-annual" onclick="selectPlan('annual')">
+              <div class="plan-top-row">
+                <div>
+                  <div class="plan-name light">Annual Plan</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                  <span class="best-value-badge">BEST VALUE</span>
+                  <div class="selected-ring filled" id="ring-annual">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="plan-price-row">
+                <span class="plan-price light">₹10,000</span>
+                <span class="plan-price-unit light">/year</span>
+              </div>
+              <div class="plan-detail light">₹833/month · Billed annually · + Tax applicable</div>
+              <div class="savings-tag">Pay for 10 months — 2 months FREE (Save ₹2,000)</div>
+            </div>
+
+            <!-- Monthly Card -->
+            <div class="plan-card monthly" id="card-monthly" onclick="selectPlan('monthly')">
+              <div class="plan-top-row">
+                <div class="plan-name dark">Monthly Plan</div>
+                <div class="selected-ring" id="ring-monthly"></div>
+              </div>
+              <div class="plan-price-row">
+                <span class="plan-price dark">₹1,000</span>
+                <span class="plan-price-unit dark">/month</span>
+              </div>
+              <div class="plan-detail dark">+ Applicable tax · Billed monthly · Cancel anytime</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Promo Code -->
+        <div class="promo-section">
+          <div class="promo-label">Have a discount code?</div>
+          <div class="promo-row">
+            <input
+              type="text"
+              class="promo-input"
+              id="promo-input"
+              placeholder="Enter promo code"
+              maxlength="20"
+            />
+            <button class="promo-apply-btn" onclick="applyPromo()">Apply</button>
+          </div>
+          <div class="promo-result" id="promo-result"></div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="benefits-section">
+          <div class="section-title">What you get with Premium</div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+            </div>
+            <div>
+              <div class="benefit-title">Premium Courses</div>
+              <div class="benefit-desc">Structured learning paths covering business decisions, operations, finance, and leadership — designed for SME growth stages.</div>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg>
+            </div>
+            <div>
+              <div class="benefit-title">Expert Tools</div>
+              <div class="benefit-desc">Business frameworks, decision-making templates, and operational tools built by practitioners — apply them directly to your business.</div>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+            </div>
+            <div>
+              <div class="benefit-title">Curated Activities</div>
+              <div class="benefit-desc">Hands-on exercises and real-world assignments — each one designed to deliver measurable outcomes for your business, not just theory.</div>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <div>
+              <div class="benefit-title">Dedicated Learning Path</div>
+              <div class="benefit-desc">A personalized journey aligned to your business stage and goals — so every session moves you closer to scaling your operations.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Trust Signals -->
+        <div class="trust-section">
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            <div class="trust-item-label">Secure Payment</div>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            <div class="trust-item-label">Cancel Anytime</div>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="trust-item-label">7-Day Refund</div>
+          </div>
+        </div>
+
+      </div><!-- end scroll-area -->
+
+      <!-- ── Sticky CTA ── -->
+      <div class="cta-footer">
+        <button class="cta-btn" id="cta-btn" onclick="handleSubscribe()">
+          Activate Free Trial
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </button>
+        <div class="cta-fine" id="cta-fine">Then ₹10,000/year (₹833/month) + tax. Cancel before day 7 — no charge.</div>
+      </div>
+
+      <!-- ── App Store Confirmation Sheet ── -->
+      <div class="store-overlay" id="store-overlay"></div>
+      <div class="store-sheet" id="store-sheet">
+
+        <!-- Step 1: Confirmation -->
+        <div id="confirm-state">
+          <div class="sheet-handle"></div>
+
+          <div class="sheet-header">
+            <span class="sheet-header-title">BillionTools</span>
+            <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+          </div>
+
+          <!-- App card -->
+          <div class="sheet-app-card">
+            <div class="app-icon-box">
+              <!-- BillionTools logo SVG -->
+              <svg viewBox="0 0 60 60" width="60" height="60">
+                <rect width="60" height="60" rx="14" fill="#512DA8"/>
+                <!-- Paper plane (orange) -->
+                <polygon points="46,10 22,24 28,29" fill="#F16623"/>
+                <polygon points="46,10 28,29 26,44" fill="#E07818"/>
+                <polygon points="28,29 32,32 26,44" fill="#F16623" opacity="0.7"/>
+                <!-- B mark (white) -->
+                <text x="7" y="52" font-family="'Lato',sans-serif" font-weight="900" font-size="22" fill="#FFFFFF" letter-spacing="-1">BT</text>
+              </svg>
+            </div>
+            <div>
+              <div class="app-name">BillionTools Premium</div>
+              <div class="app-meta">Poornatha<span class="app-tag">SME</span></div>
+              <div class="app-meta" style="margin-top:2px;">Subscription</div>
+            </div>
+          </div>
+
+          <!-- Trial info -->
+          <div class="sheet-price-section">
+            <div class="sheet-trial-title">7 days free trial</div>
+            <div class="sheet-trial-sub">Starting today</div>
+          </div>
+
+          <!-- Billing info -->
+          <div class="sheet-price-section">
+            <div class="sheet-billing-price" id="sheet-price">₹10,000 per year</div>
+            <div class="sheet-billing-sub" id="sheet-billing-start">Starting on 4 Apr 2026</div>
+          </div>
+
+          <!-- Terms -->
+          <div class="sheet-terms">
+            No commitment. Cancel any time before day 7 via Settings &gt; Account — you will not be charged. Plan renews automatically until cancelled. Applicable taxes as per Government norms.
+          </div>
+
+          <!-- Account -->
+          <div class="sheet-account">Account: tanisha@example.com</div>
+
+          <!-- Subscribe -->
+          <button class="sheet-subscribe-btn" onclick="confirmSubscribe()">Subscribe</button>
+        </div>
+
+        <!-- Step 2: Success state (hidden initially) -->
+        <div class="success-state" id="success-state">
+          <div class="check-wrap" id="check-wrap">
+            <svg viewBox="0 0 72 72" width="72" height="72">
+              <circle class="check-circle-bg" cx="36" cy="36" r="31"/>
+              <circle class="check-circle-ring" cx="36" cy="36" r="31"/>
+              <path class="check-path" d="M21 36 L31 46 L51 26"/>
+            </svg>
+          </div>
+          <div class="success-title">Subscription Activated!</div>
+          <div class="success-sub">Welcome to BillionTools Premium</div>
+
+          <div class="success-summary">
+            <div class="ss-row">
+              <span class="ss-label">Plan</span>
+              <span class="ss-value" id="ss-plan">Annual (₹10,000/year)</span>
+            </div>
+            <div class="ss-row">
+              <span class="ss-label">Today you pay</span>
+              <span class="ss-value highlight">₹0 &nbsp;(Free trial)</span>
+            </div>
+            <div class="ss-row">
+              <span class="ss-label">Trial ends</span>
+              <span class="ss-value">4 Apr 2026</span>
+            </div>
+            <div class="ss-row">
+              <span class="ss-label">Next billing</span>
+              <span class="ss-value" id="ss-billing">₹10,000 + tax · 4 Apr 2026</span>
+            </div>
+          </div>
+
+          <button class="explore-btn" onclick="startExploring()">Start Exploring Premium</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentPlan = 'annual';
+    let promoDiscount = 0;
+
+    function selectPlan(plan) {
+      currentPlan = plan;
+
+      const annualCard  = document.getElementById('card-annual');
+      const monthlyCard = document.getElementById('card-monthly');
+      const ringAnnual  = document.getElementById('ring-annual');
+      const ringMonthly = document.getElementById('ring-monthly');
+      const ctaBtn      = document.getElementById('cta-btn');
+      const ctaFine     = document.getElementById('cta-fine');
+
+      if (plan === 'annual') {
+        // Annual selected
+        annualCard.classList.remove('unselected');
+        annualCard.style.opacity = '';
+        annualCard.style.background = 'linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%)';
+        annualCard.style.boxShadow = '0 6px 20px rgba(81,45,168,0.35)';
+
+        monthlyCard.classList.remove('selected');
+        ringAnnual.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ringAnnual.classList.add('filled');
+        ringMonthly.innerHTML = '';
+        ringMonthly.classList.remove('filled');
+
+        ctaBtn.innerHTML = 'Activate Free Trial <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="flex-shrink:0"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        ctaFine.textContent = 'Then ₹10,000/year (₹833/month) + tax. Cancel before day 7 — no charge.';
+      } else {
+        // Monthly selected
+        annualCard.style.opacity = '0.5';
+        annualCard.style.background = '#E3DFFF';
+        annualCard.style.boxShadow = 'none';
+
+        monthlyCard.classList.add('selected');
+        ringMonthly.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ringMonthly.style.background = '#512DA8';
+        ringMonthly.style.border = 'none';
+        ringAnnual.innerHTML = '';
+        ringAnnual.classList.remove('filled');
+        ringAnnual.style.background = '';
+
+        ctaBtn.innerHTML = 'Activate Free Trial <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="flex-shrink:0"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        ctaFine.textContent = 'Then ₹1,000 + tax/month. Cancel before day 7 — no charge.';
+      }
+    }
+
+    function applyPromo() {
+      const input  = document.getElementById('promo-input');
+      const result = document.getElementById('promo-result');
+      const code   = input.value.trim().toUpperCase();
+
+      if (!code) {
+        result.className = 'promo-result error';
+        result.textContent = 'Please enter a promo code.';
+        return;
+      }
+
+      if (code === 'BILLIONT20') {
+        promoDiscount = 20;
+        result.className = 'promo-result success';
+        result.textContent = '✓ 20% off applied to your first billing cycle!';
+        input.style.borderColor = '#4CAF50';
+      } else if (code === 'WELCOME10') {
+        promoDiscount = 10;
+        result.className = 'promo-result success';
+        result.textContent = '✓ 10% off applied to your first billing cycle!';
+        input.style.borderColor = '#4CAF50';
+      } else {
+        promoDiscount = 0;
+        result.className = 'promo-result error';
+        result.textContent = '✗ Invalid code. Try BILLIONT20 for 20% off!';
+        input.style.borderColor = '#C62828';
+      }
+    }
+
+    function handleSubscribe() {
+      const overlay = document.getElementById('store-overlay');
+      const sheet   = document.getElementById('store-sheet');
+
+      // Set billing details based on selected plan
+      if (currentPlan === 'annual') {
+        document.getElementById('sheet-price').textContent         = '₹10,000 per year + tax';
+        document.getElementById('sheet-billing-start').textContent = 'Starting on 4 Apr 2026';
+      } else {
+        document.getElementById('sheet-price').textContent         = '₹1,000 per month + tax';
+        document.getElementById('sheet-billing-start').textContent = 'Starting on 4 Apr 2026';
+      }
+
+      overlay.style.display = 'block';
+      sheet.style.display   = 'flex';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sheet.classList.add('show');
+        });
+      });
+    }
+
+    function closeSheet() {
+      const overlay = document.getElementById('store-overlay');
+      const sheet   = document.getElementById('store-sheet');
+
+      sheet.classList.remove('show');
+      setTimeout(() => {
+        sheet.style.display   = 'none';
+        overlay.style.display = 'none';
+        // Reset back to confirm state for next open
+        document.getElementById('confirm-state').style.display  = 'block';
+        document.getElementById('success-state').style.display  = 'none';
+        document.getElementById('check-wrap').classList.remove('animate');
+      }, 380);
+    }
+
+    function confirmSubscribe() {
+      // Populate success state
+      if (currentPlan === 'annual') {
+        document.getElementById('ss-plan').textContent    = 'Annual (₹10,000/year)';
+        document.getElementById('ss-billing').textContent = '₹10,000 + tax · 4 Apr 2026';
+      } else {
+        document.getElementById('ss-plan').textContent    = 'Monthly (₹1,000/month)';
+        document.getElementById('ss-billing').textContent = '₹1,000 + tax · 4 Apr 2026';
+      }
+
+      // Switch states
+      document.getElementById('confirm-state').style.display = 'none';
+      const successEl = document.getElementById('success-state');
+      successEl.style.display = 'flex';
+
+      // Trigger checkmark animation after a brief moment
+      setTimeout(() => {
+        document.getElementById('check-wrap').classList.add('animate');
+      }, 80);
+    }
+
+    function startExploring() {
+      window.location.href = 'BILLIONT-HOME.HTML';
+    }
+  </script>
+</body>
+</html>

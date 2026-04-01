@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Courses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 16px; color: #000;
+    }
+
+    .status-right { display: flex; align-items: center; gap: 6px; }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px 14px;
+    }
+
+    /* Search bar */
+    .search-bar {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+      border-radius: 24px;
+      padding: 9px 16px;
+    }
+
+    .search-bar input {
+      border: none; outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #282828;
+      background: transparent; width: 100%;
+    }
+
+    .search-bar input::placeholder { color: #9E9E9E; }
+
+    .hdr-icon {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    /* ── Scroll Area ── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Page Header Row ── */
+    .page-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 14px;
+    }
+
+    .page-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 25px; color: #282828;
+    }
+
+    .library-btn {
+      display: flex; align-items: center; gap: 6px;
+      border: 1.5px solid #512DA8;
+      border-radius: 10px;
+      padding: 8px 14px;
+      background: transparent;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 14px; color: #512DA8;
+      cursor: pointer;
+    }
+
+    /* ── Course Card ── */
+    .course-card {
+      background: #fff;
+      border: 1px solid #E5E5EA;
+      border-radius: 16px;
+      margin: 0 16px 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .card-body {
+      padding: 14px 14px 10px;
+    }
+
+    .card-top-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    /* Course icon — circular illustration */
+    .course-icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid #E3DFFF;
+    }
+
+    .card-info { flex: 1; }
+
+    .card-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px;
+      color: #282828; line-height: 1.25;
+      padding-right: 6px;
+    }
+
+    .card-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060;
+      line-height: 1.4; margin-top: 4px;
+    }
+
+    .card-info-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid #E5E5EA;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer;
+    }
+
+    /* Meta row */
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-sections {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .sections-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060;
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 600;
+    }
+
+    .status-badge.ongoing {
+      background: #FEF3C7; color: #D97706;
+    }
+
+    .status-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+
+    /* View Course button */
+    .view-course-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      height: 44px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .view-course-btn:active { opacity: 0.88; }
+
+    /* Locked button */
+    .locked-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      height: 44px;
+      background: #F3F3F3;
+      color: #9E9E9E;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 15px;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .locked-btn:active { background: #E3DFFF; color: #512DA8; }
+
+    /* Unlocked state — replaces locked */
+    .unlocked-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      height: 44px;
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+    }
+
+    /* Premium tag on locked cards */
+    .premium-lock-tag {
+      display: none; /* shown only in non-premium mode */
+      align-items: center; gap: 4px;
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 10px;
+      padding: 2px 8px; border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    /* ── Bottom Nav ── */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 72px;
+      background: #fff;
+      border-top: 0.5px solid #E5E5EA;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 10px;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #606060;
+    }
+
+    .nav-label.active { color: #512DA8; }
+
+    /* ════════════════════════════════
+       OVERLAY + BOTTOM SHEET
+    ════════════════════════════════ */
+    .overlay {
+      position: absolute; inset: 0;
+      background: rgba(40,40,40,0.55);
+      z-index: 100;
+      display: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 101;
+      display: none;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow: hidden;
+      box-shadow: 0 -4px 24px rgba(81,45,168,0.12);
+      max-height: 90%;
+    }
+
+    .bottom-sheet.show { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 36px; height: 4px;
+      background: #D0CAEA; border-radius: 2px;
+      margin: 10px auto 0; flex-shrink: 0;
+    }
+
+    .sheet-scroll {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .sheet-scroll::-webkit-scrollbar { display: none; }
+
+    /* ── Sheet: Step 1 — Plan Selection ── */
+    #step-plan {
+      padding: 0 0 4px;
+    }
+
+    .sheet-hdr {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px;
+    }
+
+    .sheet-hdr-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 19px; color: #282828;
+    }
+
+    .sheet-close-btn {
+      width: 30px; height: 30px;
+      background: #E3DFFF; border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    /* Locked course banner inside sheet */
+    .locked-course-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF;
+      border: 1px solid #E3DFFF;
+      border-radius: 14px;
+      margin: 0 14px 14px;
+      padding: 12px 14px;
+    }
+
+    .lc-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden;
+      flex-shrink: 0; border: 2px solid #E3DFFF;
+    }
+
+    .lc-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+      line-height: 1.3;
+    }
+
+    .lc-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #606060; margin-top: 2px;
+    }
+
+    /* Plan cards inside sheet */
+    .sheet-plans {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 0 14px 14px;
+    }
+
+    .splan-card {
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      position: relative;
+    }
+
+    .splan-card:active { transform: scale(0.99); }
+
+    .splan-yearly {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      box-shadow: 0 4px 16px rgba(81,45,168,0.28);
+    }
+
+    .splan-monthly {
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+    }
+
+    .splan-monthly.selected {
+      border-color: #512DA8;
+      box-shadow: 0 2px 12px rgba(81,45,168,0.15);
+    }
+
+    .splan-top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 6px;
+    }
+
+    .splan-name-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    .splan-name-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #282828;
+    }
+
+    .splan-recommended {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 10px;
+      color: #5D4037; background: #FCD34D;
+      padding: 3px 9px; border-radius: 20px;
+    }
+
+    .splan-radio {
+      width: 20px; height: 20px;
+      border-radius: 50%; border: 2px solid #512DA8;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .splan-radio.filled { background: #512DA8; border-color: #512DA8; }
+
+    .splan-price-row {
+      display: flex; align-items: baseline; gap: 3px;
+    }
+
+    .splan-price-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 24px; color: #fff;
+    }
+
+    .splan-price-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 24px; color: #282828;
+    }
+
+    .splan-unit-light { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); }
+    .splan-unit-dark  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; }
+
+    .splan-detail-light { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .splan-detail-dark  { font-family: 'Inter', sans-serif; font-size: 12px; color: #606060; margin-top: 2px; }
+
+    .splan-savings {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 11px;
+      padding: 3px 9px; border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* 7-day trial note */
+    .trial-note {
+      display: flex; align-items: center; gap: 8px;
+      background: #F7F6FF;
+      border: 1px solid #E3DFFF;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 0 14px 14px;
+    }
+
+    .trial-note-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #512DA8; line-height: 1.4;
+    }
+
+    .trial-note-text strong {
+      font-weight: 600;
+    }
+
+    /* Sheet CTA */
+    .sheet-cta-wrap {
+      padding: 0 14px 12px;
+      flex-shrink: 0;
+    }
+
+    .sheet-cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800; font-size: 17px;
+      border: none; border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      transition: opacity 0.15s;
+    }
+
+    .sheet-cta-btn:active { opacity: 0.88; }
+
+    .sheet-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: #9E9E9E;
+      text-align: center; margin-top: 6px;
+    }
+
+    /* ── Sheet: Step 2 — Confirm ── */
+    #step-confirm {
+      display: none;
+      flex-direction: column;
+    }
+
+    .confirm-course-row {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 14px;
+      padding: 12px 14px;
+    }
+
+    .cc-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2px solid #E3DFFF;
+    }
+
+    .cc-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+    }
+
+    .cc-unlock-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #E8F5E9; color: #2E7D32;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin-top: 4px;
+    }
+
+    /* App card in confirm step */
+    .confirm-app-card {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 10px;
+      padding: 12px 14px;
+    }
+
+    .confirm-summary {
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 10px;
+      padding: 4px 14px;
+    }
+
+    .cs-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0;
+      border-bottom: 0.5px solid #E3DFFF;
+    }
+
+    .cs-row:last-child { border-bottom: none; }
+
+    .cs-label {
+      font-family: 'Inter', sans-serif; font-size: 13px; color: #606060;
+    }
+
+    .cs-value {
+      font-family: 'Lato', sans-serif; font-weight: 600;
+      font-size: 13px; color: #282828;
+    }
+
+    .cs-value.highlight { color: #512DA8; }
+
+    .confirm-terms {
+      font-family: 'Inter', sans-serif; font-size: 11px;
+      color: #9E9E9E; line-height: 1.5;
+      margin: 0 14px 10px;
+    }
+
+    /* ── Sheet: Step 3 — Success ── */
+    #step-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px 32px;
+    }
+
+    .check-wrap {
+      width: 72px; height: 72px; margin-bottom: 14px;
+    }
+
+    .check-circle-bg  { fill: none; stroke: #E8F5E9; stroke-width: 6; }
+
+    .check-circle-ring {
+      fill: none; stroke: #4CAF50; stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 200; stroke-dashoffset: 200;
+      transform-origin: center; transform: rotate(-90deg);
+      transition: stroke-dashoffset 0.5s ease 0.1s;
+    }
+
+    .check-path {
+      fill: none; stroke: #4CAF50; stroke-width: 5;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 55; stroke-dashoffset: 55;
+      transition: stroke-dashoffset 0.4s ease 0.55s;
+    }
+
+    .check-wrap.animate .check-circle-ring { stroke-dashoffset: 0; }
+    .check-wrap.animate .check-path        { stroke-dashoffset: 0; }
+
+    .success-title {
+      font-family: 'Lato', sans-serif; font-weight: 800;
+      font-size: 21px; color: #282828;
+      text-align: center; margin-bottom: 4px;
+    }
+
+    .success-sub {
+      font-family: 'Inter', sans-serif; font-size: 14px;
+      color: #606060; text-align: center; margin-bottom: 18px;
+    }
+
+    .success-course-card {
+      width: 100%;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .scc-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2px solid #E3DFFF;
+    }
+
+    .scc-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+    }
+
+    .scc-unlocked {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #E8F5E9; color: #2E7D32;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 20px; margin-top: 4px;
+    }
+
+    .start-btn {
+      width: 100%; height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif; font-weight: 800;
+      font-size: 17px; border: none; border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      margin-bottom: 10px;
+    }
+
+    .explore-all-btn {
+      width: 100%; height: 44px;
+      background: #F7F6FF; border: 1.5px solid #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      font-size: 15px; border-radius: 13px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Header ── -->
+      <div class="header">
+        <div class="status-bar">
+          <span class="status-time">9:41</span>
+          <div class="status-right">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <rect x="1" y="15" width="3" height="6" rx="1"/>
+              <rect x="6" y="11" width="3" height="10" rx="1"/>
+              <rect x="11" y="7" width="3" height="14" rx="1"/>
+              <rect x="16" y="3" width="3" height="18" rx="1" opacity="0.3"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </div>
+        </div>
+        <div class="header-bar">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9E9E9E" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search Courses" />
+          </div>
+          <!-- Language -->
+          <div class="hdr-icon" style="width:34px;height:34px;">
+            <svg viewBox="0 0 34 34" width="34" height="34">
+              <circle cx="17" cy="17" r="14" fill="#E3DFFF"/>
+              <text x="17" y="22" font-family="serif" font-size="13" font-weight="700" fill="#512DA8" text-anchor="middle">அ</text>
+              <path d="M27 14 L30 17 L27 20" stroke="#512DA8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="30" y="22" font-family="sans-serif" font-size="10" font-weight="700" fill="#512DA8" text-anchor="middle">A</text>
+            </svg>
+          </div>
+          <!-- Font size -->
+          <div class="hdr-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+          </div>
+          <!-- Sound -->
+          <div class="hdr-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+          </div>
+          <!-- Settings -->
+          <div class="hdr-icon" style="width:32px;height:32px;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Scroll Area ── -->
+      <div class="scroll-area">
+
+        <!-- Page header -->
+        <div class="page-header-row">
+          <div class="page-title">Courses</div>
+          <button class="library-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+            Library
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+
+        <!-- ── Course 1 — Unlocked / Ongoing ── -->
+        <div class="course-card">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#C5B358"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">⚖️</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Tasks vs People — Leading &amp; Managing with Clarity</div>
+                <div class="card-desc">Learn the different leadership styles to manage people and tasks effectively</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">3 Sections</span>
+              </div>
+              <span class="status-badge ongoing">
+                <span class="status-badge-dot"></span>
+                Ongoing
+              </span>
+            </div>
+            <button class="view-course-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              View Course
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 2 — Unlocked / Ongoing ── -->
+        <div class="course-card">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#2E5E6E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">🤝</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Build a Great Team</div>
+                <div class="card-desc">Master people assessment and build high performing teams</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">1 Section</span>
+              </div>
+              <span class="status-badge ongoing">
+                <span class="status-badge-dot"></span>
+                Ongoing
+              </span>
+            </div>
+            <button class="view-course-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              View Course
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 3 — LOCKED ── -->
+        <div class="course-card" id="card-marketing">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.7;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#2E6E4E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">📈</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Marketing 101</div>
+                <div class="card-desc">Build a strong marketing strategy to grow revenue in a buyer's market</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">1 Section</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="locked-btn" id="btn-marketing"
+              onclick="openLockedSheet('marketing', 'Marketing 101', '2E6E4E', '📈')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Locked
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 4 — LOCKED ── -->
+        <div class="course-card" id="card-finance">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.7;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#5E3A2E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">💰</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Finance Fundamentals for SMEs</div>
+                <div class="card-desc">Understand cash flow, margins, and financial decisions that scale your business</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">2 Sections</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="locked-btn" id="btn-finance"
+              onclick="openLockedSheet('finance', 'Finance Fundamentals for SMEs', '5E3A2E', '💰')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Locked
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 5 — LOCKED ── -->
+        <div class="course-card" id="card-operations">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.7;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#1A3A5E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">⚙️</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Operations That Scale</div>
+                <div class="card-desc">Design processes, reduce waste, and build systems that run without you</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">3 Sections</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="locked-btn" id="btn-operations"
+              onclick="openLockedSheet('operations', 'Operations That Scale', '1A3A5E', '⚙️')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Locked
+            </button>
+          </div>
+        </div>
+
+      </div><!-- end scroll-area -->
+
+      <!-- ── Bottom Nav ── -->
+      <div class="bottom-nav">
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1z"/></svg>
+          <span class="nav-label active">Courses</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span class="nav-label">Library</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span class="nav-label">Tools</span>
+        </div>
+      </div>
+
+      <!-- ════ OVERLAY ════ -->
+      <div class="overlay" id="overlay"></div>
+
+      <!-- ════ BOTTOM SHEET ════ -->
+      <div class="bottom-sheet" id="bottom-sheet">
+        <div class="sheet-handle"></div>
+
+        <div class="sheet-scroll">
+
+          <!-- ── Step 1: Plan Selection ── -->
+          <div id="step-plan">
+
+            <div class="sheet-hdr">
+              <span class="sheet-hdr-title">Unlock This Course</span>
+              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+
+            <!-- Locked course info -->
+            <div class="locked-course-banner">
+              <div class="lc-icon" id="lc-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46">
+                  <circle cx="30" cy="30" r="30" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle" id="lc-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="lc-title" id="lc-title">Course Title</div>
+                <div class="lc-sub">Premium access required</div>
+              </div>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#9E9E9E" style="margin-left:auto;flex-shrink:0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+
+            <!-- 7-day trial note -->
+            <div class="trial-note">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              <span class="trial-note-text"><strong>7 days free trial</strong> — try all premium courses at no cost. Cancel before day 7 and you will not be charged.</span>
+            </div>
+
+            <!-- Plan cards -->
+            <div class="sheet-plans">
+
+              <!-- Yearly — default selected -->
+              <div class="splan-card splan-yearly" id="sheet-card-yearly" onclick="selectSheetPlan('yearly')">
+                <div class="splan-top">
+                  <span class="splan-name-light">Yearly Plan</span>
+                  <span class="splan-recommended">RECOMMENDED</span>
+                </div>
+                <div class="splan-price-row">
+                  <span class="splan-price-light">₹10,000</span>
+                  <span class="splan-unit-light">/year</span>
+                </div>
+                <div class="splan-detail-light">₹833/month · + Applicable tax</div>
+                <div class="splan-savings">Save ₹2,000 — 2 months free</div>
+              </div>
+
+              <!-- Monthly -->
+              <div class="splan-card splan-monthly" id="sheet-card-monthly" onclick="selectSheetPlan('monthly')">
+                <div class="splan-top">
+                  <span class="splan-name-dark">Monthly Plan</span>
+                  <div class="splan-radio" id="sheet-radio-monthly"></div>
+                </div>
+                <div class="splan-price-row">
+                  <span class="splan-price-dark">₹1,000</span>
+                  <span class="splan-unit-dark">/month</span>
+                </div>
+                <div class="splan-detail-dark">+ Applicable tax · Cancel anytime</div>
+              </div>
+
+            </div>
+
+            <div class="sheet-cta-wrap">
+              <button class="sheet-cta-btn" onclick="goToConfirm()">
+                Start 7-Day Free Trial
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              </button>
+              <div class="sheet-fine" id="plan-fine">Then ₹10,000/year (₹833/month) + tax. Cancel before day 7 — no charge.</div>
+            </div>
+
+          </div><!-- end step-plan -->
+
+          <!-- ── Step 2: Confirm & Pay ── -->
+          <div id="step-confirm">
+
+            <div class="sheet-hdr">
+              <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="goBackToPlan()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                <span style="font-family:'Inter',sans-serif;font-size:15px;color:#282828;">Back</span>
+              </button>
+              <span class="sheet-hdr-title">Confirm Plan</span>
+              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+
+            <!-- Course being unlocked -->
+            <div class="confirm-course-row">
+              <div class="cc-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46">
+                  <circle cx="30" cy="30" r="30" id="cc-bg" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle" id="cc-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="cc-title" id="cc-title">Course Title</div>
+                <div class="cc-unlock-tag">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                  Will be unlocked
+                </div>
+              </div>
+            </div>
+
+            <!-- App identity card -->
+            <div class="confirm-app-card">
+              <svg viewBox="0 0 60 60" width="46" height="46" style="border-radius:11px;flex-shrink:0;">
+                <rect width="60" height="60" rx="14" fill="#512DA8"/>
+                <polygon points="46,10 22,24 28,29" fill="#F16623"/>
+                <polygon points="46,10 28,29 26,44" fill="#E07818"/>
+                <polygon points="28,29 32,32 26,44" fill="#F16623" opacity="0.7"/>
+                <text x="7" y="52" font-family="Lato,sans-serif" font-weight="900" font-size="22" fill="#fff" letter-spacing="-1">BT</text>
+              </svg>
+              <div>
+                <div style="font-family:'Lato',sans-serif;font-weight:700;font-size:15px;color:#282828;">BillionTools Premium</div>
+                <div style="font-family:'Inter',sans-serif;font-size:12px;color:#606060;margin-top:3px;">Poornatha · SME Subscription</div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="confirm-summary">
+              <div class="cs-row">
+                <span class="cs-label">Plan</span>
+                <span class="cs-value" id="cs-plan">Yearly — ₹10,000/year</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Free trial</span>
+                <span class="cs-value highlight">7 days · Starting today</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Today you pay</span>
+                <span class="cs-value highlight">₹0</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">First charge</span>
+                <span class="cs-value" id="cs-charge">₹10,000 + tax · 8 Apr 2026</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Account</span>
+                <span class="cs-value">tanisha@example.com</span>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="confirm-terms">
+              No commitment. Cancel any time before day 7 via Settings — you will not be charged. Plan renews automatically until cancelled. Applicable taxes as per Government norms.
+            </div>
+
+            <div class="sheet-cta-wrap">
+              <button class="sheet-cta-btn" onclick="completePayment()">
+                Subscribe &amp; Unlock Course
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              </button>
+            </div>
+
+          </div><!-- end step-confirm -->
+
+          <!-- ── Step 3: Success ── -->
+          <div id="step-success">
+            <div class="check-wrap" id="check-wrap" style="margin:28px auto 14px;">
+              <svg viewBox="0 0 72 72" width="72" height="72">
+                <circle class="check-circle-bg" cx="36" cy="36" r="31"/>
+                <circle class="check-circle-ring" cx="36" cy="36" r="31"/>
+                <path class="check-path" d="M21 36 L31 46 L51 26"/>
+              </svg>
+            </div>
+            <div class="success-title">You're now Premium!</div>
+            <div class="success-sub" style="padding:0 20px;">Subscription activated. Your course is unlocked and ready to start.</div>
+
+            <div class="success-course-card" style="margin:18px 16px 0;">
+              <div class="scc-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46">
+                  <circle cx="30" cy="30" r="30" id="scc-bg" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle" id="scc-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="scc-name" id="scc-name">Course Title</div>
+                <div class="scc-unlocked">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M17 8C8 10 5.9 16.17 3.82 19.36L5.71 21 7 19.5c.18.27.36.54.55.82L9 19c-.19-.28-.38-.57-.56-.86l1.46-1.22c.44.7.87 1.4 1.27 2.08L13 17.5c-.4-.68-.84-1.39-1.29-2.08L13.17 14a21.62 21.62 0 0 1 1.67 2.23L16.42 15c-.48-.73-1.01-1.48-1.6-2.21l1.41-1.18c.55.67 1.05 1.35 1.52 2.04L19.5 12.5C18.6 11.14 17.43 9.51 16 8l1-1zm-4.25 4.22l-1.41 1.18a18.47 18.47 0 0 0-1.33-1.7l1.41-1.18c.46.56.91 1.13 1.33 1.7z"/></svg>
+                  Unlocked — Start Learning
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px 16px 0;">
+              <button class="start-btn" onclick="startCourse()">
+                Start Course Now
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" style="margin-left:6px;"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="explore-all-btn" onclick="closeSheet()">Explore All Courses</button>
+            </div>
+            <div style="height:24px;"></div>
+          </div><!-- end step-success -->
+
+        </div><!-- end sheet-scroll -->
+      </div><!-- end bottom-sheet -->
+
+    </div>
+  </div>
+
+  <script>
+    /* ── State ── */
+    let currentPlan    = 'yearly';
+    let currentCourse  = null;   // { id, title, emoji, color }
+    let unlockedCourses = new Set();
+
+    /* ────────────────────────────────────────
+       Open sheet for a locked course
+       If user is already premium → go straight to course
+    ──────────────────────────────────────── */
+    function openLockedSheet(courseId, title, color, emoji) {
+      // Premium check — if this course already unlocked via previous purchase
+      if (unlockedCourses.has(courseId)) {
+        startCourseDirectly(courseId);
+        return;
+      }
+
+      currentCourse = { id: courseId, title, color, emoji };
+
+      // Populate step-1 banner
+      document.getElementById('lc-title').textContent  = title;
+      document.getElementById('lc-emoji').textContent  = emoji;
+      document.getElementById('lc-icon').querySelector('circle').setAttribute('fill', '#' + color);
+
+      // Reset to step 1
+      showStep('plan');
+      resetPlanSelection();
+
+      // Show overlay + sheet
+      const overlay = document.getElementById('overlay');
+      const sheet   = document.getElementById('bottom-sheet');
+      overlay.style.display = 'block';
+      sheet.style.display   = 'flex';
+      requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('show')));
+    }
+
+    /* ────────────────────────────────────────
+       Plan selection toggle
+    ──────────────────────────────────────── */
+    function selectSheetPlan(plan) {
+      currentPlan = plan;
+      const yearlyCard  = document.getElementById('sheet-card-yearly');
+      const monthlyCard = document.getElementById('sheet-card-monthly');
+      const radioM      = document.getElementById('sheet-radio-monthly');
+      const fine        = document.getElementById('plan-fine');
+
+      if (plan === 'yearly') {
+        yearlyCard.style.opacity     = '1';
+        yearlyCard.style.boxShadow   = '0 4px 16px rgba(81,45,168,0.28)';
+        monthlyCard.classList.remove('selected');
+        radioM.classList.remove('filled');
+        radioM.innerHTML = '';
+        fine.textContent = 'Then ₹10,000/year (₹833/month) + tax. Cancel before day 7 — no charge.';
+      } else {
+        yearlyCard.style.opacity   = '0.45';
+        yearlyCard.style.boxShadow = 'none';
+        monthlyCard.classList.add('selected');
+        radioM.classList.add('filled');
+        radioM.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        fine.textContent = 'Then ₹1,000 + tax/month. Cancel before day 7 — no charge.';
+      }
+    }
+
+    function resetPlanSelection() {
+      currentPlan = 'yearly';
+      const yearlyCard  = document.getElementById('sheet-card-yearly');
+      const monthlyCard = document.getElementById('sheet-card-monthly');
+      const radioM      = document.getElementById('sheet-radio-monthly');
+      yearlyCard.style.opacity   = '1';
+      yearlyCard.style.boxShadow = '0 4px 16px rgba(81,45,168,0.28)';
+      monthlyCard.classList.remove('selected');
+      radioM.classList.remove('filled');
+      radioM.innerHTML = '';
+      document.getElementById('plan-fine').textContent = 'Then ₹10,000/year (₹833/month) + tax. Cancel before day 7 — no charge.';
+    }
+
+    /* ────────────────────────────────────────
+       Step navigation
+    ──────────────────────────────────────── */
+    function showStep(step) {
+      document.getElementById('step-plan').style.display    = step === 'plan'    ? 'block' : 'none';
+      document.getElementById('step-confirm').style.display = step === 'confirm' ? 'flex'  : 'none';
+      document.getElementById('step-success').style.display = step === 'success' ? 'flex'  : 'none';
+      // Scroll sheet to top on each step change
+      document.querySelector('.sheet-scroll').scrollTop = 0;
+    }
+
+    function goToConfirm() {
+      if (!currentCourse) return;
+
+      // Populate confirm step
+      document.getElementById('cc-title').textContent = currentCourse.title;
+      document.getElementById('cc-emoji').textContent = currentCourse.emoji;
+      document.getElementById('cc-bg').setAttribute('fill', '#' + currentCourse.color);
+
+      if (currentPlan === 'yearly') {
+        document.getElementById('cs-plan').textContent   = 'Yearly — ₹10,000/year';
+        document.getElementById('cs-charge').textContent = '₹10,000 + tax · 8 Apr 2026';
+      } else {
+        document.getElementById('cs-plan').textContent   = 'Monthly — ₹1,000/month';
+        document.getElementById('cs-charge').textContent = '₹1,000 + tax · 8 Apr 2026';
+      }
+
+      showStep('confirm');
+    }
+
+    function goBackToPlan() {
+      showStep('plan');
+    }
+
+    function completePayment() {
+      if (!currentCourse) return;
+
+      // Populate success step
+      document.getElementById('scc-name').textContent  = currentCourse.title;
+      document.getElementById('scc-emoji').textContent = currentCourse.emoji;
+      document.getElementById('scc-bg').setAttribute('fill', '#' + currentCourse.color);
+
+      showStep('success');
+
+      // Animate checkmark
+      setTimeout(() => {
+        document.getElementById('check-wrap').classList.add('animate');
+      }, 80);
+
+      // Mark course as unlocked
+      unlockedCourses.add(currentCourse.id);
+    }
+
+    function startCourse() {
+      if (currentCourse) {
+        unlockCourseCard(currentCourse.id);
+      }
+      closeSheet();
+    }
+
+    function startCourseDirectly(courseId) {
+      // Already premium — just open the course (here we just notify)
+      alert('Opening course... (Premium member — direct access)');
+    }
+
+    function unlockCourseCard(courseId) {
+      const btn = document.getElementById('btn-' + courseId);
+      if (!btn) return;
+
+      // Replace locked button with unlocked
+      btn.outerHTML = `
+        <button class="view-course-btn" onclick="alert('Opening course...')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          Start Course
+        </button>`;
+
+      // Remove premium lock tag from the card's meta row
+      const card = document.getElementById('card-' + courseId);
+      if (card) {
+        const lockSpan = card.querySelector('.card-meta-row span');
+        if (lockSpan) lockSpan.remove();
+        // Remove opacity from icon
+        const icon = card.querySelector('.course-icon');
+        if (icon) icon.style.opacity = '1';
+      }
+    }
+
+    /* ────────────────────────────────────────
+       Close sheet
+    ──────────────────────────────────────── */
+    function closeSheet() {
+      const sheet   = document.getElementById('bottom-sheet');
+      const overlay = document.getElementById('overlay');
+
+      sheet.classList.remove('show');
+      setTimeout(() => {
+        sheet.style.display   = 'none';
+        overlay.style.display = 'none';
+        // Reset check animation for next open
+        document.getElementById('check-wrap').classList.remove('animate');
+        showStep('plan');
+      }, 380);
+    }
+
+    /* Tap overlay to close only on step-plan */
+    document.getElementById('overlay').addEventListener('click', function() {
+      const planStep = document.getElementById('step-plan');
+      if (planStep.style.display !== 'none') closeSheet();
+    });
+  </script>
+</body>
+</html>

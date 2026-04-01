@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    /* ── Screen layout ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 108px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      padding-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 0;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hdr-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Content sections ── */
+    .content-pad {
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .content-pad + .content-pad {
+      margin-top: 24px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 0.5px;
+      background: #d6d6d6;
+    }
+
+    /* ── Welcome Card ── */
+    .welcome-card {
+      background: linear-gradient(145.64deg, #1E0F41 15.83%, #42238B 84.17%);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .welcome-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .welcome-greeting-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .welcome-greeting-row span,
+    .welcome-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .welcome-company {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .welcome-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      align-self: stretch;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .avatar {
+      width: 49px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #512DA8;
+    }
+
+    .coins-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg,#f9d764,#f4a600);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .coin-count {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    /* ── Quote Card ── */
+    .quote-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .quote-image-wrap {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#E3DFFF 0%,#c5bcf5 100%);
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quote-icon-float {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .quote-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding-top: 10px;
+      width: 100%;
+    }
+
+    .quote-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #282828;
+      text-align: center;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      background: #512DA8;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: #512DA8;
+      border: 1px solid #512DA8;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-green {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    /* ── Continue Learning ── */
+    .continue-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .continue-thumb {
+      height: 170px;
+      background: linear-gradient(135deg,#E3DFFF 0%,#beb3f0 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-badge {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      background: #606060;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .continue-body {
+      background: #fff;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .continue-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .continue-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #282828;
+    }
+
+    .continue-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: #CECECE;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 75.58%;
+      background: linear-gradient(178.95deg, #512DA8 18.42%, #926AF3 100%);
+      border-radius: 2px;
+    }
+
+    .progress-pct {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+      white-space: nowrap;
+    }
+
+    /* ════════════════════════════════════════
+       ── Suggested Reels Section ──
+       Instagram-style horizontal scroll cards
+    ════════════════════════════════════════ */
+    .reels-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    /* Header row: title + 3-dot menu — uses the same 30px horizontal padding */
+    .reels-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .reels-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;    /* H2 Section Heading from design system */
+      color: #282828;
+    }
+
+    .reels-menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      color: #606060;
+    }
+
+    /* Horizontal scroll row — starts with 30px left padding so first card aligns with content */
+    .reels-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 4px 30px 6px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .reels-scroll::-webkit-scrollbar { display: none; }
+
+    /* Individual reel card — 2 full + 30% of 3rd visible
+       Calculation: (480 - 30px left pad) = 450px visible
+       2.3W + 2×12gap = 450  →  W ≈ 185px             */
+    .reel-card {
+      flex-shrink: 0;
+      width: 185px;
+      height: 280px;
+      border-radius: 16px;      /* Cards corner radius from design system */
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);  /* Normal Shadow from design system */
+      cursor: pointer;
+    }
+
+    /* Thumbnail background fills the full card */
+    .reel-thumb {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Fallback gradient shown when no image is provided */
+    .reel-bg-gradient {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Three-dot menu — top-right overlay */
+    .reel-3dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: #fff;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      background: none;
+      border: none;
+      padding: 0;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+
+    /* Caption gradient overlay + text at card bottom */
+    .reel-caption-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 10px 10px;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+      z-index: 1;
+    }
+
+    .reel-caption-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12px;          /* Body Text-2 Small from design system */
+      color: #fff;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    /* ════ End Suggested Reels ════ */
+
+    /* ── Ask a Query ── */
+    .query-card {
+      background: #E3DFFF;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .query-top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .query-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: #512DA8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .query-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .query-heading {
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .query-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+    }
+
+    /* ── Profile Status ── */
+    .profile-card {
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 354px;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+      background: linear-gradient(134.80deg, #512DA8 18.42%, #926AF3 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .profile-header-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-hdr-icon {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .profile-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+      flex: 1;
+    }
+
+    .profile-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px 8px;
+    }
+
+    .profile-pct {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #512DA8;
+      margin-bottom: 16px;
+    }
+
+    .profile-progress-track {
+      height: 8px;
+      background: #E5E5E4;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .profile-progress-fill {
+      height: 100%;
+      width: 85.53%;
+      background: #8AD143;
+      border-radius: 4px;
+    }
+
+    .profile-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .profile-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-item-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    /* ── NavBar ── */
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar-main {
+      border-top: 1px solid #E3DFFF;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+      padding: 8px 30px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      min-width: 45px;
+    }
+
+    .nav-tab-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-tab-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .nav-tab.active .nav-tab-label {
+      color: #512DA8;
+    }
+
+    .navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 4px 30px;
+      height: 25px;
+      background: #fff;
+    }
+
+    .copy-text {
+      font-family: 'Lato', sans-serif;
+      font-size: 9px;
+      color: #282828;
+    }
+
+    /* ════════════════════════════════════════
+       ── Kebab Menu Action Sheet ──
+       Slides up from inside the phone shell
+    ════════════════════════════════════════ */
+
+    /* Dim overlay — covers the phone screen */
+    .action-sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .action-sheet-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Sheet — slides up from phone bottom */
+    .action-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 201;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      padding-bottom: 24px;
+    }
+    .action-sheet.open {
+      transform: translateY(0);
+    }
+
+    /* Drag handle */
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: #d6d6d6;
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    /* Reel preview row at top of sheet */
+    .sheet-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px 12px;
+      border-bottom: 0.5px solid #e8e8e8;
+    }
+
+    .sheet-thumb {
+      width: 44px;
+      height: 62px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .sheet-reel-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #282828;
+      line-height: 1.4;
+    }
+
+    .sheet-reel-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    /* Action items */
+    .sheet-actions {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+    }
+
+    .sheet-action-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 24px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .sheet-action-item:active {
+      background: #f7f6ff;
+    }
+
+    .sheet-action-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sheet-action-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .sheet-action-item.destructive .sheet-action-label {
+      color: #E71F2C;
+    }
+    .sheet-action-item.destructive svg {
+      color: #E71F2C;
+    }
+
+    /* Cancel button */
+    .sheet-cancel {
+      margin: 8px 24px 0;
+      padding: 14px;
+      background: #f7f6ff;
+      border: none;
+      border-radius: 13px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: #512DA8;
+      cursor: pointer;
+      width: calc(100% - 48px);
+      transition: background 0.15s;
+    }
+    .sheet-cancel:active { background: #E3DFFF; }
+    /* ════ End Action Sheet ════ */
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Scrollable area ── -->
+      <div class="scroll-area">
+
+        <!-- Header Component -->
+        <div class="header">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right">
+              <!-- Signal -->
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <!-- Battery -->
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="header-bar">
+            <span class="logo">BillionTools</span>
+            <div class="header-actions">
+              <!-- Search -->
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <!-- Language toggle -->
+              <div class="hdr-icon" style="width:34px;height:34px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <!-- Font size -->
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+              </div>
+              <!-- Sound -->
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              </div>
+              <!-- Settings -->
+              <div class="hdr-icon" style="width:32px;height:32px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Main content: top sections ── -->
+        <div class="content-pad" style="padding-top:0; margin-top:0;">
+
+          <!-- Welcome Card -->
+          <div class="welcome-card">
+            <div class="welcome-left">
+              <div class="welcome-greeting-row">
+                <span>Welcome,</span>
+                <span style="font-size:20px;">👋</span>
+              </div>
+              <div class="welcome-name">Arjun</div>
+              <div class="welcome-company">Poornatha Partnering Entrepreneurs Private Limited</div>
+            </div>
+            <div class="welcome-right">
+              <div class="avatar">A</div>
+              <div class="coins-row">
+                <div class="coin-icon">⭐</div>
+                <span class="coin-count">5568</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Quote Card -->
+          <div class="quote-card">
+            <div class="quote-image-wrap">
+              <!-- Illustration placeholder -->
+              <svg viewBox="0 0 320 260" width="290" height="235">
+                <!-- Two people thinking -->
+                <ellipse cx="100" cy="120" rx="55" ry="65" fill="#c5bcf5"/>
+                <ellipse cx="220" cy="120" rx="55" ry="65" fill="#b0a6ef"/>
+                <circle cx="100" cy="80" r="26" fill="#e8d5c4"/>
+                <circle cx="220" cy="80" r="26" fill="#d4bfa8"/>
+                <!-- Light bulb above center -->
+                <circle cx="160" cy="42" r="18" fill="#f9d764" opacity="0.9"/>
+                <rect x="154" y="58" width="12" height="8" rx="2" fill="#e8b800"/>
+                <!-- Thought bubbles -->
+                <circle cx="126" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
+                <circle cx="138" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <circle cx="194" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
+                <circle cx="182" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <!-- Arms -->
+                <path d="M72 148 Q60 165 50 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M128 148 Q140 165 150 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M192 148 Q180 165 170 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M248 148 Q260 165 270 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
+              </svg>
+              <div class="quote-icon-float">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+              </div>
+            </div>
+            <div class="quote-body">
+              <div class="quote-title">Horses Don't Run at the Same Speed</div>
+              <div style="display:flex;flex-direction:column;gap:16px;width:100%;">
+                <button class="btn-primary">
+                  Read More
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                </button>
+                <button class="btn-outline">
+                  Thoughts History
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Learning Card -->
+          <div class="continue-card">
+            <div class="continue-thumb">
+              <!-- Video illustration -->
+              <svg viewBox="0 0 340 170" width="100%">
+                <rect x="0" y="0" width="340" height="170" fill="#c5bcf5"/>
+                <!-- Monitor frame -->
+                <rect x="60" y="20" width="220" height="130" rx="10" fill="#fff" opacity="0.9"/>
+                <rect x="68" y="28" width="204" height="106" rx="6" fill="#E3DFFF"/>
+                <!-- Play button -->
+                <circle cx="170" cy="81" r="24" fill="#512DA8" opacity="0.9"/>
+                <polygon points="163,72 163,90 182,81" fill="#fff"/>
+                <!-- Stand -->
+                <rect x="150" y="150" width="40" height="8" rx="4" fill="#a09be0"/>
+                <rect x="130" y="158" width="80" height="6" rx="3" fill="#a09be0"/>
+                <!-- Figure (person studying) -->
+                <circle cx="285" cy="80" r="16" fill="#e8c9a0"/>
+                <rect x="272" y="96" width="26" height="30" rx="8" fill="#9c8de6"/>
+              </svg>
+              <div class="video-badge">Video</div>
+            </div>
+            <div class="continue-body">
+              <div class="continue-info">
+                <div class="continue-title">Elevator Pitch</div>
+                <div class="continue-meta">Section 1 of 6</div>
+                <div class="progress-row">
+                  <div class="progress-track"><div class="progress-fill"></div></div>
+                  <span class="progress-pct">75%</span>
+                </div>
+              </div>
+              <button class="btn-green">Continue Learning</button>
+            </div>
+          </div>
+
+        </div><!-- /content-pad top -->
+
+        <!-- ════════════════════════════════════════════
+             SUGGESTED REELS — Full-bleed horizontal scroll
+             Instagram-style: header row + 5 portrait cards
+        ════════════════════════════════════════════ -->
+        <div class="reels-section">
+
+          <!-- Section header -->
+          <div class="reels-header">
+            <span class="reels-title">Suggested reels</span>
+            <button class="reels-menu-btn" aria-label="More reel options">
+              <!-- Vertical 3-dot icon -->
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#606060">
+                <circle cx="12" cy="5" r="1.8"/>
+                <circle cx="12" cy="12" r="1.8"/>
+                <circle cx="12" cy="19" r="1.8"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Horizontal scroll row -->
+          <div class="reels-scroll">
+
+            <!-- Card 1 — Leadership (reel index 0) -->
+            <div class="reel-card" onclick="openReel(0)" style="cursor:pointer;">
+              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #7c5cbf 0%, #3a1f7a 60%, #1e0f41 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
+                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
+              </div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('1')">⋮</button>
+              <div class="reel-caption-overlay">
+                <p class="reel-caption-text">Leadership Mindset for Entrepreneurs</p>
+              </div>
+            </div>
+
+            <!-- Card 2 — Scale (reel index 1) -->
+            <div class="reel-card" onclick="openReel(1)" style="cursor:pointer;">
+              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #5c4aaa 0%, #2e1876 60%, #180c3a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
+                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
+              </div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('2')">⋮</button>
+              <div class="reel-caption-overlay">
+                <p class="reel-caption-text">5 Ways to Scale Your Business</p>
+              </div>
+            </div>
+
+            <!-- Card 3 — Personal Brand (reel index 2) -->
+            <div class="reel-card" onclick="openReel(2)" style="cursor:pointer;">
+              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #8a69ce 0%, #4a2d96 60%, #261160 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
+                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
+              </div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('3')">⋮</button>
+              <div class="reel-caption-overlay">
+                <p class="reel-caption-text">Building Your Personal Brand</p>
+              </div>
+            </div>
+
+            <!-- Card 4 — Women in Business (reel index 3) -->
+            <div class="reel-card" onclick="openReel(3)" style="cursor:pointer;">
+              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #6b4fc0 0%, #35208a 60%, #1c0e4a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
+                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
+              </div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('4')">⋮</button>
+              <div class="reel-caption-overlay">
+                <p class="reel-caption-text">Women in Business: Success Stories</p>
+              </div>
+            </div>
+
+            <!-- Card 5 — Team Collaboration (reel index 4 → wraps to index 3) -->
+            <div class="reel-card" onclick="openReel(3)" style="cursor:pointer;">
+              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #9578d8 0%, #5236a0 60%, #2a176a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
+                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
+              </div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('5')">⋮</button>
+              <div class="reel-caption-overlay">
+                <p class="reel-caption-text">Team Collaboration Strategies</p>
+              </div>
+            </div>
+
+          </div><!-- /reels-scroll -->
+        </div><!-- /reels-section -->
+        <!-- ════ End Suggested Reels ════ -->
+
+        <!-- ── Main content: bottom sections ── -->
+        <div class="content-pad" style="margin-top:24px;">
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Ask a Query Card -->
+          <div class="query-card">
+            <div class="query-top">
+              <div class="query-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+              </div>
+              <div class="query-info">
+                <div class="query-heading">Ask a Query</div>
+                <div class="query-sub">Have questions or feedback? Let us know!</div>
+              </div>
+            </div>
+            <button class="btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              Send Query
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Profile Status Card -->
+          <div class="profile-card">
+            <div class="profile-inner">
+              <div class="profile-header-row">
+                <div class="profile-hdr-icon">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                </div>
+                <span class="profile-title">Profile Status</span>
+              </div>
+              <div class="profile-box">
+                <div class="profile-pct">90% Completed</div>
+                <div class="profile-progress-track"><div class="profile-progress-fill"></div></div>
+                <div class="profile-items">
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#4CAF50"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span class="profile-item-label">Personal Information</span>
+                  </div>
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#4CAF50"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span class="profile-item-label">Company Information</span>
+                  </div>
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" stroke="#606060" stroke-width="2" fill="none"/></svg>
+                    <span class="profile-item-label">Profile Picture</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn-outline" style="background:#fff;">Complete Profile</button>
+          </div>
+
+        </div><!-- /content-pad bottom -->
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── NavBar (fixed at phone bottom) ── -->
+      <div class="navbar">
+        <div class="navbar-main">
+          <div class="nav-tabs">
+
+            <!-- Home — active -->
+            <a class="nav-tab active" href="BILLIONT-HOME.HTML" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              </div>
+              <span class="nav-tab-label" style="color:#512DA8;">Home</span>
+            </a>
+
+            <!-- Reels — next to Home -->
+            <a class="nav-tab" href="BILLIONT-REELS.HTML" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="#282828">
+                  <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+                </svg>
+              </div>
+              <span class="nav-tab-label">Reels</span>
+            </a>
+
+            <!-- Courses -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </div>
+              <span class="nav-tab-label">Courses</span>
+            </a>
+
+            <!-- Library -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <span class="nav-tab-label">Library</span>
+            </a>
+
+            <!-- Tools -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <span class="nav-tab-label">Tools</span>
+            </a>
+
+          </div>
+        </div>
+        <div class="navbar-copy">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#282828"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+          <span class="copy-text">Billiont Tools 2025</span>
+        </div>
+      </div>
+
+    </div><!-- /screen -->
+
+    <!-- ════════════════════════════════════════
+         Kebab Menu Action Sheet
+         Rendered inside .phone so it stays within the shell
+    ════════════════════════════════════════ -->
+    <div class="action-sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+
+    <div class="action-sheet" id="actionSheet">
+      <div class="sheet-handle"></div>
+
+      <!-- Mini reel preview -->
+      <div class="sheet-preview">
+        <div class="sheet-thumb" id="sheetThumb"></div>
+        <div>
+          <div class="sheet-reel-title" id="sheetTitle"></div>
+          <div class="sheet-reel-sub">Suggested reel</div>
+        </div>
+      </div>
+
+      <!-- Action options -->
+      <div class="sheet-actions">
+
+        <button class="sheet-action-item" onclick="closeSheet()">
+          <div class="sheet-action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
+          </div>
+          <span class="sheet-action-label">Not Interested</span>
+        </button>
+
+        <button class="sheet-action-item" onclick="closeSheet()">
+          <div class="sheet-action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="sheet-action-label">Save Reel</span>
+        </button>
+
+        <button class="sheet-action-item" onclick="closeSheet()">
+          <div class="sheet-action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+          </div>
+          <span class="sheet-action-label">Share</span>
+        </button>
+
+        <button class="sheet-action-item" onclick="closeSheet()">
+          <div class="sheet-action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <span class="sheet-action-label">Remind Me Later</span>
+        </button>
+
+        <button class="sheet-action-item destructive" onclick="closeSheet()">
+          <div class="sheet-action-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#E71F2C" stroke-width="2"><path d="m10.29 3.86-1.27 2.14H5l-.86 1.5L4.31 9h15.38l.17-1.5L19 6h-4.02l-1.27-2.14a1 1 0 0 0-.87-.5h-1.68a1 1 0 0 0-.87.5z"/><path d="M4.31 9 5.5 20h13l1.19-11"/><path d="M10 13v4M14 13v4"/></svg>
+          </div>
+          <span class="sheet-action-label">Report</span>
+        </button>
+
+      </div>
+
+      <button class="sheet-cancel" onclick="closeSheet()">Cancel</button>
+    </div><!-- /action-sheet -->
+
+  </div><!-- /phone -->
+
+  <script>
+    // Reel metadata for the action sheet preview
+    const reelData = {
+      '1': { title: 'Leadership Mindset for Entrepreneurs', bg: 'linear-gradient(165deg,#7c5cbf,#3a1f7a)' },
+      '2': { title: '5 Ways to Scale Your Business',        bg: 'linear-gradient(165deg,#5c4aaa,#2e1876)' },
+      '3': { title: 'Building Your Personal Brand',         bg: 'linear-gradient(165deg,#8a69ce,#4a2d96)' },
+      '4': { title: 'Women in Business: Success Stories',   bg: 'linear-gradient(165deg,#6b4fc0,#35208a)' },
+      '5': { title: 'Team Collaboration Strategies',        bg: 'linear-gradient(165deg,#9578d8,#5236a0)' },
+    };
+
+    // Navigate to the Reels page with the tapped card's index
+    // Passes ?from=suggested so the back arrow becomes visible
+    function openReel(reelIndex) {
+      window.location.href = 'BILLIONT-REELS.HTML?from=suggested&reel=' + reelIndex;
+    }
+
+    function openSheet(reelId) {
+      const data = reelData[reelId];
+      document.getElementById('sheetTitle').textContent = data.title;
+      document.getElementById('sheetThumb').style.background = data.bg;
+
+      document.getElementById('sheetOverlay').classList.add('open');
+      document.getElementById('actionSheet').classList.add('open');
+    }
+
+    function closeSheet() {
+      document.getElementById('sheetOverlay').classList.remove('open');
+      document.getElementById('actionSheet').classList.remove('open');
+    }
+  </script>
+</body>
+</html>
