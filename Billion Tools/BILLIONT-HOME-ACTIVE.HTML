@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Billiont Tools — Home (Premium)</title>
+  <title>Billion Tools — Home (Active Premium)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -18,44 +18,6 @@
       padding: 32px 0 48px;
       font-family: 'Inter', sans-serif;
       gap: 20px;
-    }
-
-    /* ── Demo state switcher (outside phone shell) ── */
-    .demo-switcher {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .demo-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: #606060;
-      font-weight: 500;
-      margin-right: 4px;
-    }
-
-    .demo-btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 7px 16px;
-      border-radius: 20px;
-      border: 1.5px solid #ccc;
-      background: #fff;
-      color: #606060;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .demo-btn.active-expiring {
-      background: #FFFBEB;
-      border-color: #FCD34D;
-      color: #92400E;
-    }
-    .demo-btn.active-renewed {
-      background: #F0FDF4;
-      border-color: #86EFAC;
-      color: #15803D;
     }
 
     /* ── Phone Shell ── */
@@ -152,10 +114,6 @@
       gap: 24px;
     }
 
-    .content-pad + .content-pad {
-      margin-top: 24px;
-    }
-
     /* ── Divider ── */
     .divider {
       height: 0.5px;
@@ -250,145 +208,193 @@
     }
 
     /* ════════════════════════════════════════
-       ── Membership Widget ──
-       Full-width horizontal card, below welcome card
+       ── Premium Active Membership Card ──
+       Shown after successful subscription purchase
     ════════════════════════════════════════ */
-    .mem-widget {
-      width: 100%;
+    .premium-active-card {
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
       border-radius: 16px;
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 12px;
+      padding: 16px;
       position: relative;
       overflow: hidden;
     }
 
-    /* ── Expiring State — amber ── */
-    .mem-expiring {
-      background: #FFFBEB;
-      border: 1.5px solid #FCD34D;
+    /* Subtle shine overlay */
+    .premium-active-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .premium-active-card::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    /* ── Renewed State — green ── */
-    .mem-renewed {
-      background: #F0FDF4;
-      border: 1.5px solid #86EFAC;
+    /* Top row: badge + manage link */
+    .pac-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* Left icon area */
-    .mem-w-icon-circle {
-      width: 40px;
-      height: 40px;
+    .pac-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 20px;
+      padding: 4px 10px 4px 8px;
+    }
+
+    .pac-badge-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
+      background: #7DEB8A;
+      box-shadow: 0 0 6px rgba(125,235,138,0.8);
+      flex-shrink: 0;
+    }
+
+    .pac-badge-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: #fff;
+      letter-spacing: 0.4px;
+    }
+
+    .pac-manage-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* Main content row */
+    .pac-main-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Crown icon circle */
+    .pac-crown-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .mem-expiring .mem-w-icon-circle { background: #EDE7F6; }
-    .mem-renewed .mem-w-icon-circle  { background: #DCFCE7; }
 
-    /* Middle text block — takes remaining space */
-    .mem-w-text-block {
+    /* Text block */
+    .pac-text-block {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 3px;
-    }
-
-    /* Top row: badge + plan pill */
-    .mem-w-top-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .mem-w-label {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      color: #512DA8;
-    }
-
-    .mem-w-plan-tag {
-      display: inline-block;
-      background: #EDE7F6;
-      color: #512DA8;
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 20px;
-    }
-    .mem-renewed .mem-w-plan-tag { background: #DCFCE7; color: #15803D; }
-
-    /* Warning / success line */
-    .mem-w-status-row {
-      display: flex;
-      align-items: center;
       gap: 4px;
     }
 
-    .mem-w-warn-text {
+    .pac-title {
       font-family: 'Lato', sans-serif;
       font-weight: 700;
-      font-size: 13px;
-      color: #B45309;
+      font-size: 18px;
+      color: #fff;
+      line-height: 1.2;
     }
 
-    .mem-w-success-text {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      color: #15803D;
-    }
-
-    /* Sub-message */
-    .mem-w-msg {
+    .pac-subtitle {
       font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      color: #78716C;
-      line-height: 1.4;
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
     }
-    .mem-renewed .mem-w-msg { color: #3F3F46; }
 
-    /* Right CTA area */
-    .mem-w-cta-col {
+    /* Right: plan tag */
+    .pac-plan-col {
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
+      gap: 4px;
     }
 
-    /* Renew CTA button */
-    .mem-w-renew-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
-      color: #fff;
+    .pac-plan-tag {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 3px 10px;
       font-family: 'Lato', sans-serif;
       font-weight: 700;
       font-size: 12px;
-      text-align: center;
-      padding: 8px 14px;
-      border-radius: 10px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: opacity 0.15s;
+      color: #fff;
+      letter-spacing: 0.3px;
     }
-    .mem-w-renew-btn:active { opacity: 0.85; }
 
-    /* View link */
-    .mem-w-view-link {
+    .pac-valid {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.65);
+      text-align: right;
+    }
+
+    /* Divider inside card */
+    .pac-inner-divider {
+      height: 0.5px;
+      background: rgba(255,255,255,0.2);
+      margin: 12px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Benefits row */
+    .pac-benefits-row {
+      display: flex;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pac-benefit {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pac-benefit + .pac-benefit {
+      padding-left: 12px;
+      border-left: 0.5px solid rgba(255,255,255,0.2);
+    }
+
+    .pac-benefit-label {
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      color: #512DA8;
-      text-decoration: none;
-      font-weight: 500;
-      white-space: nowrap;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.3;
     }
 
     /* ── Quote Card ── */
@@ -496,7 +502,7 @@
       cursor: pointer;
     }
 
-    /* ── Continue Learning ── */
+    /* ── Continue Learning Card ── */
     .continue-card {
       border-radius: 16px;
       overflow: hidden;
@@ -580,137 +586,32 @@
       white-space: nowrap;
     }
 
-    /* ── Suggested Reels Section ── */
-    .reels-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .reels-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-    }
-
-    .reels-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 600;
-      font-size: 21px;
-      color: #282828;
-    }
-
-    .reels-menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      color: #606060;
-    }
-
-    .reels-scroll {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 4px 30px 6px;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .reels-scroll::-webkit-scrollbar { display: none; }
-
-    .reel-card {
-      flex-shrink: 0;
-      width: 185px;
-      height: 280px;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-
-    .reel-thumb {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .reel-bg-gradient {
-      position: absolute;
-      inset: 0;
-    }
-
-    .reel-3dot {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      color: #fff;
-      font-size: 17px;
-      line-height: 1;
-      font-weight: 700;
-      cursor: pointer;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
-      background: none;
-      border: none;
-      padding: 0;
-      letter-spacing: 1px;
-      z-index: 2;
-    }
-
-    .reel-caption-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 28px 10px 10px;
-      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
-      z-index: 1;
-    }
-
-    .reel-caption-text {
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 12px;
-      color: #fff;
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    /* ── Ask a Query ── */
+    /* ── Ask a Query Widget ── */
     .query-card {
       background: #E3DFFF;
       border-radius: 16px;
       padding: 16px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
       display: flex;
       flex-direction: column;
       gap: 24px;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
     }
 
     .query-top {
       display: flex;
-      gap: 12px;
       align-items: flex-start;
+      gap: 12px;
     }
 
     .query-icon {
       width: 48px;
       height: 48px;
-      flex-shrink: 0;
-      background: #512DA8;
       border-radius: 50%;
+      background: #512DA8;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .query-info {
@@ -733,22 +634,18 @@
       color: #606060;
     }
 
-    /* ── Profile Status ── */
+    /* ── Profile Status Card ── */
     .profile-card {
       border-radius: 16px;
-      padding: 16px;
+      overflow: hidden;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 16px;
-      min-height: 354px;
-      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
-      background: linear-gradient(134.80deg, #512DA8 18.42%, #926AF3 100%);
-      position: relative;
-      overflow: hidden;
     }
 
     .profile-inner {
+      background: linear-gradient(134.80deg, #512DA8 18.42%, #926AF3 100%);
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -763,12 +660,11 @@
     .profile-hdr-icon {
       width: 24px;
       height: 24px;
-      background: #fff;
+      background: rgba(255,255,255,0.15);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
     }
 
     .profile-title {
@@ -776,7 +672,6 @@
       font-weight: 600;
       font-size: 21px;
       color: #fff;
-      flex: 1;
     }
 
     .profile-box {
@@ -825,6 +720,11 @@
       color: #282828;
     }
 
+    .profile-cta-wrap {
+      background: #fff;
+      padding: 16px;
+    }
+
     /* ── NavBar ── */
     .navbar {
       position: absolute;
@@ -857,6 +757,7 @@
       gap: 4px;
       cursor: pointer;
       min-width: 45px;
+      text-decoration: none;
     }
 
     .nav-tab-icon {
@@ -897,7 +798,7 @@
     .action-sheet-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.48);
+      background: rgba(0,0,0,0.48);
       z-index: 200;
       opacity: 0;
       pointer-events: none;
@@ -998,7 +899,6 @@
     }
 
     .sheet-action-item.destructive .sheet-action-label { color: #E71F2C; }
-    .sheet-action-item.destructive svg { color: #E71F2C; }
 
     .sheet-cancel {
       margin: 8px 24px 0;
@@ -1012,19 +912,11 @@
       color: #512DA8;
       cursor: pointer;
       width: calc(100% - 48px);
-      transition: background 0.15s;
     }
     .sheet-cancel:active { background: #E3DFFF; }
   </style>
 </head>
 <body>
-
-  <!-- ── Demo State Switcher ── -->
-  <div class="demo-switcher">
-    <span class="demo-label">Preview state:</span>
-    <button class="demo-btn active-expiring" id="btn-expiring" onclick="setState('expiring')">⚠ Expiring in 1 Month</button>
-    <button class="demo-btn" id="btn-renewed" onclick="setState('renewed')">✓ Renewed</button>
-  </div>
 
   <!-- ════════════════════════════════════════ -->
   <!--                PHONE SHELL              -->
@@ -1035,7 +927,7 @@
       <!-- ── Scrollable area ── -->
       <div class="scroll-area">
 
-        <!-- Header -->
+        <!-- ── Header ── -->
         <div class="header">
           <div class="status-bar">
             <span class="status-time">9:41</span>
@@ -1047,18 +939,23 @@
           <div class="header-bar">
             <span class="logo">BillionTools</span>
             <div class="header-actions">
+              <!-- Search -->
               <div class="hdr-icon">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
+              <!-- Language switch -->
               <div class="hdr-icon" style="width:34px;height:34px;">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               </div>
+              <!-- Font size -->
               <div class="hdr-icon">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
               </div>
+              <!-- Sound -->
               <div class="hdr-icon">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
               </div>
+              <!-- Settings -->
               <div class="hdr-icon" style="width:32px;height:32px;">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
               </div>
@@ -1066,10 +963,10 @@
           </div>
         </div>
 
-        <!-- ── Main content ── -->
-        <div class="content-pad" style="padding-top:0; margin-top:0;">
+        <!-- ── Main Content ── -->
+        <div class="content-pad" style="padding-top:0;">
 
-          <!-- Welcome Card (full width) -->
+          <!-- Welcome Card -->
           <div class="welcome-card">
             <div class="welcome-left">
               <div class="welcome-greeting-row">
@@ -1088,88 +985,92 @@
             </div>
           </div>
 
-          <!-- ── Membership Widget: Expiring State ── -->
-          <div class="mem-widget mem-expiring" id="widget-expiring">
+          <!-- ════ Premium Active Membership Card ════ -->
+          <div class="premium-active-card">
 
-            <!-- Left icon -->
-            <div class="mem-w-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8">
-                <path d="M5 16L3 5l5.5 5L12 2l3.5 8L21 5l-2 11H5zm0 3a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2H5z"/>
-              </svg>
-            </div>
-
-            <!-- Middle text block -->
-            <div class="mem-w-text-block">
-              <div class="mem-w-top-row">
-                <span class="mem-w-label">Premium Member</span>
-                <span class="mem-w-plan-tag">Yearly</span>
+            <!-- Top row: Active badge + Manage link -->
+            <div class="pac-top-row">
+              <div class="pac-badge">
+                <div class="pac-badge-dot"></div>
+                <span class="pac-badge-label">PREMIUM ACTIVE</span>
               </div>
-              <div class="mem-w-status-row">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="#B45309"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-                <span class="mem-w-warn-text">Expires in 1 month</span>
+              <button class="pac-manage-link">Manage →</button>
+            </div>
+
+            <!-- Main row: crown + info + plan tag -->
+            <div class="pac-main-row">
+              <!-- Crown icon -->
+              <div class="pac-crown-circle">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#FFD54F">
+                  <path d="M5 16L3 5l5.5 5L12 2l3.5 8L21 5l-2 11H5zm0 3a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2H5z"/>
+                </svg>
               </div>
-              <div class="mem-w-msg">Renew to keep access to all premium features</div>
-            </div>
 
-            <!-- Right CTA -->
-            <div class="mem-w-cta-col">
-              <a href="BILLIONT-RENEW-PLAN.HTML" class="mem-w-renew-btn">Renew Now</a>
-            </div>
-
-          </div><!-- /widget-expiring -->
-
-          <!-- ── Membership Widget: Renewed State ── -->
-          <div class="mem-widget mem-renewed" id="widget-renewed" style="display:none;">
-
-            <!-- Left icon -->
-            <div class="mem-w-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="#15803D">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-              </svg>
-            </div>
-
-            <!-- Middle text block -->
-            <div class="mem-w-text-block">
-              <div class="mem-w-top-row">
-                <span class="mem-w-label">Premium Member</span>
-                <span class="mem-w-plan-tag">Yearly</span>
+              <!-- Text block -->
+              <div class="pac-text-block">
+                <div class="pac-title">Premium Member</div>
+                <div class="pac-subtitle">Member since April 3, 2026</div>
               </div>
-              <div class="mem-w-status-row">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="#15803D"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                <span class="mem-w-success-text">Plan Renewed!</span>
+
+              <!-- Plan + validity -->
+              <div class="pac-plan-col">
+                <span class="pac-plan-tag">YEARLY</span>
+                <span class="pac-valid">Until Apr 3, 2027</span>
               </div>
-              <div class="mem-w-msg">Active until 28 Dec 2027</div>
             </div>
 
-            <!-- Right CTA -->
-            <div class="mem-w-cta-col">
-              <a href="BILLIONT-PROFILE-PREMIUM.HTML" class="mem-w-view-link">View →</a>
+            <!-- Inner divider -->
+            <div class="pac-inner-divider"></div>
+
+            <!-- Benefits row -->
+            <div class="pac-benefits-row">
+              <div class="pac-benefit">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(255,255,255,0.8)"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <span class="pac-benefit-label">All courses unlocked</span>
+              </div>
+              <div class="pac-benefit">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(255,255,255,0.8)"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <span class="pac-benefit-label">Priority support</span>
+              </div>
+              <div class="pac-benefit">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(255,255,255,0.8)"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <span class="pac-benefit-label">All tools</span>
+              </div>
             </div>
 
-          </div><!-- /widget-renewed -->
+          </div><!-- /premium-active-card -->
 
-          <!-- Divider -->
+          <!-- ── Divider ── -->
           <div class="divider"></div>
 
-          <!-- Quote Card -->
+          <!-- ── Quote / Inspiration Card ── -->
           <div class="quote-card">
             <div class="quote-image-wrap">
+              <!-- Illustration: two people thinking (matching Figma) -->
               <svg viewBox="0 0 320 260" width="290" height="235">
+                <!-- Background shapes -->
                 <ellipse cx="100" cy="120" rx="55" ry="65" fill="#c5bcf5"/>
                 <ellipse cx="220" cy="120" rx="55" ry="65" fill="#b0a6ef"/>
+                <!-- Heads -->
                 <circle cx="100" cy="80" r="26" fill="#e8d5c4"/>
                 <circle cx="220" cy="80" r="26" fill="#d4bfa8"/>
+                <!-- Lightbulb -->
                 <circle cx="160" cy="42" r="18" fill="#f9d764" opacity="0.9"/>
                 <rect x="154" y="58" width="12" height="8" rx="2" fill="#e8b800"/>
+                <!-- Thought bubbles left -->
                 <circle cx="126" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
                 <circle cx="138" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <!-- Thought bubbles right -->
                 <circle cx="194" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
                 <circle cx="182" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <!-- Arms / body left -->
                 <path d="M72 148 Q60 165 50 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
                 <path d="M128 148 Q140 165 150 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <!-- Arms / body right -->
                 <path d="M192 148 Q180 165 170 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
                 <path d="M248 148 Q260 165 270 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
               </svg>
+              <!-- Floating quote icon -->
               <div class="quote-icon-float">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
               </div>
@@ -1189,9 +1090,13 @@
             </div>
           </div>
 
-          <!-- Continue Learning Card -->
+          <!-- ── Divider ── -->
+          <div class="divider"></div>
+
+          <!-- ── Continue Learning Card ── -->
           <div class="continue-card">
             <div class="continue-thumb">
+              <!-- Course video illustration (matching Figma) -->
               <svg viewBox="0 0 340 170" width="100%">
                 <rect x="0" y="0" width="340" height="170" fill="#c5bcf5"/>
                 <rect x="60" y="20" width="220" height="130" rx="10" fill="#fff" opacity="0.9"/>
@@ -1200,6 +1105,7 @@
                 <polygon points="163,72 163,90 182,81" fill="#fff"/>
                 <rect x="150" y="150" width="40" height="8" rx="4" fill="#a09be0"/>
                 <rect x="130" y="158" width="80" height="6" rx="3" fill="#a09be0"/>
+                <!-- Character on right -->
                 <circle cx="285" cy="80" r="16" fill="#e8c9a0"/>
                 <rect x="272" y="96" width="26" height="30" rx="8" fill="#9c8de6"/>
               </svg>
@@ -1218,80 +1124,10 @@
             </div>
           </div>
 
-        </div><!-- /content-pad top -->
-
-        <!-- ════ Suggested Reels ════ -->
-        <div class="reels-section">
-          <div class="reels-header">
-            <span class="reels-title">Suggested reels</span>
-            <button class="reels-menu-btn" aria-label="More reel options">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="#606060">
-                <circle cx="12" cy="5" r="1.8"/>
-                <circle cx="12" cy="12" r="1.8"/>
-                <circle cx="12" cy="19" r="1.8"/>
-              </svg>
-            </button>
-          </div>
-          <div class="reels-scroll">
-            <div class="reel-card" style="cursor:pointer;">
-              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #7c5cbf 0%, #3a1f7a 60%, #1e0f41 100%);"></div>
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
-                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
-              </div>
-              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('1')">⋮</button>
-              <div class="reel-caption-overlay">
-                <p class="reel-caption-text">Leadership Mindset for Entrepreneurs</p>
-              </div>
-            </div>
-            <div class="reel-card" style="cursor:pointer;">
-              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #5c4aaa 0%, #2e1876 60%, #180c3a 100%);"></div>
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
-                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
-              </div>
-              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('2')">⋮</button>
-              <div class="reel-caption-overlay">
-                <p class="reel-caption-text">5 Ways to Scale Your Business</p>
-              </div>
-            </div>
-            <div class="reel-card" style="cursor:pointer;">
-              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #8a69ce 0%, #4a2d96 60%, #261160 100%);"></div>
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
-                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
-              </div>
-              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('3')">⋮</button>
-              <div class="reel-caption-overlay">
-                <p class="reel-caption-text">Building Your Personal Brand</p>
-              </div>
-            </div>
-            <div class="reel-card" style="cursor:pointer;">
-              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #6b4fc0 0%, #35208a 60%, #1c0e4a 100%);"></div>
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
-                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
-              </div>
-              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('4')">⋮</button>
-              <div class="reel-caption-overlay">
-                <p class="reel-caption-text">Women in Business: Success Stories</p>
-              </div>
-            </div>
-            <div class="reel-card" style="cursor:pointer;">
-              <div class="reel-bg-gradient" style="background: linear-gradient(165deg, #9578d8 0%, #5236a0 60%, #2a176a 100%);"></div>
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;">
-                <svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg>
-              </div>
-              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('5')">⋮</button>
-              <div class="reel-caption-overlay">
-                <p class="reel-caption-text">Team Collaboration Strategies</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── Bottom content sections ── -->
-        <div class="content-pad" style="margin-top:24px;">
-
+          <!-- ── Divider ── -->
           <div class="divider"></div>
 
-          <!-- Ask a Query -->
+          <!-- ── Ask a Query Widget ── -->
           <div class="query-card">
             <div class="query-top">
               <div class="query-icon">
@@ -1308,14 +1144,15 @@
             </button>
           </div>
 
+          <!-- ── Divider ── -->
           <div class="divider"></div>
 
-          <!-- Profile Status -->
+          <!-- ── Profile Status Card ── -->
           <div class="profile-card">
             <div class="profile-inner">
               <div class="profile-header-row">
                 <div class="profile-hdr-icon">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#fff"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
                 </div>
                 <span class="profile-title">Profile Status</span>
               </div>
@@ -1338,51 +1175,59 @@
                 </div>
               </div>
             </div>
-            <button class="btn-outline" style="background:#fff;">Complete Profile</button>
+            <div class="profile-cta-wrap">
+              <button class="btn-outline" style="background:#fff;">Complete Profile</button>
+            </div>
           </div>
 
-        </div><!-- /content-pad bottom -->
+        </div><!-- /content-pad -->
 
       </div><!-- /scroll-area -->
 
-      <!-- ── NavBar ── -->
+      <!-- ══════════════════════════════════ -->
+      <!--           BOTTOM NAVBAR           -->
+      <!-- ══════════════════════════════════ -->
       <div class="navbar">
         <div class="navbar-main">
           <div class="nav-tabs">
 
-            <a class="nav-tab active" href="BILLIONT-HOME-PREMIUM.HTML" style="text-decoration:none;">
+            <!-- Home — active -->
+            <a class="nav-tab active" href="BILLIONT-HOME-ACTIVE.HTML">
               <div class="nav-tab-icon">
                 <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
               </div>
               <span class="nav-tab-label" style="color:#512DA8;">Home</span>
             </a>
 
-            <a class="nav-tab" href="BILLIONT-REELS.HTML" style="text-decoration:none;">
+            <!-- Courses -->
+            <a class="nav-tab" href="BILLIONT-COURSES.HTML">
               <div class="nav-tab-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="#282828">
-                  <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9h18M9 21V9"/>
                 </svg>
-              </div>
-              <span class="nav-tab-label">Reels</span>
-            </a>
-
-            <a class="nav-tab" href="BILLIONT-COURSES.HTML" style="text-decoration:none;">
-              <div class="nav-tab-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
               </div>
               <span class="nav-tab-label">Courses</span>
             </a>
 
-            <a class="nav-tab" href="#" style="text-decoration:none;">
+            <!-- Library -->
+            <a class="nav-tab" href="#">
               <div class="nav-tab-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <!-- Book / library icon -->
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#282828" stroke-width="1.5">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
               </div>
               <span class="nav-tab-label">Library</span>
             </a>
 
-            <a class="nav-tab" href="#" style="text-decoration:none;">
+            <!-- Tools -->
+            <a class="nav-tab" href="#">
               <div class="nav-tab-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#282828" stroke-width="1.5">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
               </div>
               <span class="nav-tab-label">Tools</span>
             </a>
@@ -1402,7 +1247,7 @@
       <div class="action-sheet" id="actionSheet">
         <div class="sheet-handle"></div>
         <div class="sheet-preview">
-          <div class="sheet-thumb" style="background:linear-gradient(135deg,#c5bcf5,#7B52D4);border-radius:8px;"></div>
+          <div class="sheet-thumb" style="background:linear-gradient(135deg,#c5bcf5,#7B52D4);"></div>
           <div>
             <div class="sheet-reel-title">Leadership Mindset for Entrepreneurs</div>
             <div class="sheet-reel-sub">BillionTools · 2 min</div>
@@ -1419,7 +1264,7 @@
             <span class="sheet-action-icon">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             </span>
-            <span class="sheet-action-label">Share Reel</span>
+            <span class="sheet-action-label">Share</span>
           </button>
           <button class="sheet-action-item destructive">
             <span class="sheet-action-icon">
@@ -1435,32 +1280,10 @@
   </div><!-- /phone -->
 
   <script>
-    /* ── Demo state switcher ── */
-    function setState(state) {
-      const expWidget = document.getElementById('widget-expiring');
-      const renWidget = document.getElementById('widget-renewed');
-      const btnExp    = document.getElementById('btn-expiring');
-      const btnRen    = document.getElementById('btn-renewed');
-
-      if (state === 'expiring') {
-        expWidget.style.display = 'flex';
-        renWidget.style.display  = 'none';
-        btnExp.className = 'demo-btn active-expiring';
-        btnRen.className = 'demo-btn';
-      } else {
-        expWidget.style.display  = 'none';
-        renWidget.style.display  = 'flex';
-        btnExp.className = 'demo-btn';
-        btnRen.className = 'demo-btn active-renewed';
-      }
-    }
-
-    /* ── Kebab action sheet ── */
-    function openSheet(reelId) {
+    function openSheet(id) {
       document.getElementById('overlay').classList.add('open');
       document.getElementById('actionSheet').classList.add('open');
     }
-
     function closeSheet() {
       document.getElementById('overlay').classList.remove('open');
       document.getElementById('actionSheet').classList.remove('open');

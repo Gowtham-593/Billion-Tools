@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Home (Renew Sheet)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+      gap: 20px;
+    }
+
+    /* ── Demo state switcher ── */
+    .demo-switcher {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .demo-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+    .demo-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid #ccc;
+      background: #fff;
+      color: #606060;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .demo-btn.active-expiring {
+      background: #FFFBEB;
+      border-color: #FCD34D;
+      color: #92400E;
+    }
+    .demo-btn.active-renewed {
+      background: #F0FDF4;
+      border-color: #86EFAC;
+      color: #15803D;
+    }
+    .demo-btn.active-ios {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+    .demo-btn.active-android {
+      background: #1a73e8;
+      border-color: #1a73e8;
+      color: #fff;
+    }
+    .demo-divider {
+      width: 1px;
+      height: 20px;
+      background: #ddd;
+      margin: 0 4px;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 108px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      padding-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 0;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hdr-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Content ── */
+    .content-pad {
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: #d6d6d6;
+    }
+
+    /* ── Welcome Card ── */
+    .welcome-card {
+      background: linear-gradient(145.64deg, #1E0F41 15.83%, #42238B 84.17%);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .welcome-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .welcome-greeting-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .welcome-greeting-row span,
+    .welcome-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .welcome-company {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .welcome-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      align-self: stretch;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .avatar {
+      width: 49px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #512DA8;
+    }
+
+    .coins-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg,#f9d764,#f4a600);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .coin-count {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    /* ── Membership Widget ── */
+    .mem-widget {
+      width: 100%;
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mem-expiring {
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+    }
+
+    .mem-renewed {
+      background: #F0FDF4;
+      border: 1.5px solid #86EFAC;
+    }
+
+    .mem-w-icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mem-expiring .mem-w-icon-circle { background: #EDE7F6; }
+    .mem-renewed .mem-w-icon-circle  { background: #DCFCE7; }
+
+    .mem-w-text-block {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .mem-w-top-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mem-w-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #512DA8;
+    }
+
+    .mem-w-plan-tag {
+      display: inline-block;
+      background: #EDE7F6;
+      color: #512DA8;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .mem-renewed .mem-w-plan-tag { background: #DCFCE7; color: #15803D; }
+
+    .mem-w-status-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mem-w-warn-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #B45309;
+    }
+
+    .mem-w-success-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #15803D;
+    }
+
+    .mem-w-msg {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #78716C;
+      line-height: 1.4;
+    }
+    .mem-renewed .mem-w-msg { color: #3F3F46; }
+
+    .mem-w-cta-col {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .mem-w-renew-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-align: center;
+      padding: 8px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .mem-w-renew-btn:active { opacity: 0.85; }
+
+    .mem-w-view-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #512DA8;
+      text-decoration: none;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── Quote Card ── */
+    .quote-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .quote-image-wrap {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#E3DFFF 0%,#c5bcf5 100%);
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quote-icon-float {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .quote-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding-top: 10px;
+      width: 100%;
+    }
+
+    .quote-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #282828;
+      text-align: center;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      background: #512DA8;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: #512DA8;
+      border: 1px solid #512DA8;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-green {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      padding: 12px;
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    /* ── Continue Learning ── */
+    .continue-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .continue-thumb {
+      height: 170px;
+      background: linear-gradient(135deg,#E3DFFF 0%,#beb3f0 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-badge {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      background: #606060;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .continue-body {
+      background: #fff;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .continue-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .continue-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #282828;
+    }
+
+    .continue-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: #CECECE;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 75.58%;
+      background: linear-gradient(178.95deg, #512DA8 18.42%, #926AF3 100%);
+      border-radius: 2px;
+    }
+
+    .progress-pct {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+      white-space: nowrap;
+    }
+
+    /* ── Suggested Reels ── */
+    .reels-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .reels-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .reels-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #282828;
+    }
+
+    .reels-menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      color: #606060;
+    }
+
+    .reels-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 4px 30px 6px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .reels-scroll::-webkit-scrollbar { display: none; }
+
+    .reel-card {
+      flex-shrink: 0;
+      width: 185px;
+      height: 280px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .reel-bg-gradient {
+      position: absolute;
+      inset: 0;
+    }
+
+    .reel-3dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: #fff;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      background: none;
+      border: none;
+      padding: 0;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+
+    .reel-caption-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 10px 10px;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+      z-index: 1;
+    }
+
+    .reel-caption-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #fff;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── Ask a Query ── */
+    .query-card {
+      background: #E3DFFF;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .query-top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .query-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: #512DA8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .query-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .query-heading {
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .query-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+    }
+
+    /* ── Profile Status ── */
+    .profile-card {
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 354px;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+      background: linear-gradient(134.80deg, #512DA8 18.42%, #926AF3 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .profile-header-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-hdr-icon {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .profile-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+      flex: 1;
+    }
+
+    .profile-box {
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .profile-pct {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .profile-progress-track {
+      height: 8px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .profile-progress-fill {
+      height: 100%;
+      width: 85.53%;
+      background: #8AD143;
+      border-radius: 4px;
+    }
+
+    .profile-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .profile-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-item-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    /* ── NavBar ── */
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar-main {
+      border-top: 1px solid #E3DFFF;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+      padding: 8px 30px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      min-width: 45px;
+    }
+
+    .nav-tab-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-tab-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .nav-tab.active .nav-tab-label { color: #512DA8; }
+
+    .navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 4px 30px;
+      height: 25px;
+      background: #fff;
+    }
+
+    .copy-text {
+      font-family: 'Lato', sans-serif;
+      font-size: 9px;
+      color: #282828;
+    }
+
+    /* ══════════════════════════════════════════
+       ── Kebab Action Sheet ──
+    ══════════════════════════════════════════ */
+    .action-sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .action-sheet-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .action-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 102;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      padding-bottom: 24px;
+    }
+    .action-sheet.open { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: #d6d6d6;
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    .sheet-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px 12px;
+      border-bottom: 0.5px solid #e8e8e8;
+    }
+
+    .sheet-thumb {
+      width: 44px;
+      height: 62px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .sheet-reel-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #282828;
+      line-height: 1.4;
+    }
+
+    .sheet-reel-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .sheet-actions {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+    }
+
+    .sheet-action-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 24px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .sheet-action-item:active { background: #f7f6ff; }
+
+    .sheet-action-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sheet-action-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #282828;
+    }
+
+    .sheet-action-item.destructive .sheet-action-label { color: #E71F2C; }
+
+    .sheet-cancel {
+      margin: 8px 24px 0;
+      padding: 14px;
+      background: #f7f6ff;
+      border: none;
+      border-radius: 13px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: #512DA8;
+      cursor: pointer;
+      width: calc(100% - 48px);
+      transition: background 0.15s;
+    }
+    .sheet-cancel:active { background: #E3DFFF; }
+
+    /* ══════════════════════════════════════════
+       ── Renew Plan Sheet ──
+    ══════════════════════════════════════════ */
+
+    /* Overlay — above kebab overlay */
+    .renew-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 14, 58, 0.6);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+    .renew-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Sheet panel — slides up from bottom */
+    .renew-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 900px;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      z-index: 201;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -6px 32px rgba(81,45,168,0.18);
+      overflow: hidden;
+    }
+    .renew-sheet.open { transform: translateY(0); }
+
+    /* ── Drag handle ── */
+    .rp-handle {
+      width: 44px;
+      height: 5px;
+      background: #D0CAEA;
+      border-radius: 3px;
+      margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+
+    /* ── Sheet header ── */
+    .rp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px 10px;
+      flex-shrink: 0;
+      border-bottom: 0.5px solid #EEE;
+    }
+
+    .rp-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rp-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .rp-premium-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #512DA8;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+    }
+
+    .rp-close-btn {
+      width: 32px;
+      height: 32px;
+      background: #EDE7F6;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── Sheet scrollable body ── */
+    .rp-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 6px;
+    }
+    .rp-body::-webkit-scrollbar { display: none; }
+    .rp-body { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Expiry Notice Banner ── */
+    .rp-expiry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 14px 16px 0;
+    }
+
+    .rp-expiry-icon {
+      width: 38px;
+      height: 38px;
+      background: #FEF3C7;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rp-expiry-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #92400E;
+    }
+
+    .rp-expiry-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #B45309;
+      margin-top: 2px;
+    }
+
+    .rp-expiry-pill {
+      margin-left: auto;
+      flex-shrink: 0;
+      background: #F59E0B;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 4px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ── Plan Section Label ── */
+    .rp-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #606060;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 16px 16px 10px;
+    }
+
+    /* ── Plan Cards ── */
+    .rp-plan-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px;
+    }
+
+    .rp-plan-card {
+      border-radius: 16px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      position: relative;
+      overflow: hidden;
+    }
+    .rp-plan-card:active { transform: scale(0.99); }
+
+    /* Annual — gradient, default selected */
+    .rp-card-annual {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      box-shadow: 0 6px 20px rgba(81,45,168,0.35);
+    }
+
+    /* Monthly — white with border */
+    .rp-card-monthly {
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .rp-card-monthly.rp-selected {
+      border-color: #512DA8;
+      box-shadow: 0 4px 16px rgba(81,45,168,0.2);
+    }
+    .rp-card-annual.rp-unselected {
+      opacity: 0.45;
+      background: #E3DFFF;
+      box-shadow: none;
+    }
+
+    .rp-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .rp-card-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+    }
+    .rp-card-name.light { color: #fff; }
+    .rp-card-name.dark  { color: #282828; }
+
+    .rp-card-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .rp-recommended-badge {
+      background: #FFD54F;
+      color: #5D4037;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    .rp-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .rp-radio.checked-light {
+      background: rgba(255,255,255,0.25);
+      border-color: #fff;
+    }
+    .rp-radio.checked-dark {
+      background: #512DA8;
+      border-color: #512DA8;
+    }
+    .rp-radio.unchecked-dark {
+      border: 2px solid #C4B5FD;
+    }
+
+    .rp-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin-bottom: 3px;
+    }
+
+    .rp-price {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+    }
+    .rp-price.light { color: #fff; }
+    .rp-price.dark  { color: #282828; }
+
+    .rp-price-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+    .rp-price-unit.light { color: rgba(255,255,255,0.7); }
+    .rp-price-unit.dark  { color: #606060; }
+
+    .rp-detail {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+    }
+    .rp-detail.light { color: rgba(255,255,255,0.72); }
+    .rp-detail.dark  { color: #606060; }
+
+    .rp-savings-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* ── Benefits List ── */
+    .rp-benefits {
+      padding: 16px 16px 0;
+    }
+
+    .rp-benefits-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #282828;
+      margin-bottom: 12px;
+    }
+
+    .rp-benefit-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 0.5px solid #f0f0f0;
+    }
+    .rp-benefit-row:last-child { border-bottom: none; }
+
+    .rp-benefit-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rp-benefit-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #282828;
+    }
+
+    .rp-benefit-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ── Trust Signals ── */
+    .rp-trust {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px 8px;
+    }
+
+    .rp-trust-item {
+      flex: 1;
+      background: #f7f6ff;
+      border-radius: 10px;
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+    }
+
+    .rp-trust-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      color: #512DA8;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* ── Sheet sticky footer ── */
+    .rp-footer {
+      flex-shrink: 0;
+      padding: 12px 16px 20px;
+      background: #fff;
+      box-shadow: 0 -2px 14px rgba(0,0,0,0.07);
+    }
+
+    .rp-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(81,45,168,0.4);
+      transition: transform 0.1s;
+    }
+    .rp-cta-btn:active { transform: scale(0.98); }
+
+    .rp-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #9e9e9e;
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* ══════════════════════════════════════════
+       ── Confirmation State (inside sheet) ──
+    ══════════════════════════════════════════ */
+    .rp-confirm-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(28,14,58,0.5);
+      z-index: 202;
+      display: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .rp-confirm-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 203;
+      display: none;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -4px 24px rgba(81,45,168,0.12);
+      overflow: hidden;
+    }
+    .rp-confirm-sheet.open { transform: translateY(0); }
+
+    .rpc-handle {
+      width: 36px;
+      height: 4px;
+      background: #D0CAEA;
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+
+    .rpc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px;
+      flex-shrink: 0;
+    }
+
+    .rpc-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #282828;
+    }
+
+    .rpc-close {
+      width: 30px;
+      height: 30px;
+      background: #EDE7F6;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .rpc-app-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #F7F6FF;
+      margin: 0 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #E3DFFF;
+      flex-shrink: 0;
+    }
+
+    .rpc-app-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .rpc-app-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #282828;
+    }
+
+    .rpc-app-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .rpc-app-tag {
+      display: inline-block;
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .rpc-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 14px 20px;
+      border-top: 0.5px solid #E5E5EA;
+      flex-shrink: 0;
+    }
+
+    .rpc-plan-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #282828;
+    }
+
+    .rpc-plan-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .rpc-price-amount {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #282828;
+      text-align: right;
+    }
+
+    .rpc-price-period {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 3px;
+      text-align: right;
+    }
+
+    .rpc-terms {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #9E9E9E;
+      line-height: 1.5;
+      padding: 12px 20px;
+      border-top: 0.5px solid #E5E5EA;
+      flex-shrink: 0;
+    }
+
+    .rpc-account {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #9E9E9E;
+      padding: 0 20px 14px;
+      flex-shrink: 0;
+    }
+
+    .rpc-confirm-btn {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 0 14px 28px;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      transition: opacity 0.15s;
+    }
+    .rpc-confirm-btn:active { opacity: 0.88; }
+
+    /* ── Success State ── */
+    .rpc-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px 32px;
+    }
+
+    .rpc-check-wrap {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 12px;
+    }
+
+    .rpc-circle-bg   { fill: none; stroke: #E8F5E9; stroke-width: 6; }
+    .rpc-circle-ring {
+      fill: none; stroke: #4CAF50; stroke-width: 6; stroke-linecap: round;
+      stroke-dasharray: 200; stroke-dashoffset: 200;
+      transform-origin: center; transform: rotate(-90deg);
+      transition: stroke-dashoffset 0.5s ease 0.1s;
+    }
+    .rpc-check-path {
+      fill: none; stroke: #4CAF50; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 55; stroke-dashoffset: 55;
+      transition: stroke-dashoffset 0.4s ease 0.55s;
+    }
+    .rpc-check-wrap.animate .rpc-circle-ring { stroke-dashoffset: 0; }
+    .rpc-check-wrap.animate .rpc-check-path  { stroke-dashoffset: 0; }
+
+    .rpc-success-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #282828;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .rpc-success-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #606060;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .rpc-summary {
+      width: 100%;
+      background: #F7F6FF;
+      border-radius: 14px;
+      border: 1px solid #E3DFFF;
+      padding: 4px 16px;
+      margin-bottom: 18px;
+    }
+
+    .rpc-ss-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 0.5px solid #E3DFFF;
+    }
+    .rpc-ss-row:last-child { border-bottom: none; }
+
+    .rpc-ss-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+    }
+
+    .rpc-ss-value {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #282828;
+    }
+    .rpc-ss-value.highlight { color: #512DA8; }
+
+    .rpc-done-btn {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+    }
+
+    /* ══════════════════════════════════════════
+       ── Payment Method Selection ──
+    ══════════════════════════════════════════ */
+    .rpc-payment-section {
+      padding: 14px 20px 0;
+      flex-shrink: 0;
+    }
+
+    .rpc-payment-heading {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #606060;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .rpc-pay-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rpc-pay-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 13px;
+      border: 1.5px solid #E3DFFF;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .rpc-pay-option:active { transform: scale(0.99); }
+    .rpc-pay-option.pay-selected {
+      border-color: #512DA8;
+      background: #F7F6FF;
+    }
+
+    /* Icon badge — platform branded */
+    .rpc-pay-badge {
+      width: 46px;
+      height: 30px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .rpc-pay-badge.badge-black   { background: #000; }
+    .rpc-pay-badge.badge-white   { background: #fff; border: 1px solid #e8e8e8; }
+    .rpc-pay-badge.badge-purple  { background: #5f259f; }
+    .rpc-pay-badge.badge-light   { background: #F7F6FF; border: 1px solid #E3DFFF; }
+    .rpc-pay-badge.badge-orange  { background: #FF6B00; }
+
+    .rpc-pay-info { flex: 1; min-width: 0; }
+
+    .rpc-pay-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #282828;
+    }
+
+    .rpc-pay-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+      margin-top: 1px;
+    }
+
+    .rpc-pay-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #C4B5FD;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .rpc-pay-radio.pay-checked {
+      background: #512DA8;
+      border-color: #512DA8;
+    }
+
+    /* Platform badge chips under the payment section */
+    .rpc-platform-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .rpc-platform-chip.chip-ios     { background: #000; color: #fff; }
+    .rpc-platform-chip.chip-android { background: #E8F5E9; color: #1b5e20; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Demo State Switcher ── -->
+  <div class="demo-switcher">
+    <span class="demo-label">State:</span>
+    <button class="demo-btn active-expiring" id="btn-expiring" onclick="setState('expiring')">⚠ Expiring</button>
+    <button class="demo-btn" id="btn-renewed" onclick="setState('renewed')">✓ Renewed</button>
+    <div class="demo-divider"></div>
+    <span class="demo-label">Platform:</span>
+    <button class="demo-btn active-ios" id="btn-ios" onclick="setPlatform('ios')">iOS</button>
+    <button class="demo-btn" id="btn-android" onclick="setPlatform('android')">Android</button>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Scrollable area ── -->
+      <div class="scroll-area">
+
+        <!-- Header -->
+        <div class="header">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="header-bar">
+            <span class="logo">BillionTools</span>
+            <div class="header-actions">
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <div class="hdr-icon" style="width:34px;height:34px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              </div>
+              <div class="hdr-icon" style="width:32px;height:32px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Main content ── -->
+        <div class="content-pad" style="padding-top:0; margin-top:0;">
+
+          <!-- Welcome Card -->
+          <div class="welcome-card">
+            <div class="welcome-left">
+              <div class="welcome-greeting-row">
+                <span>Welcome,</span>
+                <span style="font-size:20px;">👋</span>
+              </div>
+              <div class="welcome-name">Arjun</div>
+              <div class="welcome-company">Poornatha Partnering Entrepreneurs Private Limited</div>
+            </div>
+            <div class="welcome-right">
+              <div class="avatar">A</div>
+              <div class="coins-row">
+                <div class="coin-icon">⭐</div>
+                <span class="coin-count">5568</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Membership Widget: Expiring State ── -->
+          <div class="mem-widget mem-expiring" id="widget-expiring">
+            <div class="mem-w-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8">
+                <path d="M5 16L3 5l5.5 5L12 2l3.5 8L21 5l-2 11H5zm0 3a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2H5z"/>
+              </svg>
+            </div>
+            <div class="mem-w-text-block">
+              <div class="mem-w-top-row">
+                <span class="mem-w-label">Premium Member</span>
+                <span class="mem-w-plan-tag">Yearly</span>
+              </div>
+              <div class="mem-w-status-row">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="#B45309"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                <span class="mem-w-warn-text">Expires in 1 month</span>
+              </div>
+              <div class="mem-w-msg">Renew to keep access to all premium features</div>
+            </div>
+            <div class="mem-w-cta-col">
+              <!-- Button triggers the bottom sheet instead of navigating -->
+              <button class="mem-w-renew-btn" onclick="openRenewSheet()">Renew Now</button>
+            </div>
+          </div>
+
+          <!-- ── Membership Widget: Renewed State ── -->
+          <div class="mem-widget mem-renewed" id="widget-renewed" style="display:none;">
+            <div class="mem-w-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#15803D">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div class="mem-w-text-block">
+              <div class="mem-w-top-row">
+                <span class="mem-w-label">Premium Member</span>
+                <span class="mem-w-plan-tag">Yearly</span>
+              </div>
+              <div class="mem-w-status-row">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="#15803D"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <span class="mem-w-success-text">Plan Renewed!</span>
+              </div>
+              <div class="mem-w-msg" id="renewed-until-text">Active until 28 Dec 2027</div>
+            </div>
+            <div class="mem-w-cta-col">
+              <a href="BILLIONT-PROFILE-PREMIUM.HTML" class="mem-w-view-link">View →</a>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Quote Card -->
+          <div class="quote-card">
+            <div class="quote-image-wrap">
+              <svg viewBox="0 0 320 260" width="290" height="235">
+                <ellipse cx="100" cy="120" rx="55" ry="65" fill="#c5bcf5"/>
+                <ellipse cx="220" cy="120" rx="55" ry="65" fill="#b0a6ef"/>
+                <circle cx="100" cy="80" r="26" fill="#e8d5c4"/>
+                <circle cx="220" cy="80" r="26" fill="#d4bfa8"/>
+                <circle cx="160" cy="42" r="18" fill="#f9d764" opacity="0.9"/>
+                <rect x="154" y="58" width="12" height="8" rx="2" fill="#e8b800"/>
+                <circle cx="126" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
+                <circle cx="138" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <circle cx="194" cy="55" r="5" fill="#E3DFFF" opacity="0.8"/>
+                <circle cx="182" cy="46" r="4" fill="#E3DFFF" opacity="0.7"/>
+                <path d="M72 148 Q60 165 50 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M128 148 Q140 165 150 175" stroke="#e8d5c4" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M192 148 Q180 165 170 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
+                <path d="M248 148 Q260 165 270 175" stroke="#d4bfa8" stroke-width="10" stroke-linecap="round" fill="none"/>
+              </svg>
+              <div class="quote-icon-float">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+              </div>
+            </div>
+            <div class="quote-body">
+              <div class="quote-title">Horses Don't Run at the Same Speed</div>
+              <div style="display:flex;flex-direction:column;gap:16px;width:100%;">
+                <button class="btn-primary">
+                  Read More
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                </button>
+                <button class="btn-outline">
+                  Thoughts History
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Learning Card -->
+          <div class="continue-card">
+            <div class="continue-thumb">
+              <svg viewBox="0 0 340 170" width="100%">
+                <rect x="0" y="0" width="340" height="170" fill="#c5bcf5"/>
+                <rect x="60" y="20" width="220" height="130" rx="10" fill="#fff" opacity="0.9"/>
+                <rect x="68" y="28" width="204" height="106" rx="6" fill="#E3DFFF"/>
+                <circle cx="170" cy="81" r="24" fill="#512DA8" opacity="0.9"/>
+                <polygon points="163,72 163,90 182,81" fill="#fff"/>
+                <rect x="150" y="150" width="40" height="8" rx="4" fill="#a09be0"/>
+                <rect x="130" y="158" width="80" height="6" rx="3" fill="#a09be0"/>
+                <circle cx="285" cy="80" r="16" fill="#e8c9a0"/>
+                <rect x="272" y="96" width="26" height="30" rx="8" fill="#9c8de6"/>
+              </svg>
+              <div class="video-badge">Video</div>
+            </div>
+            <div class="continue-body">
+              <div class="continue-info">
+                <div class="continue-title">Elevator Pitch</div>
+                <div class="continue-meta">Section 1 of 6</div>
+                <div class="progress-row">
+                  <div class="progress-track"><div class="progress-fill"></div></div>
+                  <span class="progress-pct">75%</span>
+                </div>
+              </div>
+              <button class="btn-green">Continue Learning</button>
+            </div>
+          </div>
+
+        </div><!-- /content-pad top -->
+
+        <!-- Suggested Reels -->
+        <div class="reels-section">
+          <div class="reels-header">
+            <span class="reels-title">Suggested reels</span>
+            <button class="reels-menu-btn" aria-label="More reel options">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#606060">
+                <circle cx="12" cy="5" r="1.8"/>
+                <circle cx="12" cy="12" r="1.8"/>
+                <circle cx="12" cy="19" r="1.8"/>
+              </svg>
+            </button>
+          </div>
+          <div class="reels-scroll">
+            <div class="reel-card">
+              <div class="reel-bg-gradient" style="background:linear-gradient(165deg,#7c5cbf 0%,#3a1f7a 60%,#1e0f41 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;"><svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg></div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('1')">⋮</button>
+              <div class="reel-caption-overlay"><p class="reel-caption-text">Leadership Mindset for Entrepreneurs</p></div>
+            </div>
+            <div class="reel-card">
+              <div class="reel-bg-gradient" style="background:linear-gradient(165deg,#5c4aaa 0%,#2e1876 60%,#180c3a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;"><svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg></div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('2')">⋮</button>
+              <div class="reel-caption-overlay"><p class="reel-caption-text">5 Ways to Scale Your Business</p></div>
+            </div>
+            <div class="reel-card">
+              <div class="reel-bg-gradient" style="background:linear-gradient(165deg,#8a69ce 0%,#4a2d96 60%,#261160 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;"><svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg></div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('3')">⋮</button>
+              <div class="reel-caption-overlay"><p class="reel-caption-text">Building Your Personal Brand</p></div>
+            </div>
+            <div class="reel-card">
+              <div class="reel-bg-gradient" style="background:linear-gradient(165deg,#6b4fc0 0%,#35208a 60%,#1c0e4a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;"><svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg></div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('4')">⋮</button>
+              <div class="reel-caption-overlay"><p class="reel-caption-text">Women in Business: Success Stories</p></div>
+            </div>
+            <div class="reel-card">
+              <div class="reel-bg-gradient" style="background:linear-gradient(165deg,#9578d8 0%,#5236a0 60%,#2a176a 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.25;"><svg viewBox="0 0 48 48" width="52" height="52"><circle cx="24" cy="24" r="24" fill="#fff"/><polygon points="19,16 19,32 36,24" fill="#512DA8"/></svg></div>
+              <button class="reel-3dot" onclick="event.stopPropagation();openSheet('5')">⋮</button>
+              <div class="reel-caption-overlay"><p class="reel-caption-text">Team Collaboration Strategies</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom content -->
+        <div class="content-pad" style="margin-top:24px;">
+
+          <div class="divider"></div>
+
+          <!-- Ask a Query -->
+          <div class="query-card">
+            <div class="query-top">
+              <div class="query-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+              </div>
+              <div class="query-info">
+                <div class="query-heading">Ask a Query</div>
+                <div class="query-sub">Have questions or feedback? Let us know!</div>
+              </div>
+            </div>
+            <button class="btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              Send Query
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Profile Status -->
+          <div class="profile-card">
+            <div class="profile-inner">
+              <div class="profile-header-row">
+                <div class="profile-hdr-icon">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                </div>
+                <span class="profile-title">Profile Status</span>
+              </div>
+              <div class="profile-box">
+                <div class="profile-pct">90% Completed</div>
+                <div class="profile-progress-track"><div class="profile-progress-fill"></div></div>
+                <div class="profile-items">
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#4CAF50"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span class="profile-item-label">Personal Information</span>
+                  </div>
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#4CAF50"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span class="profile-item-label">Company Information</span>
+                  </div>
+                  <div class="profile-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" stroke="#606060" stroke-width="2" fill="none"/></svg>
+                    <span class="profile-item-label">Profile Picture</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn-outline" style="background:#fff;">Complete Profile</button>
+          </div>
+
+        </div>
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── NavBar ── -->
+      <div class="navbar">
+        <div class="navbar-main">
+          <div class="nav-tabs">
+            <a class="nav-tab active" href="BILLIONT-HOME-PREMIUM.HTML" style="text-decoration:none;">
+              <div class="nav-tab-icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+              <span class="nav-tab-label" style="color:#512DA8;">Home</span>
+            </a>
+            <a class="nav-tab" href="BILLIONT-REELS.HTML" style="text-decoration:none;">
+              <div class="nav-tab-icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="#282828"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg></div>
+              <span class="nav-tab-label">Reels</span>
+            </a>
+            <a class="nav-tab" href="BILLIONT-COURSES.HTML" style="text-decoration:none;">
+              <div class="nav-tab-icon"><svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+              <span class="nav-tab-label">Courses</span>
+            </a>
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon"><svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+              <span class="nav-tab-label">Library</span>
+            </a>
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon"><svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+              <span class="nav-tab-label">Tools</span>
+            </a>
+          </div>
+        </div>
+        <div class="navbar-copy">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#282828"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+          <span class="copy-text">Billiont Tools 2025</span>
+        </div>
+      </div>
+
+      <!-- ── Kebab Action Sheet ── -->
+      <div class="action-sheet-overlay" id="overlay" onclick="closeSheet()"></div>
+      <div class="action-sheet" id="actionSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-preview">
+          <div class="sheet-thumb" style="background:linear-gradient(135deg,#c5bcf5,#7B52D4);border-radius:8px;"></div>
+          <div>
+            <div class="sheet-reel-title">Leadership Mindset for Entrepreneurs</div>
+            <div class="sheet-reel-sub">BillionTools · 2 min</div>
+          </div>
+        </div>
+        <div class="sheet-actions">
+          <button class="sheet-action-item">
+            <span class="sheet-action-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></span>
+            <span class="sheet-action-label">Save to Library</span>
+          </button>
+          <button class="sheet-action-item">
+            <span class="sheet-action-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#282828" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
+            <span class="sheet-action-label">Share Reel</span>
+          </button>
+          <button class="sheet-action-item destructive">
+            <span class="sheet-action-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#E71F2C" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>
+            <span class="sheet-action-label">Not Interested</span>
+          </button>
+        </div>
+        <button class="sheet-cancel" onclick="closeSheet()">Cancel</button>
+      </div>
+
+      <!-- ════════════════════════════════════════════
+           ── Renew Plan Bottom Sheet ──
+      ════════════════════════════════════════════ -->
+      <div class="renew-overlay" id="renew-overlay" onclick="closeRenewSheet()"></div>
+
+      <div class="renew-sheet" id="renew-sheet">
+
+        <!-- Drag Handle -->
+        <div class="rp-handle"></div>
+
+        <!-- Sheet Header -->
+        <div class="rp-header">
+          <div class="rp-header-left">
+            <span class="rp-title">Renew Your Plan</span>
+            <span class="rp-premium-badge">
+              <svg viewBox="0 0 24 24" width="9" height="9" fill="#fff"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+              PREMIUM
+            </span>
+          </div>
+          <button class="rp-close-btn" onclick="closeRenewSheet()" aria-label="Close">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+
+        <!-- Scrollable Body -->
+        <div class="rp-body">
+
+          <!-- Expiry Notice -->
+          <div class="rp-expiry">
+            <div class="rp-expiry-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#B45309">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="rp-expiry-title">Your plan expires in 28 days</div>
+              <div class="rp-expiry-sub">Current plan: Annual Premium · Expires May 3, 2026</div>
+            </div>
+            <div class="rp-expiry-pill">28 days left</div>
+          </div>
+
+          <!-- Plan Section Label -->
+          <div class="rp-section-label">Choose a Renewal Plan</div>
+
+          <!-- Plan Cards -->
+          <div class="rp-plan-cards">
+
+            <!-- Annual (default selected, recommended) -->
+            <div class="rp-plan-card rp-card-annual" id="rp-card-annual" onclick="rpSelectPlan('annual')">
+              <div class="rp-card-top">
+                <div class="rp-card-name light">Annual Plan</div>
+                <div class="rp-card-badges">
+                  <span class="rp-recommended-badge">RECOMMENDED</span>
+                  <div class="rp-radio checked-light" id="rp-ring-annual">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="rp-price-row">
+                <span class="rp-price light">₹10,000</span>
+                <span class="rp-price-unit light">/year</span>
+              </div>
+              <div class="rp-detail light">₹833/month · Billed annually · + Tax applicable</div>
+              <div class="rp-savings-tag">2 months FREE — Save ₹2,000 vs monthly</div>
+            </div>
+
+            <!-- Monthly -->
+            <div class="rp-plan-card rp-card-monthly" id="rp-card-monthly" onclick="rpSelectPlan('monthly')">
+              <div class="rp-card-top">
+                <div class="rp-card-name dark">Monthly Plan</div>
+                <div class="rp-radio unchecked-dark" id="rp-ring-monthly"></div>
+              </div>
+              <div class="rp-price-row">
+                <span class="rp-price dark">₹1,000</span>
+                <span class="rp-price-unit dark">/month</span>
+              </div>
+              <div class="rp-detail dark">+ Applicable tax · Billed monthly · Cancel anytime</div>
+            </div>
+
+          </div>
+
+          <!-- Benefits -->
+          <div class="rp-benefits">
+            <div class="rp-benefits-title">What you continue to get</div>
+
+            <div class="rp-benefit-row">
+              <div class="rp-benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+              </div>
+              <div>
+                <div class="rp-benefit-title">Premium Courses</div>
+                <div class="rp-benefit-desc">Structured learning paths for SME growth — operations, finance, leadership.</div>
+              </div>
+            </div>
+
+            <div class="rp-benefit-row">
+              <div class="rp-benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg>
+              </div>
+              <div>
+                <div class="rp-benefit-title">Expert Tools</div>
+                <div class="rp-benefit-desc">Business frameworks and templates built by practitioners — apply directly.</div>
+              </div>
+            </div>
+
+            <div class="rp-benefit-row">
+              <div class="rp-benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+              </div>
+              <div>
+                <div class="rp-benefit-title">Curated Activities</div>
+                <div class="rp-benefit-desc">Hands-on exercises delivering measurable business outcomes.</div>
+              </div>
+            </div>
+
+            <div class="rp-benefit-row">
+              <div class="rp-benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              </div>
+              <div>
+                <div class="rp-benefit-title">Dedicated Learning Path</div>
+                <div class="rp-benefit-desc">Personalized journey aligned to your business stage and goals.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Trust Signals -->
+          <div class="rp-trust">
+            <div class="rp-trust-item">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              <div class="rp-trust-label">Secure Payment</div>
+            </div>
+            <div class="rp-trust-item">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              <div class="rp-trust-label">Cancel Anytime</div>
+            </div>
+            <div class="rp-trust-item">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+              <div class="rp-trust-label">Priority Support</div>
+            </div>
+          </div>
+
+        </div><!-- /rp-body -->
+
+        <!-- Sticky Footer CTA -->
+        <div class="rp-footer">
+          <button class="rp-cta-btn" id="rp-cta-btn" onclick="openConfirmSheet()">
+            Renew Annual Plan
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </button>
+          <div class="rp-fine" id="rp-fine">₹10,000/year (₹833/month) + applicable tax. Billed immediately upon renewal.</div>
+        </div>
+
+        <!-- ── Confirmation sub-sheet (stacked above renew sheet) ── -->
+        <div class="rp-confirm-overlay" id="rp-confirm-overlay" onclick="closeConfirmSheet()"></div>
+        <div class="rp-confirm-sheet" id="rp-confirm-sheet">
+
+          <!-- Confirm Step -->
+          <div id="rpc-confirm-step">
+            <div class="rpc-handle"></div>
+
+            <div class="rpc-header">
+              <span class="rpc-title">BillionTools</span>
+              <button class="rpc-close" onclick="closeConfirmSheet()" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+
+            <div class="rpc-app-card">
+              <div class="rpc-app-icon">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#512DA8"/>
+                  <polygon points="44,10 21,23 27,28" fill="#F16623"/>
+                  <polygon points="44,10 27,28 25,42" fill="#E07818"/>
+                  <polygon points="27,28 31,31 25,42" fill="#F16623" opacity="0.7"/>
+                  <text x="6" y="51" font-family="'Lato',sans-serif" font-weight="900" font-size="21" fill="#FFFFFF" letter-spacing="-1">BT</text>
+                </svg>
+              </div>
+              <div>
+                <div class="rpc-app-name">BillionTools Premium <span class="rpc-app-tag">RENEW</span></div>
+                <div class="rpc-app-meta">In-App Purchase · Membership Renewal</div>
+              </div>
+            </div>
+
+            <div class="rpc-price-row">
+              <div>
+                <div class="rpc-plan-name" id="rpc-plan-name">Renew Annual Plan</div>
+                <div class="rpc-plan-sub">Access continues without interruption</div>
+              </div>
+              <div>
+                <div class="rpc-price-amount" id="rpc-price-amount">₹10,000</div>
+                <div class="rpc-price-period" id="rpc-price-period">per year + tax</div>
+              </div>
+            </div>
+
+            <!-- ── Payment Method ── -->
+            <div class="rpc-payment-section">
+              <div id="rpc-platform-chip"></div>
+              <div class="rpc-payment-heading">Payment Method</div>
+              <div class="rpc-pay-options" id="rpc-pay-options">
+                <!-- rendered by JS based on platform -->
+              </div>
+            </div>
+
+            <div class="rpc-terms">
+              Payment via <span id="rpc-terms-method" style="font-weight:600;color:#282828;">Apple Pay</span>. Your membership will be renewed immediately. You will be charged <span id="rpc-terms-price">₹10,000 + applicable tax</span>. New plan starts from the date of renewal.
+            </div>
+
+            <div class="rpc-account">Signed in as arjun@example.com</div>
+
+            <button class="rpc-confirm-btn" id="rpc-confirm-btn" onclick="confirmRenewal()">Pay with Apple Pay</button>
+          </div>
+
+          <!-- Success Step -->
+          <div class="rpc-success" id="rpc-success-step">
+            <svg class="rpc-check-wrap" id="rpc-check-wrap" viewBox="0 0 72 72">
+              <circle class="rpc-circle-bg"   cx="36" cy="36" r="30"/>
+              <circle class="rpc-circle-ring" cx="36" cy="36" r="30"/>
+              <polyline class="rpc-check-path" points="20,37 30,47 52,25"/>
+            </svg>
+            <div class="rpc-success-title">Membership Renewed!</div>
+            <div class="rpc-success-sub">Your premium access continues seamlessly.</div>
+            <div class="rpc-summary">
+              <div class="rpc-ss-row">
+                <span class="rpc-ss-label">Plan</span>
+                <span class="rpc-ss-value highlight" id="rpc-ss-plan">Annual Premium</span>
+              </div>
+              <div class="rpc-ss-row">
+                <span class="rpc-ss-label">Amount charged</span>
+                <span class="rpc-ss-value" id="rpc-ss-amount">₹10,000 + tax</span>
+              </div>
+              <div class="rpc-ss-row">
+                <span class="rpc-ss-label">Valid until</span>
+                <span class="rpc-ss-value" id="rpc-ss-until">May 3, 2027</span>
+              </div>
+            </div>
+            <button class="rpc-done-btn" onclick="onRenewalDone()">Done</button>
+          </div>
+
+        </div><!-- /rp-confirm-sheet -->
+
+      </div><!-- /renew-sheet -->
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+
+  <script>
+    /* ══════════════════════════════════════════
+       ── Platform & Payment Logic ──
+    ══════════════════════════════════════════ */
+
+    /* Auto-detect platform; override via demo toggle */
+    function autoDetectPlatform() {
+      const ua = navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod|macintosh/.test(ua) ? 'ios' : 'android';
+    }
+
+    let currentPlatform   = autoDetectPlatform();
+    let selectedPaymentId = null;
+
+    const PAYMENT_METHODS = {
+      ios: [
+        {
+          id: 'apple-pay',
+          name: 'Apple Pay',
+          desc: 'Touch ID · Face ID',
+          badgeClass: 'badge-black',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#000"/>
+                   <!-- Apple leaf -->
+                   <path d="M20 7c.7-.8 1.8-1.4 2.8-1.4.1 1.1-.3 2.2-1 3-.7.8-1.7 1.4-2.7 1.3-.1-1.1.3-2.2.9-2.9z" fill="#fff"/>
+                   <path d="M22.8 10.4c1.5 0 3.1 1.1 3.1 3.1 0 2.3-1.7 3.5-3.2 3.5-1 0-1.6-.7-2.4-.7-.9 0-1.6.7-2.5.7-1.4 0-3-1.2-3-3.5 0-2.3 1.6-3.1 3-3.1.8 0 1.6.7 2.2.7.5 0 1.4-.7 2.8-.7z" fill="#fff"/>
+                   <text x="29" y="20" font-family="'Lato',sans-serif" font-weight="700" font-size="9" fill="#fff">Pay</text>
+                 </svg>`
+        },
+        {
+          id: 'card',
+          name: 'Credit / Debit Card',
+          desc: 'Visa · Mastercard · RuPay',
+          badgeClass: 'badge-light',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#F7F6FF"/>
+                   <rect x="5" y="8" width="36" height="22" rx="3" fill="none" stroke="#512DA8" stroke-width="1.5"/>
+                   <rect x="5" y="14" width="36" height="5" fill="#E3DFFF"/>
+                   <rect x="9" y="22" width="8" height="3" rx="1" fill="#512DA8" opacity="0.5"/>
+                 </svg>`
+        },
+        {
+          id: 'upi',
+          name: 'UPI / Net Banking',
+          desc: 'BHIM · Other UPI apps',
+          badgeClass: 'badge-orange',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#FF6B00"/>
+                   <!-- UPI stylised arrows -->
+                   <polygon points="14,8 20,15 14,22" fill="#fff" opacity="0.9"/>
+                   <polygon points="24,8 30,15 24,22" fill="#fff" opacity="0.6"/>
+                   <text x="31" y="19" font-family="'Lato',sans-serif" font-weight="800" font-size="8" fill="#fff">UPI</text>
+                 </svg>`
+        }
+      ],
+      android: [
+        {
+          id: 'google-pay',
+          name: 'Google Pay',
+          desc: 'Pay with your Google account',
+          badgeClass: 'badge-white',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#fff" stroke="#e8e8e8" stroke-width="1"/>
+                   <!-- Coloured G segments -->
+                   <path d="M19 15c0-3.3 2.7-6 6-6 1.7 0 3.1.7 4.2 1.8l-1.7 1.7C26.8 11.8 26 11.4 25 11.4c-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6c1.8 0 3-1 3.3-2.4H25v-2.4h5.6c.1.4.1.8.1 1.2 0 3.3-2.2 5.6-5.7 5.6-3.3 0-6-2.7-6-6z" fill="#4285F4"/>
+                   <path d="M25 11.4c1 0 1.8.4 2.5 1.1l1.7-1.7C28.1 9.7 26.7 9 25 9c-2.5 0-4.6 1.4-5.5 3.4l2.1 1.6c.4-1.4 1.7-2.6 3.4-2.6z" fill="#EA4335"/>
+                   <path d="M19.5 12.4l-2.1-1.6c-.5 1-.8 2.1-.8 3.2s.3 2.2.8 3.2l2.1-1.6c-.3-.5-.5-1-.5-1.6s.2-1.1.5-1.6z" fill="#FBBC05"/>
+                   <path d="M25 21c1.7 0 3.1-.6 4.2-1.5l-2-1.6c-.6.4-1.4.7-2.2.7-1.7 0-3-1.2-3.4-2.6l-2.1 1.6c.9 2 3 3.4 5.5 3.4z" fill="#34A853"/>
+                 </svg>`
+        },
+        {
+          id: 'phonepe',
+          name: 'PhonePe',
+          desc: 'UPI · Wallet',
+          badgeClass: 'badge-purple',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#5f259f"/>
+                   <!-- Stylised P shape -->
+                   <rect x="12" y="7" width="3" height="16" rx="1.5" fill="#fff"/>
+                   <path d="M15 7h5c2.8 0 5 2.2 5 5s-2.2 5-5 5h-5V7z" fill="#fff"/>
+                   <path d="M15 12h5c1.1 0 2 .9 2 2s-.9 2-2 2h-5v-4z" fill="#5f259f"/>
+                   <text x="28" y="20" font-family="'Lato',sans-serif" font-weight="800" font-size="9" fill="#fff">Pe</text>
+                 </svg>`
+        },
+        {
+          id: 'card',
+          name: 'Credit / Debit Card',
+          desc: 'Visa · Mastercard · RuPay',
+          badgeClass: 'badge-light',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#F7F6FF"/>
+                   <rect x="5" y="8" width="36" height="22" rx="3" fill="none" stroke="#512DA8" stroke-width="1.5"/>
+                   <rect x="5" y="14" width="36" height="5" fill="#E3DFFF"/>
+                   <rect x="9" y="22" width="8" height="3" rx="1" fill="#512DA8" opacity="0.5"/>
+                 </svg>`
+        },
+        {
+          id: 'upi',
+          name: 'UPI / Net Banking',
+          desc: 'BHIM · Other UPI apps',
+          badgeClass: 'badge-orange',
+          icon: `<svg viewBox="0 0 46 30" width="46" height="30">
+                   <rect width="46" height="30" rx="5" fill="#FF6B00"/>
+                   <polygon points="14,8 20,15 14,22" fill="#fff" opacity="0.9"/>
+                   <polygon points="24,8 30,15 24,22" fill="#fff" opacity="0.6"/>
+                   <text x="31" y="19" font-family="'Lato',sans-serif" font-weight="800" font-size="8" fill="#fff">UPI</text>
+                 </svg>`
+        }
+      ]
+    };
+
+    function renderPaymentOptions() {
+      const methods   = PAYMENT_METHODS[currentPlatform];
+      selectedPaymentId = methods[0].id;
+
+      /* Platform chip */
+      const chipEl = document.getElementById('rpc-platform-chip');
+      if (currentPlatform === 'ios') {
+        chipEl.innerHTML = `<span class="rpc-platform-chip chip-ios">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          iOS · In-App Purchase
+        </span>`;
+      } else {
+        chipEl.innerHTML = `<span class="rpc-platform-chip chip-android">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="#1b5e20"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 1.23 12.95 1 12 1c-.96 0-1.86.23-2.66.63L7.85.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 3.26 6 5.01 6 7h12c0-1.99-.97-3.75-2.47-4.84zM10 5H9V4h1v1zm5 0h-1V4h1v1z"/></svg>
+          Android · Google Play
+        </span>`;
+      }
+
+      /* Build option cards */
+      const container = document.getElementById('rpc-pay-options');
+      container.innerHTML = methods.map((m, i) => `
+        <div class="rpc-pay-option ${i === 0 ? 'pay-selected' : ''}" id="rpc-pay-${m.id}" onclick="selectPayment('${m.id}')">
+          <div class="rpc-pay-badge ${m.badgeClass}">${m.icon}</div>
+          <div class="rpc-pay-info">
+            <div class="rpc-pay-name">${m.name}</div>
+            <div class="rpc-pay-desc">${m.desc}</div>
+          </div>
+          <div class="rpc-pay-radio ${i === 0 ? 'pay-checked' : ''}" id="rpc-radio-${m.id}">
+            ${i === 0 ? '<svg viewBox="0 0 24 24" width="10" height="10" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+          </div>
+        </div>
+      `).join('');
+
+      /* Sync CTA button + terms */
+      updateConfirmCTA();
+    }
+
+    function selectPayment(id) {
+      const methods = PAYMENT_METHODS[currentPlatform];
+      const prev    = selectedPaymentId;
+      selectedPaymentId = id;
+
+      /* Deselect previous */
+      const prevCard  = document.getElementById(`rpc-pay-${prev}`);
+      const prevRadio = document.getElementById(`rpc-radio-${prev}`);
+      if (prevCard)  { prevCard.classList.remove('pay-selected'); }
+      if (prevRadio) { prevRadio.classList.remove('pay-checked'); prevRadio.innerHTML = ''; }
+
+      /* Select new */
+      const newCard  = document.getElementById(`rpc-pay-${id}`);
+      const newRadio = document.getElementById(`rpc-radio-${id}`);
+      if (newCard)  newCard.classList.add('pay-selected');
+      if (newRadio) {
+        newRadio.classList.add('pay-checked');
+        newRadio.innerHTML = '<svg viewBox="0 0 24 24" width="10" height="10" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+      }
+
+      updateConfirmCTA();
+    }
+
+    function updateConfirmCTA() {
+      const methods = PAYMENT_METHODS[currentPlatform];
+      const method  = methods.find(m => m.id === selectedPaymentId) || methods[0];
+      const btn     = document.getElementById('rpc-confirm-btn');
+      const termMethod = document.getElementById('rpc-terms-method');
+      if (btn)        btn.textContent = `Pay with ${method.name}`;
+      if (termMethod) termMethod.textContent = method.name;
+    }
+
+    /* Demo platform toggle */
+    function setPlatform(platform) {
+      currentPlatform = platform;
+      document.getElementById('btn-ios').className     = platform === 'ios'     ? 'demo-btn active-ios'     : 'demo-btn';
+      document.getElementById('btn-android').className = platform === 'android' ? 'demo-btn active-android' : 'demo-btn';
+      /* Re-render if confirm sheet is currently visible */
+      if (document.getElementById('rp-confirm-sheet').classList.contains('open')) {
+        renderPaymentOptions();
+      }
+    }
+
+    /* ── Demo state switcher ── */
+    let rpSelectedPlan = 'annual';
+
+    function setState(state) {
+      const expW  = document.getElementById('widget-expiring');
+      const renW  = document.getElementById('widget-renewed');
+      const btnE  = document.getElementById('btn-expiring');
+      const btnR  = document.getElementById('btn-renewed');
+      if (state === 'expiring') {
+        expW.style.display = 'flex';
+        renW.style.display = 'none';
+        btnE.className = 'demo-btn active-expiring';
+        btnR.className = 'demo-btn';
+      } else {
+        expW.style.display = 'none';
+        renW.style.display = 'flex';
+        btnE.className = 'demo-btn';
+        btnR.className = 'demo-btn active-renewed';
+      }
+    }
+
+    /* ── Kebab action sheet ── */
+    function openSheet() {
+      document.getElementById('overlay').classList.add('open');
+      document.getElementById('actionSheet').classList.add('open');
+    }
+
+    function closeSheet() {
+      document.getElementById('overlay').classList.remove('open');
+      document.getElementById('actionSheet').classList.remove('open');
+    }
+
+    /* ════════════════════════════════════════
+       ── Renew Sheet ──
+    ════════════════════════════════════════ */
+    function openRenewSheet() {
+      const overlay = document.getElementById('renew-overlay');
+      const sheet   = document.getElementById('renew-sheet');
+      overlay.classList.add('open');
+      sheet.style.display = 'flex';  /* ensure flex column layout */
+      requestAnimationFrame(() => sheet.classList.add('open'));
+    }
+
+    function closeRenewSheet() {
+      const sheet   = document.getElementById('renew-sheet');
+      const overlay = document.getElementById('renew-overlay');
+      sheet.classList.remove('open');
+      overlay.classList.remove('open');
+      /* Also close the confirm sheet if open */
+      closeConfirmSheet(true);
+    }
+
+    /* ── Plan selection inside renew sheet ── */
+    function rpSelectPlan(plan) {
+      rpSelectedPlan = plan;
+
+      const cardAnnual  = document.getElementById('rp-card-annual');
+      const cardMonthly = document.getElementById('rp-card-monthly');
+      const ringAnnual  = document.getElementById('rp-ring-annual');
+      const ringMonthly = document.getElementById('rp-ring-monthly');
+      const ctaBtn      = document.getElementById('rp-cta-btn');
+      const ctaFine     = document.getElementById('rp-fine');
+
+      if (plan === 'annual') {
+        /* Annual selected */
+        cardAnnual.classList.remove('rp-unselected');
+        cardAnnual.style.background  = 'linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%)';
+        cardAnnual.style.boxShadow   = '0 6px 20px rgba(81,45,168,0.35)';
+        cardAnnual.style.opacity     = '1';
+        cardMonthly.classList.remove('rp-selected');
+        ringAnnual.className  = 'rp-radio checked-light';
+        ringAnnual.innerHTML  = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ringMonthly.className = 'rp-radio unchecked-dark';
+        ringMonthly.innerHTML = '';
+        ctaBtn.innerHTML = 'Renew Annual Plan <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="display:inline;vertical-align:middle"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        ctaFine.textContent = '₹10,000/year (₹833/month) + applicable tax. Billed immediately upon renewal.';
+      } else {
+        /* Monthly selected */
+        cardAnnual.classList.add('rp-unselected');
+        cardAnnual.style.background  = '#E3DFFF';
+        cardAnnual.style.boxShadow   = 'none';
+        cardAnnual.style.opacity     = '0.45';
+        cardMonthly.classList.add('rp-selected');
+        ringAnnual.className  = 'rp-radio unchecked-dark';
+        ringAnnual.innerHTML  = '';
+        ringMonthly.className = 'rp-radio checked-dark';
+        ringMonthly.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ctaBtn.innerHTML = 'Renew Monthly Plan <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="display:inline;vertical-align:middle"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        ctaFine.textContent = '₹1,000/month + applicable tax. Billed immediately upon renewal.';
+      }
+    }
+
+    /* ── Open confirmation sub-sheet ── */
+    function openConfirmSheet() {
+      const confirmOverlay = document.getElementById('rp-confirm-overlay');
+      const confirmSheet   = document.getElementById('rp-confirm-sheet');
+
+      /* Populate content based on selected plan */
+      if (rpSelectedPlan === 'annual') {
+        document.getElementById('rpc-plan-name').textContent    = 'Renew Annual Plan';
+        document.getElementById('rpc-price-amount').textContent = '₹10,000';
+        document.getElementById('rpc-price-period').textContent = 'per year + tax';
+        document.getElementById('rpc-terms-price').textContent  = '₹10,000 + applicable tax';
+      } else {
+        document.getElementById('rpc-plan-name').textContent    = 'Renew Monthly Plan';
+        document.getElementById('rpc-price-amount').textContent = '₹1,000';
+        document.getElementById('rpc-price-period').textContent = 'per month + tax';
+        document.getElementById('rpc-terms-price').textContent  = '₹1,000 + applicable tax';
+      }
+
+      /* Render platform-specific payment options */
+      renderPaymentOptions();
+
+      confirmOverlay.style.display = 'block';
+      confirmSheet.style.display   = 'flex';
+      requestAnimationFrame(() => confirmSheet.classList.add('open'));
+    }
+
+    function closeConfirmSheet(silent) {
+      const confirmSheet   = document.getElementById('rp-confirm-sheet');
+      const confirmOverlay = document.getElementById('rp-confirm-overlay');
+      confirmSheet.classList.remove('open');
+      setTimeout(() => {
+        confirmSheet.style.display   = 'none';
+        confirmOverlay.style.display = 'none';
+        /* Reset to confirm step for next time */
+        document.getElementById('rpc-confirm-step').style.display = '';
+        document.getElementById('rpc-success-step').style.display = 'none';
+        document.getElementById('rpc-check-wrap').classList.remove('animate');
+      }, silent ? 0 : 350);
+    }
+
+    /* ── Confirm renewal → success ── */
+    function confirmRenewal() {
+      const confirmStep = document.getElementById('rpc-confirm-step');
+      const successStep = document.getElementById('rpc-success-step');
+      const checkWrap   = document.getElementById('rpc-check-wrap');
+
+      if (rpSelectedPlan === 'annual') {
+        document.getElementById('rpc-ss-plan').textContent   = 'Annual Premium';
+        document.getElementById('rpc-ss-amount').textContent = '₹10,000 + tax';
+        document.getElementById('rpc-ss-until').textContent  = 'May 3, 2027';
+      } else {
+        document.getElementById('rpc-ss-plan').textContent   = 'Monthly Premium';
+        document.getElementById('rpc-ss-amount').textContent = '₹1,000 + tax';
+        document.getElementById('rpc-ss-until').textContent  = 'June 3, 2026';
+      }
+
+      confirmStep.style.display = 'none';
+      successStep.style.display = 'flex';
+      requestAnimationFrame(() => checkWrap.classList.add('animate'));
+    }
+
+    /* ── Done → close all sheets + update widget ── */
+    function onRenewalDone() {
+      /* Close both sheets */
+      closeConfirmSheet(true);
+      closeRenewSheet();
+
+      /* Update until-text with plan info */
+      const untilText = rpSelectedPlan === 'annual' ? 'Active until May 3, 2027' : 'Active until June 3, 2026';
+      document.getElementById('renewed-until-text').textContent = untilText;
+
+      /* Switch widget to renewed state */
+      setState('renewed');
+      document.getElementById('btn-expiring').className = 'demo-btn';
+      document.getElementById('btn-renewed').className  = 'demo-btn active-renewed';
+    }
+  </script>
+
+</body>
+</html>

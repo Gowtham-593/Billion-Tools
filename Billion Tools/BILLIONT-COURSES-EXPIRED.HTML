@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Courses (Membership Expired)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 16px; color: #000;
+    }
+
+    .status-right { display: flex; align-items: center; gap: 6px; }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px 14px;
+    }
+
+    .search-bar {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+      border-radius: 24px;
+      padding: 9px 16px;
+    }
+
+    .search-bar input {
+      border: none; outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #282828;
+      background: transparent; width: 100%;
+    }
+
+    .search-bar input::placeholder { color: #9E9E9E; }
+
+    .hdr-icon {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    /* ── Scroll Area ── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ══════════════════════════════════════════
+       ── Membership Expired Banner ──
+    ══════════════════════════════════════════ */
+    .expired-banner {
+      background: linear-gradient(135deg, #7C2D12 0%, #B45309 100%);
+      margin: 16px 16px 0;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .expired-banner::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    }
+
+    .exp-banner-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .exp-icon-circle {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      backdrop-filter: blur(4px);
+    }
+
+    .exp-banner-text { flex: 1; }
+
+    .exp-banner-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .exp-banner-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .exp-renew-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 42px;
+      background: #fff;
+      color: #B45309;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .exp-renew-btn:active { opacity: 0.88; }
+
+    /* ── Section Label ── */
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #606060;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 18px 16px 10px;
+    }
+
+    /* ══════════════════════════════════════════
+       ── Course Cards ──
+    ══════════════════════════════════════════ */
+    .course-card {
+      background: #fff;
+      border: 1px solid #E5E5EA;
+      border-radius: 16px;
+      margin: 0 16px 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    /* Previously accessed — expired state */
+    .course-card.expired-access {
+      border-color: #FDE68A;
+      background: #FFFDF5;
+    }
+
+    .card-body { padding: 14px 14px 12px; }
+
+    .card-top-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .course-icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid #E3DFFF;
+      position: relative;
+    }
+
+    /* Lock overlay on expired-access icons */
+    .course-icon.icon-expired {
+      border-color: #FDE68A;
+    }
+
+    .card-info { flex: 1; }
+
+    .card-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 17px;
+      color: #282828; line-height: 1.25;
+      padding-right: 6px;
+    }
+
+    .card-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060;
+      line-height: 1.4; margin-top: 4px;
+    }
+
+    .card-info-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid #E5E5EA;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer;
+    }
+
+    /* ── Progress (expired access cards) ── */
+    .expired-progress-wrap {
+      margin-bottom: 10px;
+    }
+
+    .exp-prog-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .exp-prog-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #B45309;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .exp-prog-pct {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #9E9E9E;
+    }
+
+    .exp-prog-track {
+      height: 5px;
+      background: #F3F3F3;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .exp-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FCD34D, #F59E0B);
+      border-radius: 3px;
+      opacity: 0.7;
+    }
+
+    /* ── Status row (meta) ── */
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-sections {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .sections-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: #606060;
+    }
+
+    /* Expired badge */
+    .expired-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #B45309;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Premium badge */
+    .premium-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Buttons ── */
+
+    /* Resume requires renewal */
+    .resume-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      height: 44px;
+      background: #FEF3C7;
+      border: 1.5px solid #FCD34D;
+      color: #92400E;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .resume-btn:hover { background: #FDE68A; }
+
+    /* Locked premium — "Renew to Access" */
+    .renew-access-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      height: 44px;
+      background: #F7F6FF;
+      border: 1.5px solid #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .renew-access-btn:hover {
+      background: #E3DFFF;
+      border-color: #512DA8;
+    }
+
+    /* ── Bottom Nav ── */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 72px;
+      background: #fff;
+      border-top: 0.5px solid #E5E5EA;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 10px;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #606060;
+    }
+
+    .nav-label.active { color: #512DA8; }
+
+    /* ══════════════════════════════════════════
+       ── Overlay + Bottom Sheet ──
+    ══════════════════════════════════════════ */
+    .overlay {
+      position: absolute; inset: 0;
+      background: rgba(40, 28, 14, 0.6);
+      z-index: 100;
+      display: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 101;
+      display: none;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow: hidden;
+      box-shadow: 0 -4px 28px rgba(180,83,9,0.15);
+      max-height: 92%;
+    }
+
+    .bottom-sheet.show { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 40px; height: 4px;
+      background: #D0CAEA; border-radius: 2px;
+      margin: 12px auto 0; flex-shrink: 0;
+    }
+
+    .sheet-scroll {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .sheet-scroll::-webkit-scrollbar { display: none; }
+
+    /* ── Sheet: Step 1 — Plan Selection ── */
+    .sheet-hdr {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 12px;
+    }
+
+    .sheet-hdr-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800; font-size: 18px; color: #282828;
+    }
+
+    .sheet-close-btn {
+      width: 30px; height: 30px;
+      background: #E3DFFF; border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    /* Expired alert inside sheet */
+    .sheet-expired-alert {
+      margin: 0 14px 14px;
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sea-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sea-icon {
+      width: 38px; height: 38px;
+      background: #FEF3C7;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sea-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800; font-size: 14px; color: #92400E;
+    }
+
+    .sea-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #B45309;
+      margin-top: 2px; line-height: 1.4;
+    }
+
+    /* Locked course preview inside sheet */
+    .sheet-course-preview {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF;
+      border: 1px solid #E3DFFF;
+      border-radius: 14px;
+      margin: 0 14px 14px;
+      padding: 12px 14px;
+    }
+
+    .scp-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden;
+      flex-shrink: 0; border: 2px solid #E3DFFF;
+    }
+
+    .scp-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+      line-height: 1.3;
+    }
+
+    .scp-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: #606060; margin-top: 3px;
+    }
+
+    /* Section label inside sheet */
+    .sheet-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #606060;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 0 14px 10px;
+    }
+
+    /* ── Plan Cards ── */
+    .sheet-plans {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 0 14px 14px;
+    }
+
+    .splan-card {
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      position: relative;
+    }
+
+    .splan-card:active { transform: scale(0.99); }
+
+    .splan-yearly {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      box-shadow: 0 4px 16px rgba(81,45,168,0.28);
+    }
+
+    .splan-monthly {
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+    }
+
+    .splan-monthly.selected {
+      border-color: #512DA8;
+      box-shadow: 0 2px 12px rgba(81,45,168,0.15);
+    }
+
+    .splan-yearly.unselected {
+      opacity: 0.45;
+      background: #E3DFFF;
+      box-shadow: none;
+    }
+
+    .splan-top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 6px;
+    }
+
+    .splan-name-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #fff;
+    }
+
+    .splan-name-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px; color: #282828;
+    }
+
+    .splan-recommended {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 10px;
+      color: #5D4037; background: #FCD34D;
+      padding: 3px 9px; border-radius: 20px;
+    }
+
+    .splan-radio {
+      width: 20px; height: 20px;
+      border-radius: 50%; border: 2px solid #C4B5FD;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .splan-radio.checked-light {
+      background: rgba(255,255,255,0.25);
+      border-color: #fff;
+    }
+
+    .splan-radio.checked-dark {
+      background: #512DA8;
+      border-color: #512DA8;
+    }
+
+    .splan-price-row {
+      display: flex; align-items: baseline; gap: 3px;
+    }
+
+    .splan-price-light {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 26px; color: #fff;
+    }
+
+    .splan-price-dark {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900; font-size: 26px; color: #282828;
+    }
+
+    .splan-unit-light { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); }
+    .splan-unit-dark  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; }
+    .splan-detail-light { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .splan-detail-dark  { font-family: 'Inter', sans-serif; font-size: 12px; color: #606060; margin-top: 2px; }
+
+    .splan-savings {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 11px;
+      padding: 3px 9px; border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* Sheet CTA */
+    .sheet-cta-wrap {
+      padding: 0 14px 14px;
+      flex-shrink: 0;
+    }
+
+    .sheet-cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800; font-size: 17px;
+      border: none; border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      transition: opacity 0.15s;
+    }
+
+    .sheet-cta-btn:active { opacity: 0.88; }
+
+    .sheet-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: #9E9E9E;
+      text-align: center; margin-top: 6px;
+    }
+
+    /* ── Sheet: Step 2 — Confirm ── */
+    #step-confirm { display: none; flex-direction: column; }
+
+    .confirm-course-row {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 14px;
+      padding: 12px 14px;
+    }
+
+    .cc-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2px solid #E3DFFF;
+    }
+
+    .cc-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+    }
+
+    .cc-unlock-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #E8F5E9; color: #2E7D32;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin-top: 4px;
+    }
+
+    .confirm-app-card {
+      display: flex; align-items: center; gap: 12px;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 10px;
+      padding: 12px 14px;
+    }
+
+    .confirm-summary {
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; margin: 0 14px 10px;
+      padding: 4px 14px;
+    }
+
+    .cs-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0;
+      border-bottom: 0.5px solid #E3DFFF;
+    }
+
+    .cs-row:last-child { border-bottom: none; }
+
+    .cs-label { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; }
+
+    .cs-value {
+      font-family: 'Lato', sans-serif; font-weight: 600;
+      font-size: 13px; color: #282828;
+    }
+
+    .cs-value.highlight { color: #512DA8; }
+
+    .confirm-terms {
+      font-family: 'Inter', sans-serif; font-size: 11px;
+      color: #9E9E9E; line-height: 1.5;
+      margin: 0 14px 10px;
+    }
+
+    /* ── Sheet: Step 3 — Success ── */
+    #step-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px 32px;
+    }
+
+    .check-wrap {
+      width: 72px; height: 72px; margin-bottom: 14px;
+    }
+
+    .check-circle-bg  { fill: none; stroke: #E8F5E9; stroke-width: 6; }
+
+    .check-circle-ring {
+      fill: none; stroke: #4CAF50; stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 200; stroke-dashoffset: 200;
+      transform-origin: center; transform: rotate(-90deg);
+      transition: stroke-dashoffset 0.5s ease 0.1s;
+    }
+
+    .check-path {
+      fill: none; stroke: #4CAF50; stroke-width: 5;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 55; stroke-dashoffset: 55;
+      transition: stroke-dashoffset 0.4s ease 0.55s;
+    }
+
+    .check-wrap.animate .check-circle-ring { stroke-dashoffset: 0; }
+    .check-wrap.animate .check-path        { stroke-dashoffset: 0; }
+
+    .success-title {
+      font-family: 'Lato', sans-serif; font-weight: 800;
+      font-size: 21px; color: #282828;
+      text-align: center; margin-bottom: 4px;
+    }
+
+    .success-sub {
+      font-family: 'Inter', sans-serif; font-size: 14px;
+      color: #606060; text-align: center; margin-bottom: 18px;
+      padding: 0 16px; line-height: 1.4;
+    }
+
+    .success-course-card {
+      width: 100%;
+      background: #F7F6FF; border: 1px solid #E3DFFF;
+      border-radius: 14px; padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .scc-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2px solid #E3DFFF;
+    }
+
+    .scc-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 14px; color: #282828;
+    }
+
+    .scc-unlocked {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #E8F5E9; color: #2E7D32;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 20px; margin-top: 4px;
+    }
+
+    .resume-course-btn {
+      width: 100%; height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif; font-weight: 800;
+      font-size: 17px; border: none; border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
+      margin-bottom: 10px;
+    }
+
+    .explore-all-btn {
+      width: 100%; height: 44px;
+      background: #F7F6FF; border: 1.5px solid #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      font-size: 15px; border-radius: 13px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <!-- ── Header ── -->
+      <div class="header">
+        <div class="status-bar">
+          <span class="status-time">9:41</span>
+          <div class="status-right">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000">
+              <rect x="1" y="15" width="3" height="6" rx="1"/>
+              <rect x="6" y="11" width="3" height="10" rx="1"/>
+              <rect x="11" y="7" width="3" height="14" rx="1"/>
+              <rect x="16" y="3" width="3" height="18" rx="1" opacity="0.3"/>
+            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </div>
+        </div>
+        <div class="header-bar">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9E9E9E" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search Courses" />
+          </div>
+          <div class="hdr-icon" style="width:34px;height:34px;">
+            <svg viewBox="0 0 34 34" width="34" height="34">
+              <circle cx="17" cy="17" r="14" fill="#E3DFFF"/>
+              <text x="17" y="22" font-family="serif" font-size="13" font-weight="700" fill="#512DA8" text-anchor="middle">அ</text>
+              <path d="M27 14 L30 17 L27 20" stroke="#512DA8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="30" y="22" font-family="sans-serif" font-size="10" font-weight="700" fill="#512DA8" text-anchor="middle">A</text>
+            </svg>
+          </div>
+          <div class="hdr-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+          </div>
+          <div class="hdr-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+          </div>
+          <div class="hdr-icon" style="width:32px;height:32px;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Scroll Area ── -->
+      <div class="scroll-area">
+
+        <!-- ════ Membership Expired Banner ════ -->
+        <div class="expired-banner">
+          <div class="exp-banner-top">
+            <div class="exp-icon-circle">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              </svg>
+            </div>
+            <div class="exp-banner-text">
+              <div class="exp-banner-title">Your Premium membership has expired</div>
+              <div class="exp-banner-sub">Annual plan expired on April 3, 2026 · All premium courses are now locked</div>
+            </div>
+          </div>
+          <button class="exp-renew-btn" onclick="openSheet('renew-all', 'All Premium Courses', '512DA8', '📚')">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#B45309">
+              <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+            Reactivate Membership — View Plans
+          </button>
+        </div>
+
+        <!-- ════ Previously In Progress ════ -->
+        <div class="section-label">Pick up where you left off</div>
+
+        <!-- ── Course 1 — In Progress, Expired ── -->
+        <div class="course-card expired-access">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon icon-expired">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#C5B358" opacity="0.6"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">⚖️</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Tasks vs People — Leading &amp; Managing with Clarity</div>
+                <div class="card-desc">Learn the different leadership styles to manage people and tasks effectively</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+
+            <!-- Progress (locked) -->
+            <div class="expired-progress-wrap">
+              <div class="exp-prog-row">
+                <span class="exp-prog-label">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="#B45309"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                  Progress locked
+                </span>
+                <span class="exp-prog-pct">75% done</span>
+              </div>
+              <div class="exp-prog-track">
+                <div class="exp-prog-fill" style="width:75%;"></div>
+              </div>
+            </div>
+
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">3 Sections</span>
+              </div>
+              <span class="expired-badge">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#B45309"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                ACCESS EXPIRED
+              </span>
+            </div>
+
+            <button class="resume-btn"
+              onclick="openSheet('tasks-people', 'Tasks vs People', 'C5B358', '⚖️')">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#92400E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Renew to Resume — 75% done
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 2 — In Progress, Expired ── -->
+        <div class="course-card expired-access">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon icon-expired">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#2E5E6E" opacity="0.6"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">🤝</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title">Build a Great Team</div>
+                <div class="card-desc">Master people assessment and build high performing teams</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+            </div>
+
+            <div class="expired-progress-wrap">
+              <div class="exp-prog-row">
+                <span class="exp-prog-label">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="#B45309"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                  Progress locked
+                </span>
+                <span class="exp-prog-pct">40% done</span>
+              </div>
+              <div class="exp-prog-track">
+                <div class="exp-prog-fill" style="width:40%;"></div>
+              </div>
+            </div>
+
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text">1 Section</span>
+              </div>
+              <span class="expired-badge">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#B45309"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                ACCESS EXPIRED
+              </span>
+            </div>
+
+            <button class="resume-btn"
+              onclick="openSheet('build-team', 'Build a Great Team', '2E5E6E', '🤝')">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#92400E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Renew to Resume — 40% done
+            </button>
+          </div>
+        </div>
+
+        <!-- ════ More Premium Courses (never started) ════ -->
+        <div class="section-label">More Premium Courses</div>
+
+        <!-- ── Course 3 — Premium Locked ── -->
+        <div class="course-card">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.5;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#2E6E4E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">📈</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title" style="color:#606060;">Marketing 101</div>
+                <div class="card-desc">Build a strong marketing strategy to grow revenue in a buyer's market</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#CECECE"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text" style="color:#9E9E9E;">1 Section</span>
+              </div>
+              <span class="premium-badge">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="renew-access-btn"
+              onclick="openSheet('marketing', 'Marketing 101', '2E6E4E', '📈')">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Renew to Access
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 4 — Premium Locked ── -->
+        <div class="course-card">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.5;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#5E3A2E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">💰</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title" style="color:#606060;">Finance Fundamentals for SMEs</div>
+                <div class="card-desc">Understand cash flow, margins, and financial decisions that scale your business</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#CECECE"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text" style="color:#9E9E9E;">2 Sections</span>
+              </div>
+              <span class="premium-badge">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="renew-access-btn"
+              onclick="openSheet('finance', 'Finance Fundamentals for SMEs', '5E3A2E', '💰')">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Renew to Access
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Course 5 — Premium Locked ── -->
+        <div class="course-card">
+          <div class="card-body">
+            <div class="card-top-row">
+              <div class="course-icon" style="opacity:0.5;">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle cx="30" cy="30" r="30" fill="#1A3A5E"/>
+                  <text x="30" y="38" font-size="26" text-anchor="middle">⚙️</text>
+                </svg>
+              </div>
+              <div class="card-info">
+                <div class="card-title" style="color:#606060;">Operations That Scale</div>
+                <div class="card-desc">Design processes, reduce waste, and build systems that run without you</div>
+              </div>
+              <div class="card-info-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-02-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              </div>
+            </div>
+            <div class="card-meta-row">
+              <div class="card-sections">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#CECECE"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span class="sections-text" style="color:#9E9E9E;">3 Sections</span>
+              </div>
+              <span class="premium-badge">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+                PREMIUM
+              </span>
+            </div>
+            <button class="renew-access-btn"
+              onclick="openSheet('operations', 'Operations That Scale', '1A3A5E', '⚙️')">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-02-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Renew to Access
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── Bottom Nav ── -->
+      <div class="bottom-nav">
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1z"/></svg>
+          <span class="nav-label active">Courses</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span class="nav-label">Library</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span class="nav-label">Tools</span>
+        </div>
+      </div>
+
+      <!-- ════ OVERLAY ════ -->
+      <div class="overlay" id="overlay" onclick="closeSheet()"></div>
+
+      <!-- ════ BOTTOM SHEET ════ -->
+      <div class="bottom-sheet" id="bottom-sheet">
+        <div class="sheet-handle"></div>
+
+        <div class="sheet-scroll">
+
+          <!-- ── Step 1: Reactivate Plan ── -->
+          <div id="step-plan">
+
+            <div class="sheet-hdr">
+              <span class="sheet-hdr-title">Reactivate Your Plan</span>
+              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+
+            <!-- Membership expired alert -->
+            <div class="sheet-expired-alert">
+              <div class="sea-top">
+                <div class="sea-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="#B45309">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="sea-title">Your membership has expired</div>
+                  <div class="sea-sub">Annual plan expired April 3, 2026. Reactivate to continue your learning journey and resume where you left off.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course being accessed -->
+            <div class="sheet-course-preview" id="sheet-course-preview">
+              <div class="scp-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46" id="scp-icon-svg">
+                  <circle cx="30" cy="30" r="30" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="22" text-anchor="middle" id="scp-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="scp-title" id="scp-title">Course Title</div>
+                <div class="scp-sub" id="scp-sub">Renew membership to access</div>
+              </div>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#9E9E9E" style="margin-left:auto;flex-shrink:0;">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+            </div>
+
+            <!-- Plan label -->
+            <div class="sheet-section-label">Choose a Plan to Reactivate</div>
+
+            <!-- Plan Cards -->
+            <div class="sheet-plans">
+
+              <!-- Yearly — recommended, default selected -->
+              <div class="splan-card splan-yearly" id="sheet-card-yearly" onclick="selectPlan('yearly')">
+                <div class="splan-top">
+                  <span class="splan-name-light">Annual Plan</span>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="splan-recommended">RECOMMENDED</span>
+                    <div class="splan-radio checked-light" id="radio-yearly">
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="splan-price-row">
+                  <span class="splan-price-light">₹10,000</span>
+                  <span class="splan-unit-light">/year</span>
+                </div>
+                <div class="splan-detail-light">₹833/month · Billed annually · + Tax applicable</div>
+                <div class="splan-savings">Save ₹2,000 — 2 months free vs monthly</div>
+              </div>
+
+              <!-- Monthly -->
+              <div class="splan-card splan-monthly" id="sheet-card-monthly" onclick="selectPlan('monthly')">
+                <div class="splan-top">
+                  <span class="splan-name-dark">Monthly Plan</span>
+                  <div class="splan-radio" id="radio-monthly"></div>
+                </div>
+                <div class="splan-price-row">
+                  <span class="splan-price-dark">₹1,000</span>
+                  <span class="splan-unit-dark">/month</span>
+                </div>
+                <div class="splan-detail-dark">+ Applicable tax · Billed monthly · Cancel anytime</div>
+              </div>
+
+            </div>
+
+            <div class="sheet-cta-wrap">
+              <button class="sheet-cta-btn" id="sheet-cta-btn" onclick="goToConfirm()">
+                Reactivate Annual Plan
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              </button>
+              <div class="sheet-fine" id="plan-fine">₹10,000/year (₹833/month) + applicable tax. Access starts immediately upon payment.</div>
+            </div>
+
+          </div><!-- /step-plan -->
+
+          <!-- ── Step 2: Confirm & Pay ── -->
+          <div id="step-confirm">
+
+            <div class="sheet-hdr">
+              <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="goBackToPlan()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                <span style="font-family:'Inter',sans-serif;font-size:15px;color:#282828;">Back</span>
+              </button>
+              <span class="sheet-hdr-title">Confirm Renewal</span>
+              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+
+            <!-- Course unlocking -->
+            <div class="confirm-course-row">
+              <div class="cc-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46">
+                  <circle cx="30" cy="30" r="30" id="cc-bg" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="22" text-anchor="middle" id="cc-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="cc-title" id="cc-title">Course Title</div>
+                <div class="cc-unlock-tag">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                  Will be unlocked with membership
+                </div>
+              </div>
+            </div>
+
+            <!-- App card -->
+            <div class="confirm-app-card">
+              <svg viewBox="0 0 60 60" width="46" height="46" style="border-radius:11px;flex-shrink:0;">
+                <rect width="60" height="60" rx="14" fill="#512DA8"/>
+                <polygon points="46,10 22,24 28,29" fill="#F16623"/>
+                <polygon points="46,10 28,29 26,44" fill="#E07818"/>
+                <polygon points="28,29 32,32 26,44" fill="#F16623" opacity="0.7"/>
+                <text x="7" y="52" font-family="Lato,sans-serif" font-weight="900" font-size="22" fill="#fff" letter-spacing="-1">BT</text>
+              </svg>
+              <div>
+                <div style="font-family:'Lato',sans-serif;font-weight:700;font-size:15px;color:#282828;">BillionTools Premium</div>
+                <div style="font-family:'Inter',sans-serif;font-size:12px;color:#606060;margin-top:3px;">Poornatha · SME Subscription · Renewal</div>
+              </div>
+            </div>
+
+            <!-- Summary — no trial, actual charge -->
+            <div class="confirm-summary">
+              <div class="cs-row">
+                <span class="cs-label">Plan</span>
+                <span class="cs-value" id="cs-plan">Annual — ₹10,000/year</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Previous plan expired</span>
+                <span class="cs-value" style="color:#B45309;">April 3, 2026</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Access starts</span>
+                <span class="cs-value highlight">Immediately · Today</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Today you pay</span>
+                <span class="cs-value highlight" id="cs-charge">₹10,000 + applicable tax</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Next renewal</span>
+                <span class="cs-value" id="cs-next">April 3, 2027</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-label">Account</span>
+                <span class="cs-value">arjun@example.com</span>
+              </div>
+            </div>
+
+            <div class="confirm-terms">
+              Your membership is reactivated immediately upon payment. Applicable taxes as per Government norms. Cancel anytime via Settings — future renewals will not be charged.
+            </div>
+
+            <div class="sheet-cta-wrap">
+              <button class="sheet-cta-btn" onclick="completePayment()">
+                Pay &amp; Reactivate Now
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              </button>
+            </div>
+
+          </div><!-- /step-confirm -->
+
+          <!-- ── Step 3: Success ── -->
+          <div id="step-success">
+            <div class="check-wrap" id="check-wrap" style="margin:28px auto 14px;">
+              <svg viewBox="0 0 72 72" width="72" height="72">
+                <circle class="check-circle-bg" cx="36" cy="36" r="31"/>
+                <circle class="check-circle-ring" cx="36" cy="36" r="31"/>
+                <path class="check-path" d="M21 36 L31 46 L51 26"/>
+              </svg>
+            </div>
+            <div class="success-title">Membership Reactivated!</div>
+            <div class="success-sub">Your premium access is back. All courses are unlocked and your progress is restored.</div>
+
+            <div class="success-course-card" style="margin:0 16px 16px;">
+              <div class="scc-icon">
+                <svg viewBox="0 0 60 60" width="46" height="46">
+                  <circle cx="30" cy="30" r="30" id="scc-bg" fill="#512DA8"/>
+                  <text x="30" y="38" font-size="22" text-anchor="middle" id="scc-emoji">📚</text>
+                </svg>
+              </div>
+              <div>
+                <div class="scc-name" id="scc-name">Course Title</div>
+                <div class="scc-unlocked">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                  Unlocked — Ready to continue
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 0 16px 0;">
+              <button class="resume-course-btn" onclick="resumeCourse()">
+                Continue Learning
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" style="margin-left:6px;"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="explore-all-btn" onclick="closeSheet()">Back to All Courses</button>
+            </div>
+          </div><!-- /step-success -->
+
+        </div><!-- /sheet-scroll -->
+      </div><!-- /bottom-sheet -->
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+
+  <script>
+    let currentCourseId    = null;
+    let currentCourseName  = null;
+    let currentCourseColor = null;
+    let currentCourseEmoji = null;
+    let selectedPlanId     = 'yearly';
+
+    /* ── Open the sheet ── */
+    function openSheet(courseId, courseName, courseColor, courseEmoji) {
+      currentCourseId    = courseId;
+      currentCourseName  = courseName;
+      currentCourseColor = courseColor;
+      currentCourseEmoji = courseEmoji;
+
+      /* Reset to step 1 */
+      showStep('plan');
+
+      /* Populate course preview */
+      document.getElementById('scp-title').textContent   = courseName;
+      document.getElementById('scp-emoji').textContent   = courseEmoji;
+      document.getElementById('scp-icon-svg').querySelector('circle').setAttribute('fill', '#' + courseColor);
+
+      /* Update scp-sub based on context */
+      const isInProgress = (courseId === 'tasks-people' || courseId === 'build-team');
+      document.getElementById('scp-sub').textContent = isInProgress
+        ? 'You had progress in this course — renew to resume'
+        : 'Renew membership to access this course';
+
+      /* Reset plan selection to yearly */
+      selectedPlanId = 'yearly';
+      updatePlanSelection();
+
+      /* Show overlay + sheet */
+      document.getElementById('overlay').style.display = 'block';
+      const sheet = document.getElementById('bottom-sheet');
+      sheet.style.display = 'flex';
+      requestAnimationFrame(() => sheet.classList.add('show'));
+    }
+
+    function closeSheet() {
+      const sheet = document.getElementById('bottom-sheet');
+      sheet.classList.remove('show');
+      setTimeout(() => {
+        sheet.style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('check-wrap').classList.remove('animate');
+      }, 380);
+    }
+
+    /* ── Plan Selection ── */
+    function selectPlan(plan) {
+      selectedPlanId = plan;
+      updatePlanSelection();
+    }
+
+    function updatePlanSelection() {
+      const cardYearly  = document.getElementById('sheet-card-yearly');
+      const cardMonthly = document.getElementById('sheet-card-monthly');
+      const radioY      = document.getElementById('radio-yearly');
+      const radioM      = document.getElementById('radio-monthly');
+      const ctaBtn      = document.getElementById('sheet-cta-btn');
+      const fine        = document.getElementById('plan-fine');
+
+      if (selectedPlanId === 'yearly') {
+        cardYearly.classList.remove('unselected');
+        cardYearly.style.background = 'linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%)';
+        cardYearly.style.boxShadow  = '0 4px 16px rgba(81,45,168,0.28)';
+        cardYearly.style.opacity    = '1';
+        cardMonthly.classList.remove('selected');
+        radioY.className = 'splan-radio checked-light';
+        radioY.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        radioM.className = 'splan-radio';
+        radioM.innerHTML = '';
+        ctaBtn.innerHTML = 'Reactivate Annual Plan <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" style="display:inline;vertical-align:middle"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        fine.textContent = '₹10,000/year (₹833/month) + applicable tax. Access starts immediately upon payment.';
+      } else {
+        cardYearly.classList.add('unselected');
+        cardYearly.style.background = '#E3DFFF';
+        cardYearly.style.boxShadow  = 'none';
+        cardYearly.style.opacity    = '0.45';
+        cardMonthly.classList.add('selected');
+        radioY.className = 'splan-radio';
+        radioY.innerHTML = '';
+        radioM.className = 'splan-radio checked-dark';
+        radioM.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ctaBtn.innerHTML = 'Reactivate Monthly Plan <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" style="display:inline;vertical-align:middle"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
+        fine.textContent = '₹1,000/month + applicable tax. Access starts immediately upon payment.';
+      }
+    }
+
+    /* ── Step navigation ── */
+    function showStep(step) {
+      document.getElementById('step-plan').style.display    = step === 'plan'    ? 'block' : 'none';
+      document.getElementById('step-confirm').style.display = step === 'confirm' ? 'flex'  : 'none';
+      document.getElementById('step-success').style.display = step === 'success' ? 'flex'  : 'none';
+      /* Scroll sheet to top on each step */
+      document.querySelector('.sheet-scroll').scrollTop = 0;
+    }
+
+    function goToConfirm() {
+      /* Populate confirm step */
+      document.getElementById('cc-bg').setAttribute('fill', '#' + currentCourseColor);
+      document.getElementById('cc-emoji').textContent = currentCourseEmoji;
+      document.getElementById('cc-title').textContent = currentCourseName;
+
+      if (selectedPlanId === 'yearly') {
+        document.getElementById('cs-plan').textContent   = 'Annual — ₹10,000/year';
+        document.getElementById('cs-charge').textContent = '₹10,000 + applicable tax';
+        document.getElementById('cs-next').textContent   = 'April 3, 2027';
+      } else {
+        document.getElementById('cs-plan').textContent   = 'Monthly — ₹1,000/month';
+        document.getElementById('cs-charge').textContent = '₹1,000 + applicable tax';
+        document.getElementById('cs-next').textContent   = 'May 3, 2026';
+      }
+
+      showStep('confirm');
+    }
+
+    function goBackToPlan() { showStep('plan'); }
+
+    function completePayment() {
+      /* Populate success step */
+      document.getElementById('scc-bg').setAttribute('fill', '#' + currentCourseColor);
+      document.getElementById('scc-emoji').textContent = currentCourseEmoji;
+      document.getElementById('scc-name').textContent  = currentCourseName;
+
+      showStep('success');
+      requestAnimationFrame(() => {
+        document.getElementById('check-wrap').classList.add('animate');
+      });
+    }
+
+    function resumeCourse() {
+      closeSheet();
+      /* In a real app: navigate to course player */
+    }
+  </script>
+</body>
+</html>
