@@ -297,54 +297,128 @@
       margin-top: 8px;
     }
 
-    /* ── Promo Code ── */
+    /* ── Promo trigger link ── */
     .promo-section {
-      padding: 18px 20px 0;
+      padding: 14px 20px 0;
+      text-align: center;
     }
 
-    .promo-label {
-      font-family: 'Lato', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      color: #282828;
-      margin-bottom: 10px;
-    }
-
-    .promo-row { display: flex; gap: 10px; }
-
-    .promo-input {
-      flex: 1; height: 46px;
-      border: 1.5px solid #E3DFFF;
-      border-radius: 13px;
-      padding: 0 14px;
+    .promo-toggle-link {
       font-family: 'Inter', sans-serif;
-      font-size: 15px; color: #282828;
-      background: #fafafa; outline: none;
-      transition: border-color 0.15s;
-      text-transform: uppercase; letter-spacing: 1px;
+      font-size: 13px; color: #7B61D4;
+      background: none; border: none;
+      cursor: pointer; padding: 0;
+      text-decoration: underline;
+      text-decoration-color: rgba(123,97,212,0.35);
+      text-underline-offset: 3px;
+      transition: color 0.15s, text-decoration-color 0.15s;
     }
 
-    .promo-input::placeholder { text-transform: none; letter-spacing: 0; color: #aaa; }
-    .promo-input:focus { border-color: #512DA8; background: #fff; }
+    .promo-toggle-link:hover {
+      color: #512DA8;
+      text-decoration-color: rgba(81,45,168,0.6);
+    }
 
-    .promo-apply-btn {
-      height: 46px; padding: 0 20px;
+    /* ── Promo bottom sheet ── */
+    .promo-overlay {
+      position: absolute; inset: 0;
+      background: rgba(28,20,50,0.5);
+      z-index: 200; display: none;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .promo-sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      z-index: 201;
+      display: none; flex-direction: column; align-items: center;
+      padding: 0 24px 36px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
+      box-shadow: 0 -6px 32px rgba(81,45,168,0.14);
+    }
+
+    .promo-sheet.show { transform: translateY(0); }
+
+    .ps-handle {
+      width: 36px; height: 4px;
+      background: #DDD8F0; border-radius: 2px;
+      margin: 10px auto 0; flex-shrink: 0; align-self: stretch;
+      display: block; margin-left: auto; margin-right: auto;
+    }
+
+    .ps-close {
+      position: absolute; top: 14px; right: 16px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #F4F3FA; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #606060; font-size: 16px; line-height: 1;
+      transition: background 0.15s;
+    }
+
+    .ps-close:hover { background: #EAE8F5; }
+
+    .ps-icon-wrap {
+      width: 62px; height: 62px; border-radius: 18px;
+      background: linear-gradient(135deg, #EDE7F6 0%, #D9D0F5 100%);
+      display: flex; align-items: center; justify-content: center;
+      margin: 22px 0 16px;
+    }
+
+    .ps-title {
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      font-size: 18px; color: #1C1440; margin-bottom: 5px;
+    }
+
+    .ps-sub {
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      color: #9E9E9E; margin-bottom: 22px; text-align: center;
+    }
+
+    .ps-input {
+      width: 100%; height: 50px;
+      border: 1.5px solid #E3DFFF; border-radius: 14px;
+      padding: 0 16px; box-sizing: border-box;
+      font-family: 'Lato', sans-serif; font-weight: 600;
+      font-size: 15px; color: #282828; letter-spacing: 2px;
+      background: #FAFAFE; outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      text-transform: uppercase; text-align: center;
+    }
+
+    .ps-input::placeholder {
+      color: #C8C4DF; letter-spacing: 1px;
+      font-weight: 400; text-transform: none;
+    }
+
+    .ps-input:focus {
+      border-color: #7B61D4;
+      box-shadow: 0 0 0 3px rgba(123,97,212,0.12);
+      background: #fff;
+    }
+
+    .ps-apply-btn {
+      width: 100%; height: 50px; margin-top: 12px;
       background: #512DA8; color: #fff;
-      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 15px;
-      border: none; border-radius: 13px;
-      cursor: pointer; transition: background 0.15s; white-space: nowrap;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px;
+      border: none; border-radius: 14px;
+      cursor: pointer; transition: background 0.15s;
     }
 
-    .promo-apply-btn:hover { background: #4527A0; }
+    .ps-apply-btn:hover { background: #4527A0; }
+    .ps-apply-btn:disabled { background: #C5B8EF; cursor: default; }
 
-    .promo-result {
-      margin-top: 7px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px; min-height: 18px;
+    .ps-result {
+      margin-top: 10px; width: 100%;
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      min-height: 18px; text-align: center;
     }
 
-    .promo-result.success { color: #2E7D32; }
-    .promo-result.error   { color: #C62828; }
+    .ps-result.success { color: #2E7D32; }
+    .ps-result.error   { color: #C62828; }
 
     /* ── Trust signals ── */
     .trust-section {
@@ -690,12 +764,7 @@
 
         <!-- Promo Code -->
         <div class="promo-section">
-          <div class="promo-label">Have a discount code?</div>
-          <div class="promo-row">
-            <input type="text" class="promo-input" id="promo-input" placeholder="Enter promo code" maxlength="20" />
-            <button class="promo-apply-btn" onclick="applyPromo()">Apply</button>
-          </div>
-          <div class="promo-result" id="promo-result"></div>
+          <button class="promo-toggle-link" id="promo-toggle" onclick="openPromoSheet()">Have a promo code?</button>
         </div>
 
         <!-- Trust signals -->
@@ -710,7 +779,7 @@
           </div>
           <div class="trust-item">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-            <div class="trust-item-label">7-Day Free Trial</div>
+            <div class="trust-item-label">Instant Access</div>
           </div>
         </div>
 
@@ -719,10 +788,10 @@
       <!-- ── Sticky CTA ── -->
       <div class="cta-footer">
         <button class="cta-btn" id="cta-btn" onclick="handleSubscribe()">
-          Start Free Trial
+          Subscribe
           <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
         </button>
-        <div class="cta-fine" id="cta-fine">7 days free · Then ₹10,000/year + tax · Cancel before day 7 — no charge</div>
+        <div class="cta-fine" id="cta-fine">₹10,000/year · Billed annually · Cancel anytime</div>
       </div>
 
       <!-- ── Confirmation Sheet ── -->
@@ -756,17 +825,12 @@
           </div>
 
           <div class="sheet-price-section">
-            <div class="sheet-trial-title">7 days free trial</div>
-            <div class="sheet-trial-sub">Starting today</div>
-          </div>
-
-          <div class="sheet-price-section">
             <div class="sheet-billing-price" id="sheet-price">₹10,000 per year</div>
-            <div class="sheet-billing-sub" id="sheet-billing-start">Starting on 15 Apr 2026</div>
+            <div class="sheet-billing-sub" id="sheet-billing-start">Starts today · Renews on 9 Apr 2027</div>
           </div>
 
           <div class="sheet-terms">
-            No commitment. Cancel any time before day 7 via Settings &gt; Account — you will not be charged. Plan renews automatically until cancelled. Applicable taxes as per Government norms.
+            Plan renews automatically until cancelled. Cancel anytime via Settings &gt; Account. Applicable taxes as per Government norms.
           </div>
 
           <div class="sheet-account">Account: arjun@example.com</div>
@@ -791,22 +855,38 @@
               <span class="ss-value" id="ss-plan">Annual (₹10,000/year)</span>
             </div>
             <div class="ss-row">
-              <span class="ss-label">Today you pay</span>
-              <span class="ss-value highlight">₹0 &nbsp;(Free trial)</span>
-            </div>
-            <div class="ss-row">
-              <span class="ss-label">Trial ends</span>
-              <span class="ss-value">15 Apr 2026</span>
+              <span class="ss-label">Starts on</span>
+              <span class="ss-value highlight">Today · 9 Apr 2026</span>
             </div>
             <div class="ss-row">
               <span class="ss-label">Next billing</span>
-              <span class="ss-value" id="ss-billing">₹10,000 + tax · 15 Apr 2026</span>
+              <span class="ss-value" id="ss-billing">₹10,000 + tax · 9 Apr 2027</span>
             </div>
           </div>
           <button class="explore-btn" onclick="startExploring()">Start Exploring Premium</button>
         </div>
 
       </div><!-- /store-sheet -->
+
+      <!-- ── Promo Code Sheet ── -->
+      <div class="promo-overlay" id="promo-overlay" onclick="closePromoSheet()"></div>
+      <div class="promo-sheet" id="promo-sheet">
+        <span class="ps-handle"></span>
+        <button class="ps-close" onclick="closePromoSheet()">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#606060"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        <div class="ps-icon-wrap">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="#512DA8">
+            <path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/>
+          </svg>
+        </div>
+        <div class="ps-title">Have a Promo Code?</div>
+        <div class="ps-sub">Enter your code below to apply a discount</div>
+        <input type="text" class="ps-input" id="promo-input" placeholder="Enter code" maxlength="20"
+          oninput="document.getElementById('ps-apply').disabled = this.value.trim().length === 0" />
+        <button class="ps-apply-btn" id="ps-apply" onclick="applyPromo()" disabled>Apply Code</button>
+        <div class="ps-result" id="promo-result"></div>
+      </div>
 
     </div><!-- /screen -->
   </div><!-- /phone -->
@@ -829,7 +909,7 @@
         ringAnnual.innerHTML  = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
         ringMonthly.className = 'selected-ring';
         ringMonthly.innerHTML = '';
-        ctaFine.textContent   = '7 days free · Then ₹10,000/year + tax · Cancel before day 7 — no charge';
+        ctaFine.textContent   = '₹10,000/year · Billed annually · Cancel anytime';
       } else {
         annualCard.className  = 'plan-card annual unselected';
         monthlyCard.className = 'plan-card monthly selected';
@@ -837,8 +917,29 @@
         ringMonthly.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
         ringAnnual.className  = 'selected-ring';
         ringAnnual.innerHTML  = '';
-        ctaFine.textContent   = '7 days free · Then ₹1,000/month + tax · Cancel before day 7 — no charge';
+        ctaFine.textContent   = '₹1,000/month · Billed monthly · Cancel anytime';
       }
+    }
+
+    function openPromoSheet() {
+      const overlay = document.getElementById('promo-overlay');
+      const sheet   = document.getElementById('promo-sheet');
+      overlay.style.display = 'block';
+      sheet.style.display   = 'flex';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        sheet.classList.add('show');
+        setTimeout(() => document.getElementById('promo-input').focus(), 380);
+      }));
+    }
+
+    function closePromoSheet() {
+      const overlay = document.getElementById('promo-overlay');
+      const sheet   = document.getElementById('promo-sheet');
+      sheet.classList.remove('show');
+      sheet.addEventListener('transitionend', () => {
+        sheet.style.display   = 'none';
+        overlay.style.display = 'none';
+      }, { once: true });
     }
 
     function applyPromo() {
@@ -846,22 +947,21 @@
       const result = document.getElementById('promo-result');
       const code   = input.value.trim().toUpperCase();
 
-      if (!code) {
-        result.className = 'promo-result error';
-        result.textContent = 'Please enter a promo code.';
-        return;
-      }
+      if (!code) return;
+
       if (code === 'BILLIONT20') {
-        result.className = 'promo-result success';
+        result.className = 'ps-result success';
         result.textContent = '✓ 20% off applied to your first billing cycle!';
         input.style.borderColor = '#4CAF50';
+        setTimeout(closePromoSheet, 1400);
       } else if (code === 'WELCOME10') {
-        result.className = 'promo-result success';
-        result.textContent = '✓ 10% off applied to your first billing cycle!';
+        result.className = 'ps-result success';
+        result.textContent = '✓ 10% off applied!';
         input.style.borderColor = '#4CAF50';
+        setTimeout(closePromoSheet, 1400);
       } else {
-        result.className = 'promo-result error';
-        result.textContent = '✗ Invalid code. Try BILLIONT20 for 20% off!';
+        result.className = 'ps-result error';
+        result.textContent = '✗ Invalid code. Please try again.';
         input.style.borderColor = '#C62828';
       }
     }
