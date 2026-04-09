@@ -231,126 +231,133 @@
     .plan-cards {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
-    /* Annual Card */
     .plan-card {
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 18px;
+      padding: 18px 18px 16px;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: transform 0.12s, box-shadow 0.18s;
       position: relative;
       overflow: hidden;
     }
 
-    .plan-card:active { transform: scale(0.99); }
+    .plan-card:active { transform: scale(0.985); }
 
     .plan-card.annual {
-      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
-      box-shadow: 0 6px 20px rgba(81,45,168,0.35);
+      background: linear-gradient(140deg, #180840 0%, #3b1a8c 50%, #6b3ecf 100%);
+      box-shadow: 0 8px 28px rgba(81,45,168,0.42);
+    }
+
+    .plan-card.annual::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(255,255,255,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .plan-card.annual::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: -10px;
+      width: 90px; height: 90px;
+      background: radial-gradient(circle, rgba(123,97,212,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .plan-card.annual.unselected {
+      background: linear-gradient(140deg, #180840 0%, #3b1a8c 50%, #6b3ecf 100%);
+      box-shadow: none;
+      opacity: 0.38;
     }
 
     .plan-card.monthly {
       background: #fff;
-      border: 1.5px solid #E3DFFF;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1.5px solid #EAE6F8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .plan-card.monthly.selected {
-      border-color: #512DA8;
-      box-shadow: 0 4px 16px rgba(81,45,168,0.2);
-    }
-
-    .plan-card.annual.unselected {
-      opacity: 0.5;
-      background: #E3DFFF;
-      box-shadow: none;
+      border-color: #7B61D4;
+      box-shadow: 0 4px 18px rgba(81,45,168,0.15);
     }
 
     .plan-top-row {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       margin-bottom: 12px;
     }
 
+    .plan-top-left { display: flex; align-items: center; gap: 9px; }
+
     .plan-name {
       font-family: 'Lato', sans-serif;
       font-weight: 700;
-      font-size: 19px;
+      font-size: 15px;
+      letter-spacing: 0.1px;
     }
 
-    .plan-name.light { color: #fff; }
-    .plan-name.dark { color: #282828; }
+    .plan-name.light { color: rgba(255,255,255,0.85); }
+    .plan-name.dark  { color: #3D3060; }
 
     .best-value-badge {
-      background: #FFD54F;
-      color: #5D4037;
+      background: linear-gradient(135deg, #FFE57F 0%, #FFB300 100%);
+      color: #5D3A00;
       font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 10px;
+      font-weight: 800;
+      font-size: 9px;
       padding: 3px 9px;
       border-radius: 20px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(255,179,0,0.35);
     }
 
-    .selected-ring {
-      width: 22px;
-      height: 22px;
+    .plan-ring {
+      width: 22px; height: 22px; flex-shrink: 0;
       border-radius: 50%;
-      border: 2px solid #512DA8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border: 2px solid #C5B8EF;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
     }
 
-    .selected-ring.filled {
-      background: #512DA8;
-    }
+    .plan-ring.checked { background: #512DA8; border-color: #512DA8; }
+    .plan-ring.checked-white { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
 
-    .plan-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      margin-bottom: 4px;
-    }
+    .plan-price-block { display: flex; align-items: baseline; gap: 3px; }
 
     .plan-price {
       font-family: 'Lato', sans-serif;
       font-weight: 900;
       font-size: 32px;
+      line-height: 1;
     }
 
     .plan-price.light { color: #fff; }
-    .plan-price.dark { color: #282828; }
+    .plan-price.dark  { color: #1C1440; }
 
-    .plan-price-unit {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-    }
+    .plan-price-unit { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; }
+    .plan-price-unit.light { color: rgba(255,255,255,0.55); }
+    .plan-price-unit.dark  { color: #9E9E9E; }
 
-    .plan-price-unit.light { color: rgba(255,255,255,0.7); }
-    .plan-price-unit.dark { color: #606060; }
-
-    .plan-detail {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-    }
-
-    .plan-detail.light { color: rgba(255,255,255,0.75); }
-    .plan-detail.dark { color: #606060; }
+    .plan-detail { font-family: 'Inter', sans-serif; font-size: 12px; margin-top: 7px; }
+    .plan-detail.light { color: rgba(255,255,255,0.5); }
+    .plan-detail.dark  { color: #9E9E9E; }
 
     .savings-tag {
-      display: inline-block;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #FFE082;
       font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 3px 10px;
+      font-weight: 700; font-size: 11px;
+      padding: 5px 12px;
       border-radius: 20px;
-      margin-top: 8px;
+      margin-top: 12px;
     }
 
     /* ── Promo Code ── */
@@ -946,35 +953,38 @@
             <!-- Annual Card (default selected) -->
             <div class="plan-card annual" id="card-annual" onclick="selectPlan('annual')">
               <div class="plan-top-row">
-                <div>
-                  <div class="plan-name light">Annual Plan</div>
+                <div class="plan-top-left">
+                  <span class="plan-name light">Annual</span>
+                  <span class="best-value-badge">Best Value</span>
                 </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                  <span class="best-value-badge">BEST VALUE</span>
-                  <div class="selected-ring filled" id="ring-annual">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                  </div>
+                <div class="plan-ring checked-white" id="ring-annual">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 </div>
               </div>
-              <div class="plan-price-row">
+              <div class="plan-price-block">
                 <span class="plan-price light">₹10,000</span>
                 <span class="plan-price-unit light">/year</span>
               </div>
-              <div class="plan-detail light">₹833/month · Billed annually · + Tax applicable</div>
-              <div class="savings-tag">Pay for 10 months — 2 months FREE (Save ₹2,000)</div>
+              <div class="plan-detail light">₹833/month · Billed annually · + Tax</div>
+              <div class="savings-tag">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="#FFE082"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Save ₹2,000 — 2 months free
+              </div>
             </div>
 
             <!-- Monthly Card -->
             <div class="plan-card monthly" id="card-monthly" onclick="selectPlan('monthly')">
               <div class="plan-top-row">
-                <div class="plan-name dark">Monthly Plan</div>
-                <div class="selected-ring" id="ring-monthly"></div>
+                <div class="plan-top-left">
+                  <span class="plan-name dark">Monthly</span>
+                </div>
+                <div class="plan-ring" id="ring-monthly"></div>
               </div>
-              <div class="plan-price-row">
+              <div class="plan-price-block">
                 <span class="plan-price dark">₹1,000</span>
                 <span class="plan-price-unit dark">/month</span>
               </div>
-              <div class="plan-detail dark">+ Applicable tax · Billed monthly · Cancel anytime</div>
+              <div class="plan-detail dark">Billed monthly · Cancel anytime</div>
             </div>
 
           </div>
@@ -1182,34 +1192,21 @@
       const ctaFine     = document.getElementById('cta-fine');
 
       if (plan === 'annual') {
-        // Annual selected
-        annualCard.classList.remove('unselected');
-        annualCard.style.opacity = '';
-        annualCard.style.background = 'linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%)';
-        annualCard.style.boxShadow = '0 6px 20px rgba(81,45,168,0.35)';
-
-        monthlyCard.classList.remove('selected');
-        ringAnnual.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-        ringAnnual.classList.add('filled');
+        annualCard.className  = 'plan-card annual';
+        monthlyCard.className = 'plan-card monthly';
+        ringAnnual.className  = 'plan-ring checked-white';
+        ringAnnual.innerHTML  = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ringMonthly.className = 'plan-ring';
         ringMonthly.innerHTML = '';
-        ringMonthly.classList.remove('filled');
-
         ctaBtn.innerHTML = 'Subscribe <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="flex-shrink:0"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
         ctaFine.textContent = '₹10,000/year · Billed annually · Cancel anytime';
       } else {
-        // Monthly selected
-        annualCard.style.opacity = '0.5';
-        annualCard.style.background = '#E3DFFF';
-        annualCard.style.boxShadow = 'none';
-
-        monthlyCard.classList.add('selected');
-        ringMonthly.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-        ringMonthly.style.background = '#512DA8';
-        ringMonthly.style.border = 'none';
-        ringAnnual.innerHTML = '';
-        ringAnnual.classList.remove('filled');
-        ringAnnual.style.background = '';
-
+        annualCard.className  = 'plan-card annual unselected';
+        monthlyCard.className = 'plan-card monthly selected';
+        ringMonthly.className = 'plan-ring checked';
+        ringMonthly.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        ringAnnual.className  = 'plan-ring checked-white';
+        ringAnnual.innerHTML  = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
         ctaBtn.innerHTML = 'Subscribe <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" style="flex-shrink:0"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
         ctaFine.textContent = '₹1,000/month · Billed monthly · Cancel anytime';
       }
