@@ -55,6 +55,11 @@
       border-color: #86EFAC;
       color: #15803D;
     }
+    .demo-btn.active-expired {
+      background: #FEE2E2;
+      border-color: #F87171;
+      color: #B91C1C;
+    }
     .demo-btn.active-ios {
       background: #000;
       border-color: #000;
@@ -280,6 +285,11 @@
       border: 1.5px solid #86EFAC;
     }
 
+    .mem-expired {
+      background: #F9F9F9;
+      border: 1.5px solid #E5E5EA;
+    }
+
     .mem-w-icon-circle {
       width: 40px;
       height: 40px;
@@ -291,6 +301,7 @@
     }
     .mem-expiring .mem-w-icon-circle { background: #EDE7F6; }
     .mem-renewed .mem-w-icon-circle  { background: #DCFCE7; }
+    .mem-expired .mem-w-icon-circle  { background: #F0F0F0; }
 
     .mem-w-text-block {
       flex: 1;
@@ -323,7 +334,8 @@
       padding: 2px 8px;
       border-radius: 20px;
     }
-    .mem-renewed .mem-w-plan-tag { background: #DCFCE7; color: #15803D; }
+    .mem-renewed .mem-w-plan-tag  { background: #DCFCE7; color: #15803D; }
+    .mem-expired .mem-w-plan-tag  { background: #F0F0F0; color: #9E9E9E; }
 
     .mem-w-status-row {
       display: flex;
@@ -352,6 +364,14 @@
       line-height: 1.4;
     }
     .mem-renewed .mem-w-msg { color: #3F3F46; }
+    .mem-expired .mem-w-msg { color: #9E9E9E; }
+
+    .mem-w-expired-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #E53935;
+    }
 
     .mem-w-cta-col {
       flex-shrink: 0;
@@ -1044,6 +1064,44 @@
       overflow: hidden;
     }
     .renew-sheet.open { transform: translateY(0); }
+
+    /* ── Activation notice banner ── */
+    .rp-activation-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #EDE7F6;
+      border: 1px solid #C5B8EF;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+
+    .rp-activation-icon {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .rp-activation-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .rp-activation-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #3B1F8C;
+    }
+
+    .rp-activation-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #5E35B1;
+      line-height: 1.45;
+    }
 
     /* ── Drag handle ── */
     .rp-handle {
@@ -1818,6 +1876,7 @@
     <span class="demo-label">State:</span>
     <button class="demo-btn active-expiring" id="btn-expiring" onclick="setState('expiring')">⚠ Expiring</button>
     <button class="demo-btn" id="btn-renewed" onclick="setState('renewed')">✓ Renewed</button>
+    <button class="demo-btn" id="btn-expired" onclick="setState('expired')">✕ Expired</button>
     <div class="demo-divider"></div>
     <span class="demo-label">Platform:</span>
     <button class="demo-btn active-ios" id="btn-ios" onclick="setPlatform('ios')">iOS</button>
@@ -1904,6 +1963,29 @@
             <div class="mem-w-cta-col">
               <!-- Button triggers the bottom sheet instead of navigating -->
               <button class="mem-w-renew-btn" onclick="openRenewSheet()">Renew Now</button>
+            </div>
+          </div>
+
+          <!-- ── Membership Widget: Expired State ── -->
+          <div class="mem-widget mem-expired" id="widget-expired" style="display:none;">
+            <div class="mem-w-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#9E9E9E">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+            </div>
+            <div class="mem-w-text-block">
+              <div class="mem-w-top-row">
+                <span class="mem-w-label" style="color:#606060;">Membership</span>
+                <span class="mem-w-plan-tag">Expired</span>
+              </div>
+              <div class="mem-w-status-row">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="#E53935"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                <span class="mem-w-expired-text">Plan Expired</span>
+              </div>
+              <div class="mem-w-msg">Expired on 3 May 2025 · Renew to regain access</div>
+            </div>
+            <div class="mem-w-cta-col">
+              <button class="mem-w-renew-btn" onclick="openRenewSheet()">Renew</button>
             </div>
           </div>
 
@@ -2247,6 +2329,17 @@
 
           </div>
 
+          <!-- Activation Notice -->
+          <div class="rp-activation-notice">
+            <div class="rp-activation-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#512DA8"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-7-2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm2-9h-4v2h4V8z"/></svg>
+            </div>
+            <div class="rp-activation-text">
+              <span class="rp-activation-title">New plan activates after current plan ends</span>
+              <span class="rp-activation-sub">You will be charged now, but your renewed plan will start on <strong>May 4, 2026</strong> — the day after your current plan expires. No overlap, no gap.</span>
+            </div>
+          </div>
+
           <!-- Benefits -->
           <div class="rp-benefits">
             <div class="rp-benefits-title">What you continue to get</div>
@@ -2354,7 +2447,7 @@
             <div class="rpc-price-row">
               <div>
                 <div class="rpc-plan-name" id="rpc-plan-name">Renew Annual Plan</div>
-                <div class="rpc-plan-sub">Access continues without interruption</div>
+                <div class="rpc-plan-sub">Activates on May 4, 2026 · After current plan ends</div>
               </div>
               <div>
                 <div class="rpc-price-amount" id="rpc-price-amount">₹10,000</div>
@@ -2372,7 +2465,7 @@
             </div>
 
             <div class="rpc-terms">
-              Payment via <span id="rpc-terms-method" style="font-weight:600;color:#282828;">Apple Pay</span>. Your membership will be renewed immediately. You will be charged <span id="rpc-terms-price">₹10,000 + applicable tax</span>. New plan starts from the date of renewal.
+              Payment via <span id="rpc-terms-method" style="font-weight:600;color:#282828;">Apple Pay</span>. You will be charged <span id="rpc-terms-price">₹10,000 + applicable tax</span> today. Your new plan will <strong style="color:#282828;">activate on May 4, 2026</strong>, the day after your current plan expires on May 3, 2026. No overlap, no gap in access.
             </div>
 
             <div class="rpc-account">Signed in as arjun@example.com</div>
@@ -2397,6 +2490,10 @@
               <div class="rpc-ss-row">
                 <span class="rpc-ss-label">Amount charged</span>
                 <span class="rpc-ss-value" id="rpc-ss-amount">₹10,000 + tax</span>
+              </div>
+              <div class="rpc-ss-row">
+                <span class="rpc-ss-label">New plan starts</span>
+                <span class="rpc-ss-value">May 4, 2026</span>
               </div>
               <div class="rpc-ss-row">
                 <span class="rpc-ss-label">Valid until</span>
@@ -2610,18 +2707,27 @@
     function setState(state) {
       const expW  = document.getElementById('widget-expiring');
       const renW  = document.getElementById('widget-renewed');
+      const expdW = document.getElementById('widget-expired');
       const btnE  = document.getElementById('btn-expiring');
       const btnR  = document.getElementById('btn-renewed');
+      const btnX  = document.getElementById('btn-expired');
+
+      expW.style.display  = 'none';
+      renW.style.display  = 'none';
+      expdW.style.display = 'none';
+      btnE.className = 'demo-btn';
+      btnR.className = 'demo-btn';
+      btnX.className = 'demo-btn';
+
       if (state === 'expiring') {
         expW.style.display = 'flex';
-        renW.style.display = 'none';
         btnE.className = 'demo-btn active-expiring';
-        btnR.className = 'demo-btn';
-      } else {
-        expW.style.display = 'none';
+      } else if (state === 'renewed') {
         renW.style.display = 'flex';
-        btnE.className = 'demo-btn';
         btnR.className = 'demo-btn active-renewed';
+      } else if (state === 'expired') {
+        expdW.style.display = 'flex';
+        btnX.className = 'demo-btn active-expired';
       }
     }
 

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    /* ── Screen layout ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 108px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      padding-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 0;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hdr-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Airy Layout — 30px pad, 24px gaps ── */
+    .content-pad {
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 0.5px;
+      background: #d6d6d6;
+    }
+
+    /* ════════════════════════════════════════
+       WELCOME CARD — New user, no membership
+    ════════════════════════════════════════ */
+    .welcome-card {
+      background: linear-gradient(145.64deg, #1E0F41 15.83%, #42238B 84.17%);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .welcome-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .welcome-greeting-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .welcome-greeting-row span,
+    .welcome-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .welcome-company {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .welcome-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 49px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #512DA8;
+    }
+
+    /* ════════════════════════════════════════
+       HERO UNLOCK BANNER — Main value CTA
+    ════════════════════════════════════════ */
+    .hero-unlock {
+      background: linear-gradient(145deg, #2a1060 0%, #512DA8 55%, #7B52D4 100%);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative glow blobs */
+    .hero-unlock::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255,255,255,0.09) 0%, transparent 70%);
+    }
+
+    .hero-unlock::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    }
+
+    .hero-crown {
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      backdrop-filter: blur(4px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 27px;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Stat row inside hero */
+    .hero-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hero-stat-value {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .hero-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .hero-stat-sep {
+      width: 1px;
+      background: rgba(255,255,255,0.25);
+      margin: 4px 0;
+      align-self: stretch;
+    }
+
+    /* CTA button in hero */
+    .hero-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 52px;
+      background: #fff;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.1s, box-shadow 0.15s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta-btn:active { transform: scale(0.98); }
+
+    .hero-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ════════════════════════════════════════
+       LOCKED PREVIEW SECTION — Teaser cards
+    ════════════════════════════════════════ */
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: #282828;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 2px;
+    }
+
+    .lock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #EDE7F6;
+      color: #512DA8;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* Locked course card */
+    .locked-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid #E3DFFF;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .locked-thumb {
+      height: 140px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .locked-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 15, 65, 0.48);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .lock-icon-circle {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .locked-body {
+      padding: 14px 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .locked-info {
+      flex: 1;
+    }
+
+    .locked-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .locked-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 3px;
+    }
+
+    .unlock-tag {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: #512DA8;
+      background: #E3DFFF;
+      padding: 5px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Horizontal locked reels scroll ── */
+    .locked-reels-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 4px 30px 6px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .locked-reels-scroll::-webkit-scrollbar { display: none; }
+
+    .locked-reel-card {
+      flex-shrink: 0;
+      width: 155px;
+      height: 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .locked-reel-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 15, 65, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .locked-reel-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 10px 10px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      z-index: 3;
+    }
+
+    .locked-reel-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #fff;
+      line-height: 1.35;
+    }
+
+    /* ════════════════════════════════════════
+       BENEFITS SECTION
+    ════════════════════════════════════════ */
+    .benefits-card {
+      background: #f7f6ff;
+      border-radius: 16px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .benefits-heading {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: #282828;
+      margin-bottom: 14px;
+    }
+
+    .benefit-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 0.5px solid #e4e1f5;
+    }
+
+    .benefit-row:last-child { border-bottom: none; }
+
+    .benefit-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .benefit-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .benefit-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .benefit-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      line-height: 1.45;
+    }
+
+    /* ════════════════════════════════════════
+       SOCIAL PROOF
+    ════════════════════════════════════════ */
+    .proof-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .proof-card {
+      flex: 1;
+      background: #fff;
+      border: 1.5px solid #E3DFFF;
+      border-radius: 16px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .proof-value {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 25px;
+      color: #512DA8;
+    }
+
+    .proof-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+      line-height: 1.3;
+    }
+
+    /* Stars */
+    .stars-row {
+      display: flex;
+      gap: 2px;
+    }
+
+    /* ════════════════════════════════════════
+       TESTIMONIAL
+    ════════════════════════════════════════ */
+    .testimonial-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1.5px solid #E3DFFF;
+      padding: 18px 16px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.06);
+    }
+
+    .testimonial-quote-icon {
+      width: 34px;
+      height: 34px;
+      background: #512DA8;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #282828;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #512DA8, #7B52D4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .author-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #282828;
+    }
+
+    .author-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #606060;
+    }
+
+    /* ════════════════════════════════════════
+       PRICING CARD
+    ════════════════════════════════════════ */
+    .pricing-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(81,45,168,0.25);
+    }
+
+    .pricing-header {
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
+      padding: 20px 20px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-header::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    }
+
+    .pricing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+      backdrop-filter: blur(4px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-plan-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 25px;
+      color: #fff;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-amount-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-currency {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .pricing-amount {
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: 40px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .pricing-period {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .pricing-savings {
+      display: inline-block;
+      background: #FFD54F;
+      color: #5D4037;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-body {
+      background: #fff;
+      padding: 18px 20px 20px;
+    }
+
+    .pricing-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pricing-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .check-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pricing-feature-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #282828;
+    }
+
+    .pricing-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(81,45,168,0.4);
+      transition: box-shadow 0.15s, transform 0.1s;
+    }
+
+    .pricing-cta-btn:active { transform: scale(0.98); }
+
+    .pricing-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #9e9e9e;
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    /* ── FAQ section ── */
+    .faq-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: #282828;
+      margin-bottom: 4px;
+    }
+
+    .faq-item {
+      background: #f7f6ff;
+      border-radius: 13px;
+      padding: 14px 16px;
+      border: 1px solid #E3DFFF;
+    }
+
+    .faq-q {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #282828;
+      margin-bottom: 6px;
+    }
+
+    .faq-a {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      line-height: 1.5;
+    }
+
+    /* ════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════ */
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 0.5px solid #e0e0e0;
+      box-shadow: 0px -1px 3px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .navbar-main {
+      padding: 0 8px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 0 8px;
+      text-decoration: none;
+    }
+
+    .nav-tab-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-tab-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+      font-weight: 400;
+    }
+
+    .nav-tab.active .nav-tab-label { color: #512DA8; }
+
+    .navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 5px 0 8px;
+      border-top: 0.5px solid #f0f0f0;
+    }
+
+    .copy-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <div class="scroll-area">
+
+        <!-- ── Header ── -->
+        <div class="header">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="header-bar">
+            <span class="logo">BillionTools</span>
+            <div class="header-actions">
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <div class="hdr-icon" style="width:34px;height:34px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Main Content ── -->
+        <div class="content-pad" style="padding-top: 0; margin-top: 0;">
+
+          <!-- Welcome Card -->
+          <div class="welcome-card">
+            <div class="welcome-left">
+              <div class="welcome-greeting-row">
+                <span>Welcome,</span>
+                <span style="font-size:20px;">👋</span>
+              </div>
+              <div class="welcome-name">Arjun</div>
+              <div class="welcome-company">Poornatha Partnering Entrepreneurs</div>
+            </div>
+            <div class="welcome-right">
+              <div class="avatar">A</div>
+            </div>
+          </div>
+
+          <!-- Hero Unlock Banner -->
+          <div class="hero-unlock">
+
+            <div class="hero-crown">
+              <!-- Crown icon -->
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#FFD54F">
+                <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+              </svg>
+            </div>
+
+            <div class="hero-title">Unlock Everything.<br>Grow Faster.</div>
+            <div class="hero-subtitle">Join thousands of entrepreneurs already using BillionTools to build, learn, and scale their businesses.</div>
+
+            <!-- Stats -->
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <span class="hero-stat-value">12,000+</span>
+                <span class="hero-stat-label">Active Members</span>
+              </div>
+              <div class="hero-stat-sep"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-value">200+</span>
+                <span class="hero-stat-label">Courses & Reels</span>
+              </div>
+              <div class="hero-stat-sep"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-value">4.9★</span>
+                <span class="hero-stat-label">App Rating</span>
+              </div>
+            </div>
+
+            <button class="hero-cta-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+              Get Premium Access
+            </button>
+            <div class="hero-fine">Cancel anytime &nbsp;·&nbsp; No hidden fees</div>
+
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+        </div><!-- /content-pad -->
+
+        <!-- ── Locked Reels Preview — full-bleed horizontal scroll ── -->
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:0;">
+
+          <div class="section-header" style="padding: 0 30px;">
+            <div>
+              <div class="section-title">Reels for You</div>
+              <div class="section-subtitle">Unlock 200+ business reels</div>
+            </div>
+            <div class="lock-pill">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="#512DA8"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Members Only
+            </div>
+          </div>
+
+          <div class="locked-reels-scroll">
+
+            <!-- Reel 1 -->
+            <div class="locked-reel-card">
+              <div style="position:absolute;inset:0;background:linear-gradient(165deg,#7c5cbf 0%,#3a1f7a 60%,#1e0f41 100%);"></div>
+              <div class="locked-reel-overlay">
+                <div class="lock-icon-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+              </div>
+              <div class="locked-reel-caption"><p>Leadership Mindset for Entrepreneurs</p></div>
+            </div>
+
+            <!-- Reel 2 -->
+            <div class="locked-reel-card">
+              <div style="position:absolute;inset:0;background:linear-gradient(165deg,#5c4aaa 0%,#2e1876 60%,#180c3a 100%);"></div>
+              <div class="locked-reel-overlay">
+                <div class="lock-icon-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+              </div>
+              <div class="locked-reel-caption"><p>5 Ways to Scale Your Business</p></div>
+            </div>
+
+            <!-- Reel 3 -->
+            <div class="locked-reel-card">
+              <div style="position:absolute;inset:0;background:linear-gradient(165deg,#8a69ce 0%,#4a2d96 60%,#261160 100%);"></div>
+              <div class="locked-reel-overlay">
+                <div class="lock-icon-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+              </div>
+              <div class="locked-reel-caption"><p>Building Your Personal Brand</p></div>
+            </div>
+
+            <!-- Reel 4 -->
+            <div class="locked-reel-card">
+              <div style="position:absolute;inset:0;background:linear-gradient(165deg,#6b4fc0 0%,#35208a 60%,#1c0e4a 100%);"></div>
+              <div class="locked-reel-overlay">
+                <div class="lock-icon-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+              </div>
+              <div class="locked-reel-caption"><p>Women in Business: Success Stories</p></div>
+            </div>
+
+          </div>
+
+        </div><!-- /locked reels section -->
+
+        <!-- ── Bottom content sections ── -->
+        <div class="content-pad" style="margin-top:24px;">
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Locked Course Card -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="section-header">
+              <div>
+                <div class="section-title">Premium Courses</div>
+                <div class="section-subtitle">In-depth programs for entrepreneurs</div>
+              </div>
+              <div class="lock-pill">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="#512DA8"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                Members Only
+              </div>
+            </div>
+
+            <!-- Course 1 -->
+            <div class="locked-card">
+              <div class="locked-thumb" style="background:linear-gradient(135deg,#7c5cbf 0%,#2a1060 100%);">
+                <!-- Illustration -->
+                <svg viewBox="0 0 320 140" width="100%">
+                  <rect x="60" y="15" width="200" height="110" rx="10" fill="#fff" opacity="0.12"/>
+                  <rect x="70" y="25" width="180" height="90" rx="6" fill="#E3DFFF" opacity="0.25"/>
+                  <circle cx="160" cy="70" r="22" fill="rgba(255,255,255,0.2)"/>
+                  <polygon points="153,62 153,78 170,70" fill="#fff" opacity="0.7"/>
+                </svg>
+                <div class="locked-overlay">
+                  <div class="lock-icon-circle">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="locked-body">
+                <div class="locked-info">
+                  <div class="locked-title">The Entrepreneur's Playbook</div>
+                  <div class="locked-meta">6 sections · 24 videos · Beginner</div>
+                </div>
+                <div class="unlock-tag">Unlock</div>
+              </div>
+            </div>
+
+            <!-- Course 2 -->
+            <div class="locked-card">
+              <div class="locked-thumb" style="background:linear-gradient(135deg,#4a2d96 0%,#1e0f41 100%);">
+                <svg viewBox="0 0 320 140" width="100%">
+                  <rect x="40" y="20" width="240" height="100" rx="8" fill="rgba(255,255,255,0.1)"/>
+                  <circle cx="100" cy="70" r="28" fill="rgba(255,255,255,0.15)"/>
+                  <circle cx="220" cy="70" r="28" fill="rgba(255,255,255,0.15)"/>
+                  <path d="M100 55 L220 55" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+                  <path d="M100 70 L220 70" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+                  <path d="M100 85 L220 85" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+                </svg>
+                <div class="locked-overlay">
+                  <div class="lock-icon-circle">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="locked-body">
+                <div class="locked-info">
+                  <div class="locked-title">Sales & Negotiation Mastery</div>
+                  <div class="locked-meta">5 sections · 18 videos · Intermediate</div>
+                </div>
+                <div class="unlock-tag">Unlock</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Benefits Card -->
+          <div class="benefits-card">
+            <div class="benefits-heading">Everything in one membership</div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-title">200+ Premium Courses</div>
+                <div class="benefit-desc">Deep-dive programs on sales, leadership, finance, and more — curated for entrepreneurs.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-title">Daily Business Reels</div>
+                <div class="benefit-desc">Bite-sized video lessons from successful founders — learn on the go in 60 seconds.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-title">Exclusive Business Tools</div>
+                <div class="benefit-desc">Templates, calculators, pitch frameworks — ready-to-use resources that save you hours.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-title">Ask an Expert</div>
+                <div class="benefit-desc">Submit your business questions and get answers from experienced mentors and founders.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-title">Daily Thought of the Day</div>
+                <div class="benefit-desc">Inspiring insights and frameworks from top entrepreneurs to start your day right.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Social Proof -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="section-title">Loved by entrepreneurs</div>
+            <div class="proof-row">
+              <div class="proof-card">
+                <span class="proof-value">12K+</span>
+                <span class="proof-label">Active<br>Members</span>
+              </div>
+              <div class="proof-card">
+                <div class="stars-row">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFD54F"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFD54F"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFD54F"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFD54F"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFD54F"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </div>
+                <span class="proof-value" style="font-size:21px;">4.9</span>
+                <span class="proof-label">App<br>Rating</span>
+              </div>
+              <div class="proof-card">
+                <span class="proof-value">200+</span>
+                <span class="proof-label">Courses &amp;<br>Reels</span>
+              </div>
+            </div>
+
+            <!-- Testimonial -->
+            <div class="testimonial-card">
+              <div class="testimonial-quote-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+              </div>
+              <div class="testimonial-text">"BillionTools completely changed how I run my business. The courses are practical and the daily reels keep me sharp. Worth every rupee."</div>
+              <div class="testimonial-author">
+                <div class="author-avatar">P</div>
+                <div class="author-info">
+                  <div class="author-name">Priya Venkatesh</div>
+                  <div class="author-role">Founder, Bloom Retail Co.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- Pricing Card -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <div class="pricing-badge">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="#FFD54F"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                BEST VALUE
+              </div>
+              <div class="pricing-plan-name">Annual Membership</div>
+              <div class="pricing-amount-row">
+                <span class="pricing-currency">₹</span>
+                <span class="pricing-amount">6,999</span>
+                <span class="pricing-period">&nbsp;/ year</span>
+              </div>
+              <div class="pricing-savings">Save ₹5,000 vs monthly · Just ₹583/month</div>
+            </div>
+            <div class="pricing-body">
+              <div class="pricing-features">
+                <div class="pricing-feature">
+                  <div class="check-circle"><svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <span class="pricing-feature-text">Unlimited access to all courses &amp; reels</span>
+                </div>
+                <div class="pricing-feature">
+                  <div class="check-circle"><svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <span class="pricing-feature-text">All business tools &amp; templates</span>
+                </div>
+                <div class="pricing-feature">
+                  <div class="check-circle"><svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <span class="pricing-feature-text">Unlimited expert Q&amp;A queries</span>
+                </div>
+                <div class="pricing-feature">
+                  <div class="check-circle"><svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <span class="pricing-feature-text">Daily thought of the day &amp; insights</span>
+                </div>
+                <div class="pricing-feature">
+                  <div class="check-circle"><svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <span class="pricing-feature-text">Priority support &amp; new content first</span>
+                </div>
+              </div>
+
+              <button class="pricing-cta-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                Start My Membership
+              </button>
+              <div class="pricing-fine">Secure payment · Instant access · Cancel anytime</div>
+
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- FAQ -->
+          <div class="faq-section">
+            <div class="faq-title">Common questions</div>
+
+            <div class="faq-item">
+              <div class="faq-q">Can I cancel anytime?</div>
+              <div class="faq-a">Yes. You can cancel your membership at any time from the Settings page. Your access continues until the end of your billing period.</div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-q">What's included in the membership?</div>
+              <div class="faq-a">All courses, daily reels, business tools, daily thought of the day, and unlimited expert queries. Everything in the app, unlocked.</div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-q">Is there a free trial?</div>
+              <div class="faq-a">We offer a 7-day free preview for new members. Explore everything before committing — no charge until the trial ends.</div>
+            </div>
+
+          </div>
+
+        </div><!-- /content-pad bottom -->
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── NavBar ── -->
+      <div class="navbar">
+        <div class="navbar-main">
+          <div class="nav-tabs">
+
+            <!-- Home — active -->
+            <a class="nav-tab active" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              </div>
+              <span class="nav-tab-label" style="color:#512DA8;">Home</span>
+            </a>
+
+            <!-- Reels -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="#282828">
+                  <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+                </svg>
+              </div>
+              <span class="nav-tab-label">Reels</span>
+            </a>
+
+            <!-- Courses -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </div>
+              <span class="nav-tab-label">Courses</span>
+            </a>
+
+            <!-- Library -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <span class="nav-tab-label">Library</span>
+            </a>
+
+            <!-- Tools -->
+            <a class="nav-tab" href="#" style="text-decoration:none;">
+              <div class="nav-tab-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="#282828" stroke-width="1.5" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <span class="nav-tab-label">Tools</span>
+            </a>
+
+          </div>
+        </div>
+        <div class="navbar-copy">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#282828"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+          <span class="copy-text">Billiont Tools 2025</span>
+        </div>
+      </div>
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+</body>
+</html>

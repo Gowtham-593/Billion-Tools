@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Business Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 108px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      padding-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right { display: flex; align-items: center; gap: 5px; }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 0;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .hdr-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Content — Airy layout (30px pad, 24px gaps) ── */
+    .content-pad {
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── Page heading ── */
+    .page-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 25px;   /* H1 Standard */
+      color: #282828;
+    }
+
+    .page-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;   /* Body */
+      color: #606060;
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════
+       TOOL CARDS — shared base
+    ════════════════════════════════════════ */
+    .tool-card {
+      border-radius: 16px;          /* Cards corner radius */
+      border: 1.5px solid #E3DFFF; /* Normal border */
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.08); /* Flat Subtle */
+      background: #fff;
+    }
+
+    .tool-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Unlocked icon bg uses primary light */
+    .tool-icon-wrap.unlocked { background: #E3DFFF; }
+
+    /* Locked icon bg is plain grey — the card itself signals premium */
+    .tool-icon-wrap.locked   { background: #F0F0F0; }
+
+    .tool-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tool-info { display: flex; flex-direction: column; gap: 4px; }
+
+    .tool-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;   /* H3 */
+      color: #282828;
+    }
+
+    /* Premium badge — gold tint, immediately readable */
+    .premium-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #FFF8DC 0%, #FFF0A0 100%);
+      border: 1px solid #F5C842;
+      color: #7A5000;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .tool-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;   /* Body */
+      color: #606060;
+      line-height: 1.4;
+    }
+
+    /* ── Unlocked: Start button (green) ── */
+    .start-btn {
+      align-self: flex-end;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #4CAF50;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 9px 18px;
+      border-radius: 13px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .start-btn:hover { background: #43A047; }
+
+    /* ── Locked: Unlock button (purple gradient) ── */
+    .unlock-btn {
+      align-self: flex-end;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 9px 18px;
+      border-radius: 13px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(81,45,168,0.3);
+      transition: box-shadow 0.15s, transform 0.1s;
+    }
+    .unlock-btn:active { transform: scale(0.97); }
+
+    /* Locked card gets a lavender tint to separate it visually */
+    .tool-card.is-locked {
+      background: #f9f8ff;
+      border-color: #D5CFFF;
+    }
+
+    /* ════════════════════════════════════════
+       BOTTOM SHEET — Premium upsell
+    ════════════════════════════════════════ */
+    .sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(40, 40, 40, 0.5);
+      z-index: 100;
+      display: none;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .sheet {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      z-index: 101;
+      display: none;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -4px 24px rgba(81,45,168,0.14);
+      overflow: hidden;
+    }
+
+    .sheet.show { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #D0CAEA;
+      border-radius: 2px;
+      margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+
+    /* Sheet header */
+    .sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 0;
+      flex-shrink: 0;
+    }
+
+    .sheet-head-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .sheet-close {
+      width: 30px;
+      height: 30px;
+      background: #E3DFFF;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Tool preview row inside sheet */
+    .sheet-tool-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 16px 20px 0;
+      padding: 14px;
+      background: #f9f8ff;
+      border-radius: 13px;
+      border: 1px solid #E3DFFF;
+    }
+
+    .sheet-tool-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sheet-tool-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #282828;
+    }
+
+    .sheet-tool-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #606060;
+      margin-top: 2px;
+    }
+
+    /* Divider inside sheet */
+    .sheet-div {
+      height: 0.5px;
+      background: #e8e8e8;
+      margin: 18px 20px 0;
+    }
+
+    /* Pricing block inside sheet */
+    .sheet-pricing {
+      padding: 16px 20px 0;
+    }
+
+    .sheet-plan-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #606060;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .sheet-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin-bottom: 4px;
+    }
+
+    .sheet-currency {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .sheet-amount {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 25px;   /* H1 Standard */
+      color: #282828;
+    }
+
+    .sheet-period {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #606060;
+    }
+
+    .sheet-save-tag {
+      display: inline-block;
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 4px;
+    }
+
+    /* Feature list in sheet */
+    .sheet-features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 14px 20px 0;
+    }
+
+    .sheet-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sheet-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sheet-feature-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #282828;
+    }
+
+    /* CTA button in sheet */
+    .sheet-cta {
+      margin: 18px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: calc(100% - 40px);
+      height: 54px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(81,45,168,0.35);
+      transition: transform 0.1s;
+    }
+    .sheet-cta:active { transform: scale(0.98); }
+
+    .sheet-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;    /* Body -2 */
+      color: #606060;
+      text-align: center;
+      padding: 10px 20px 22px;
+      line-height: 1.5;
+    }
+
+    /* ════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════ */
+    .navbar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-top: 0.5px solid #e0e0e0;
+      box-shadow: 0px -1px 3px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .nav-tabs { display: flex; align-items: stretch; padding: 0 8px; }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 0 8px;
+      text-decoration: none;
+    }
+
+    .nav-tab-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+
+    .nav-tab-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+    }
+
+    .nav-tab.active .nav-tab-label { color: #512DA8; }
+
+    .navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 5px 0 8px;
+      border-top: 0.5px solid #f0f0f0;
+    }
+
+    .copy-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <div class="scroll-area">
+
+        <!-- ── Header ── -->
+        <div class="header">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="header-bar">
+            <span class="logo">BillionTools</span>
+            <div class="header-actions">
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <div class="hdr-icon" style="width:34px;height:34px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Content ── -->
+        <div class="content-pad" style="padding-top:24px;">
+
+          <!-- Page heading -->
+          <div>
+            <div class="page-title">Business Tools</div>
+            <div class="page-subtitle">Powerful tools to help you grow your business</div>
+          </div>
+
+          <!-- ── Tool 1: EMI Calculator (Unlocked) ── -->
+          <div class="tool-card">
+            <div class="tool-icon-wrap unlocked">
+              <!-- Receipt / calculator icon -->
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="#512DA8">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25S13.24 11.25 12 11.25 9.75 10.24 9.75 9s1.01-2.25 2.25-2.25zM17 17H7v-.75c0-1.66 2.69-2.5 5-2.5s5 .84 5 2.5V17z"/>
+              </svg>
+            </div>
+            <div class="tool-body">
+              <div class="tool-info">
+                <div class="tool-name">EMI Calculator</div>
+                <div class="tool-desc">Plan your loan repayments with ease using our EMI Calculator</div>
+              </div>
+              <button class="start-btn">
+                <!-- Play triangle -->
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+                Start
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Tool 2: Business Plan Generator (Locked / Premium) ── -->
+          <div class="tool-card is-locked" onclick="openSheet('business-plan')" style="cursor:pointer;">
+            <div class="tool-icon-wrap locked">
+              <!-- Document icon -->
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="#9E9E9E">
+                <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zm-2 8H7v-2h4v2zm2-4H7v-2h6v2zm1-6H7V9h7v2z"/>
+              </svg>
+            </div>
+            <div class="tool-body">
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">Business Plan Generator</span>
+                  <span class="premium-badge">
+                    <!-- Crown icon -->
+                    <svg viewBox="0 0 24 24" width="9" height="9" fill="#7A5000"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                    PREMIUM
+                  </span>
+                </div>
+                <div class="tool-desc">Create a professional business plan in minutes</div>
+              </div>
+              <button class="unlock-btn" onclick="openSheet('business-plan')">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                Unlock
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Tool 3: ROI Calculator (Locked / Premium) ── -->
+          <div class="tool-card is-locked" onclick="openSheet('roi')" style="cursor:pointer;">
+            <div class="tool-icon-wrap locked">
+              <!-- Calculator icon -->
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="#9E9E9E">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+              </svg>
+            </div>
+            <div class="tool-body">
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">ROI Calculator</span>
+                  <span class="premium-badge">
+                    <svg viewBox="0 0 24 24" width="9" height="9" fill="#7A5000"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                    PREMIUM
+                  </span>
+                </div>
+                <div class="tool-desc">Calculate return on investment for your projects</div>
+              </div>
+              <button class="unlock-btn" onclick="openSheet('roi')">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                Unlock
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /content-pad -->
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── NavBar ── -->
+      <div class="navbar">
+        <div class="nav-tabs">
+
+          <a class="nav-tab" href="BILLIONT-HOME.HTML" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18v-9"/></svg>
+            </div>
+            <span class="nav-tab-label">Home</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <span class="nav-tab-label">Courses</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <span class="nav-tab-label">Library</span>
+          </a>
+
+          <!-- Tools — active -->
+          <a class="nav-tab active" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="nav-tab-label" style="color:#512DA8;">Tools</span>
+          </a>
+
+        </div>
+        <div class="navbar-copy">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+          <span class="copy-text">Billiont Tools 2025</span>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           PREMIUM UPSELL SHEET
+      ════════════════════════════════════════ -->
+      <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+
+      <div class="sheet" id="upsell-sheet">
+
+        <div class="sheet-handle"></div>
+
+        <!-- Header -->
+        <div class="sheet-head">
+          <span class="sheet-head-title" id="sheet-title">Unlock Premium Tool</span>
+          <button class="sheet-close" onclick="closeSheet()" aria-label="Close">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+
+        <!-- Tool preview row -->
+        <div class="sheet-tool-row">
+          <div class="sheet-tool-icon" id="sheet-icon">
+            <!-- filled by JS -->
+          </div>
+          <div>
+            <div class="sheet-tool-name" id="sheet-tool-name"></div>
+            <div class="sheet-tool-desc" id="sheet-tool-desc"></div>
+          </div>
+        </div>
+
+        <div class="sheet-div"></div>
+
+        <!-- Pricing -->
+        <div class="sheet-pricing">
+          <div class="sheet-plan-label">Annual Membership</div>
+          <div class="sheet-price-row">
+            <span class="sheet-currency">₹</span>
+            <span class="sheet-amount">6,999</span>
+            <span class="sheet-period">&nbsp;/ year</span>
+          </div>
+          <span class="sheet-save-tag">Save ₹5,000 &nbsp;·&nbsp; Just ₹583/month</span>
+        </div>
+
+        <!-- Feature list -->
+        <div class="sheet-features">
+          <div class="sheet-feature">
+            <div class="sheet-check"><svg viewBox="0 0 24 24" width="12" height="12" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span class="sheet-feature-text">All business tools unlocked</span>
+          </div>
+          <div class="sheet-feature">
+            <div class="sheet-check"><svg viewBox="0 0 24 24" width="12" height="12" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span class="sheet-feature-text">200+ courses &amp; daily reels</span>
+          </div>
+          <div class="sheet-feature">
+            <div class="sheet-check"><svg viewBox="0 0 24 24" width="12" height="12" fill="#512DA8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span class="sheet-feature-text">Unlimited expert Q&amp;A queries</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <button class="sheet-cta">
+          Get Premium Access
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </button>
+
+        <div class="sheet-fine">Cancel anytime &nbsp;·&nbsp; Secure payment &nbsp;·&nbsp; Instant access</div>
+
+      </div><!-- /sheet -->
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+
+  <script>
+    const TOOLS = {
+      'business-plan': {
+        name: 'Business Plan Generator',
+        desc: 'Create a professional business plan in minutes',
+        icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8">
+                 <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zm-2 8H7v-2h4v2zm2-4H7v-2h6v2zm1-6H7V9h7v2z"/>
+               </svg>`
+      },
+      'roi': {
+        name: 'ROI Calculator',
+        desc: 'Calculate return on investment for your projects',
+        icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8">
+                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+               </svg>`
+      }
+    };
+
+    function openSheet(toolKey) {
+      const tool    = TOOLS[toolKey];
+      const overlay = document.getElementById('sheet-overlay');
+      const sheet   = document.getElementById('upsell-sheet');
+
+      document.getElementById('sheet-title').textContent     = 'Unlock ' + tool.name;
+      document.getElementById('sheet-tool-name').textContent = tool.name;
+      document.getElementById('sheet-tool-desc').textContent = tool.desc;
+      document.getElementById('sheet-icon').innerHTML         = tool.icon;
+
+      overlay.style.display = 'block';
+      sheet.style.display   = 'flex';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sheet.classList.add('show');
+        });
+      });
+    }
+
+    function closeSheet() {
+      const overlay = document.getElementById('sheet-overlay');
+      const sheet   = document.getElementById('upsell-sheet');
+
+      sheet.classList.remove('show');
+
+      sheet.addEventListener('transitionend', function handler() {
+        sheet.style.display   = 'none';
+        overlay.style.display = 'none';
+        sheet.removeEventListener('transitionend', handler);
+      });
+    }
+  </script>
+</body>
+</html>

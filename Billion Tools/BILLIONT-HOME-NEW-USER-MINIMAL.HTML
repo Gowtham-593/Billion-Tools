@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billiont Tools — Home (New User)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 0 48px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Phone Shell ── */
+    .phone {
+      width: 480px;
+      height: 1013px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      border: 1.5px solid #282828;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 108px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .header {
+      background: #f7f6ff;
+      padding-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 26px 4px;
+    }
+
+    .status-time {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .status-right { display: flex; align-items: center; gap: 5px; }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px 0;
+    }
+
+    .logo {
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      color: #512DA8;
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .hdr-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Airy layout: 30px padding, 24px gaps ── */
+    .content-pad {
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── Divider — Soft (0.5px) from design system ── */
+    .divider { height: 0.5px; background: #d6d6d6; }
+
+    /* ════════════════════════════════════
+       WELCOME CARD
+    ════════════════════════════════════ */
+    .welcome-card {
+      background: linear-gradient(145.64deg, #1E0F41 15.83%, #42238B 84.17%);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .welcome-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .welcome-greeting-row { display: flex; align-items: center; gap: 8px; }
+
+    .welcome-greeting-row span,
+    .welcome-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;   /* H2 */
+      color: #fff;
+    }
+
+    .welcome-company {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;   /* Body */
+      color: rgba(255,255,255,0.8);
+    }
+
+    .avatar {
+      width: 49px;
+      height: 50px;
+      border-radius: 50%;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #512DA8;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════
+       MEMBERSHIP PROMPT
+       Horizontal card — icon · text · CTA
+    ════════════════════════════════════ */
+    .mem-prompt {
+      background: #f7f6ff;
+      border: 1.5px solid #E3DFFF;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0px 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .mem-prompt-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mem-prompt-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .mem-prompt-title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;   /* H3 */
+      color: #282828;
+    }
+
+    .mem-prompt-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;   /* Body -2 */
+      color: #606060;
+    }
+
+    .mem-prompt-btn {
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 13px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════
+       WHAT'S INCLUDED — benefit rows
+    ════════════════════════════════════ */
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;   /* H2 */
+      color: #282828;
+    }
+
+    .benefit-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .benefit-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 0.5px solid #e8e8e8;
+    }
+
+    .benefit-row:first-child { padding-top: 0; }
+    .benefit-row:last-child  { border-bottom: none; padding-bottom: 0; }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #E3DFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .benefit-text { display: flex; flex-direction: column; gap: 3px; }
+
+    .benefit-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      font-size: 17px;   /* H3 */
+      color: #282828;
+    }
+
+    .benefit-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;   /* Body -2 */
+      color: #606060;
+      line-height: 1.45;
+    }
+
+    /* ════════════════════════════════════
+       PRICING CARD
+    ════════════════════════════════════ */
+    .pricing-card {
+      border-radius: 16px;
+      border: 1.5px solid #E3DFFF;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .pricing-top {
+      padding: 20px 20px 16px;
+      border-bottom: 0.5px solid #E3DFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pricing-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pricing-name {
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 21px;   /* H2 */
+      color: #282828;
+    }
+
+    .pricing-badge {
+      background: #E3DFFF;
+      color: #512DA8;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    .pricing-amount-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+    }
+
+    .pricing-currency {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: #282828;
+    }
+
+    .pricing-amount {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 25px;   /* H1 */
+      color: #282828;
+    }
+
+    .pricing-period {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;   /* Body */
+      color: #606060;
+    }
+
+    .pricing-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;   /* Body -2 */
+      color: #606060;
+    }
+
+    .pricing-bottom {
+      padding: 16px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 17px;   /* H3 */
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(81,45,168,0.3);
+      transition: transform 0.1s;
+    }
+
+    .pricing-cta:active { transform: scale(0.98); }
+
+    .pricing-fine {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;   /* Body -2 */
+      color: #606060;
+      text-align: center;
+    }
+
+    /* ════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════ */
+    .navbar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-top: 0.5px solid #e0e0e0;
+      box-shadow: 0px -1px 3px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .nav-tabs { display: flex; align-items: stretch; padding: 0 8px; }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 0 8px;
+      text-decoration: none;
+    }
+
+    .nav-tab-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+
+    .nav-tab-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+    }
+
+    .nav-tab.active .nav-tab-label { color: #512DA8; }
+
+    .navbar-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 5px 0 8px;
+      border-top: 0.5px solid #f0f0f0;
+    }
+
+    .copy-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #606060;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+
+      <div class="scroll-area">
+
+        <!-- ── Header ── -->
+        <div class="header">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#000"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="header-bar">
+            <span class="logo">BillionTools</span>
+            <div class="header-actions">
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <div class="hdr-icon" style="width:34px;height:34px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#282828" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+              </div>
+              <div class="hdr-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Content ── -->
+        <div class="content-pad" style="padding-top:0; margin-top:0;">
+
+          <!-- Welcome Card -->
+          <div class="welcome-card">
+            <div class="welcome-left">
+              <div class="welcome-greeting-row">
+                <span>Welcome,</span>
+                <span style="font-size:20px;">👋</span>
+              </div>
+              <div class="welcome-name">Arjun</div>
+              <div class="welcome-company">Poornatha Partnering Entrepreneurs Private Limited</div>
+            </div>
+            <div class="avatar">A</div>
+          </div>
+
+          <!-- Membership Prompt -->
+          <div class="mem-prompt">
+            <div class="mem-prompt-icon">
+              <!-- Crown -->
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+            </div>
+            <div class="mem-prompt-body">
+              <div class="mem-prompt-title">Get Full Access</div>
+              <div class="mem-prompt-sub">Unlock all courses, reels and tools</div>
+            </div>
+            <button class="mem-prompt-btn">View Plans</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- What's included -->
+          <div class="section-label">What's included</div>
+
+          <div class="benefit-list">
+
+            <div class="benefit-row">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-name">200+ Courses</div>
+                <div class="benefit-desc">Deep-dive programs on sales, leadership, finance, and operations — built for entrepreneurs.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-name">Daily Business Reels</div>
+                <div class="benefit-desc">Bite-sized video lessons from founders — learn something new in 60 seconds, every day.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-name">Business Tools</div>
+                <div class="benefit-desc">Templates, calculators, and pitch frameworks ready to use — save hours of prep work.</div>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#512DA8"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+              </div>
+              <div class="benefit-text">
+                <div class="benefit-name">Ask an Expert</div>
+                <div class="benefit-desc">Submit business questions and get answers from experienced mentors and founders.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Pricing Card -->
+          <div class="pricing-card">
+            <div class="pricing-top">
+              <div class="pricing-name-row">
+                <span class="pricing-name">Annual Membership</span>
+                <span class="pricing-badge">Best Value</span>
+              </div>
+              <div class="pricing-amount-row">
+                <span class="pricing-currency">₹</span>
+                <span class="pricing-amount">6,999</span>
+                <span class="pricing-period">&nbsp;/ year</span>
+              </div>
+              <span class="pricing-note">Just ₹583 per month &nbsp;·&nbsp; Save ₹5,000 vs monthly</span>
+            </div>
+            <div class="pricing-bottom">
+              <button class="pricing-cta">
+                Start My Membership
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              </button>
+              <div class="pricing-fine">Cancel anytime &nbsp;·&nbsp; Secure payment &nbsp;·&nbsp; Instant access</div>
+            </div>
+          </div>
+
+        </div><!-- /content-pad -->
+
+      </div><!-- /scroll-area -->
+
+      <!-- ── NavBar ── -->
+      <div class="navbar">
+        <div class="nav-tabs">
+
+          <a class="nav-tab active" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#512DA8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </div>
+            <span class="nav-tab-label" style="color:#512DA8;">Home</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#606060"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+            </div>
+            <span class="nav-tab-label">Reels</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <span class="nav-tab-label">Courses</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <span class="nav-tab-label">Library</span>
+          </a>
+
+          <a class="nav-tab" href="#" style="text-decoration:none;">
+            <div class="nav-tab-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="#606060" stroke-width="1.5" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="nav-tab-label">Tools</span>
+          </a>
+
+        </div>
+        <div class="navbar-copy">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"/></svg>
+          <span class="copy-text">Billiont Tools 2025</span>
+        </div>
+      </div>
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+</body>
+</html>

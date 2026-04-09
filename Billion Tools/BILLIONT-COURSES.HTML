@@ -15,7 +15,8 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      padding: 32px 0 48px;
+      padding: 32px 24px 48px;
+      gap: 32px;
       font-family: 'Inter', sans-serif;
     }
 
@@ -682,14 +683,175 @@
       font-family: 'Lato', sans-serif; font-weight: 700;
       font-size: 15px; border-radius: 13px; cursor: pointer;
     }
+
+    /* ══════════════════════════════════════
+       INSPECTOR PANEL
+    ══════════════════════════════════════ */
+    .insp-panel {
+      width: 278px;
+      background: #0F0F1E;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+      align-self: flex-start;
+      position: sticky;
+      top: 32px;
+      max-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+    }
+    .insp-top {
+      padding: 16px 18px 13px;
+      background: #16162A;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .insp-logo {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      color: #C5B0FF;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .insp-subtitle {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 4px;
+    }
+    .insp-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 12px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(81,45,168,0.4) transparent;
+    }
+    .insp-group-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.28);
+      text-transform: uppercase;
+      margin: 0 0 5px 6px;
+    }
+    .insp-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-bottom: 2px;
+      transition: background 0.15s;
+    }
+    .insp-row:hover { background: rgba(255,255,255,0.05); }
+    .insp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #512DA8;
+      flex-shrink: 0;
+    }
+    .insp-name {
+      flex: 1;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.75);
+    }
+    .insp-btn {
+      background: rgba(81,45,168,0.35);
+      border: none;
+      color: #C5B0FF;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .insp-btn:hover { background: #512DA8; color: #fff; }
+    .insp-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .insp-hr {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 13px 0;
+    }
+    .insp-figma-box {
+      background: rgba(81,45,168,0.1);
+      border: 1px solid rgba(81,45,168,0.22);
+      border-radius: 12px;
+      padding: 13px;
+    }
+    .insp-figma-note {
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.6;
+      margin-bottom: 11px;
+    }
+    .insp-dl-btn {
+      width: 100%;
+      background: #512DA8;
+      border: none;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: background 0.15s;
+    }
+    .insp-dl-btn:hover { background: #6B46C1; }
+    .insp-figma-hint {
+      font-size: 10px;
+      color: rgba(255,255,255,0.32);
+      margin-top: 8px;
+      line-height: 1.55;
+      min-height: 14px;
+    }
+    .insp-figma-hint.ok { color: #4ADE80; }
+    .insp-steps-box {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding: 11px 12px;
+    }
+    .insp-steps-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.28);
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+    .insp-steps-body {
+      font-size: 10px;
+      color: rgba(255,255,255,0.38);
+      line-height: 1.75;
+    }
+    /* Highlight ring on hover */
+    .insp-hl {
+      outline: 2px solid #7C3AED !important;
+      outline-offset: 1px;
+      box-shadow: 0 0 0 4px rgba(124,58,237,0.15) !important;
+    }
   </style>
+  <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
 </head>
 <body>
   <div class="phone">
     <div class="screen">
 
       <!-- ── Header ── -->
-      <div class="header">
+      <div class="header" id="comp-header">
         <div class="status-bar">
           <span class="status-time">9:41</span>
           <div class="status-right">
@@ -746,7 +908,7 @@
         </div>
 
         <!-- ── Course 1 — Unlocked / Ongoing ── -->
-        <div class="course-card">
+        <div class="course-card" id="comp-card-1">
           <div class="card-body">
             <div class="card-top-row">
               <div class="course-icon">
@@ -781,7 +943,7 @@
         </div>
 
         <!-- ── Course 2 — Unlocked / Ongoing ── -->
-        <div class="course-card">
+        <div class="course-card" id="comp-card-2">
           <div class="card-body">
             <div class="card-top-row">
               <div class="course-icon">
@@ -926,11 +1088,11 @@
       </div><!-- end scroll-area -->
 
       <!-- ── Bottom Nav ── -->
-      <div class="bottom-nav">
-        <div class="nav-item">
+      <div class="bottom-nav" id="comp-bottom-nav">
+        <a class="nav-item" href="BILLIONT-HOME-ACTIVE.HTML" style="text-decoration:none;">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span class="nav-label">Home</span>
-        </div>
+        </a>
         <div class="nav-item">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="#512DA8"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1z"/></svg>
           <span class="nav-label active">Courses</span>
@@ -958,25 +1120,10 @@
           <div id="step-plan">
 
             <div class="sheet-hdr">
-              <span class="sheet-hdr-title">Unlock This Course</span>
+              <span class="sheet-hdr-title">Get Premium Access</span>
               <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
               </button>
-            </div>
-
-            <!-- Locked course info -->
-            <div class="locked-course-banner">
-              <div class="lc-icon" id="lc-icon">
-                <svg viewBox="0 0 60 60" width="46" height="46">
-                  <circle cx="30" cy="30" r="30" fill="#512DA8"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle" id="lc-emoji">📚</text>
-                </svg>
-              </div>
-              <div>
-                <div class="lc-title" id="lc-title">Course Title</div>
-                <div class="lc-sub">Premium access required</div>
-              </div>
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="#9E9E9E" style="margin-left:auto;flex-shrink:0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
             </div>
 
             <!-- 7-day trial note -->
@@ -1041,23 +1188,6 @@
               </button>
             </div>
 
-            <!-- Course being unlocked -->
-            <div class="confirm-course-row">
-              <div class="cc-icon">
-                <svg viewBox="0 0 60 60" width="46" height="46">
-                  <circle cx="30" cy="30" r="30" id="cc-bg" fill="#512DA8"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle" id="cc-emoji">📚</text>
-                </svg>
-              </div>
-              <div>
-                <div class="cc-title" id="cc-title">Course Title</div>
-                <div class="cc-unlock-tag">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                  Will be unlocked
-                </div>
-              </div>
-            </div>
-
             <!-- App identity card -->
             <div class="confirm-app-card">
               <svg viewBox="0 0 60 60" width="46" height="46" style="border-radius:11px;flex-shrink:0;">
@@ -1104,7 +1234,7 @@
 
             <div class="sheet-cta-wrap">
               <button class="sheet-cta-btn" onclick="completePayment()">
-                Subscribe &amp; Unlock Course
+                Start Premium Membership
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
               </button>
             </div>
@@ -1121,23 +1251,7 @@
               </svg>
             </div>
             <div class="success-title">You're now Premium!</div>
-            <div class="success-sub" style="padding:0 20px;">Subscription activated. Your course is unlocked and ready to start.</div>
-
-            <div class="success-course-card" style="margin:18px 16px 0;">
-              <div class="scc-icon">
-                <svg viewBox="0 0 60 60" width="46" height="46">
-                  <circle cx="30" cy="30" r="30" id="scc-bg" fill="#512DA8"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle" id="scc-emoji">📚</text>
-                </svg>
-              </div>
-              <div>
-                <div class="scc-name" id="scc-name">Course Title</div>
-                <div class="scc-unlocked">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="#2E7D32"><path d="M17 8C8 10 5.9 16.17 3.82 19.36L5.71 21 7 19.5c.18.27.36.54.55.82L9 19c-.19-.28-.38-.57-.56-.86l1.46-1.22c.44.7.87 1.4 1.27 2.08L13 17.5c-.4-.68-.84-1.39-1.29-2.08L13.17 14a21.62 21.62 0 0 1 1.67 2.23L16.42 15c-.48-.73-1.01-1.48-1.6-2.21l1.41-1.18c.55.67 1.05 1.35 1.52 2.04L19.5 12.5C18.6 11.14 17.43 9.51 16 8l1-1zm-4.25 4.22l-1.41 1.18a18.47 18.47 0 0 0-1.33-1.7l1.41-1.18c.46.56.91 1.13 1.33 1.7z"/></svg>
-                  Unlocked — Start Learning
-                </div>
-              </div>
-            </div>
+            <div class="success-sub" style="padding:0 20px;">Subscription activated. All premium courses are now unlocked.</div>
 
             <div style="padding:16px 16px 0;">
               <button class="start-btn" onclick="startCourse()">
@@ -1173,11 +1287,6 @@
       }
 
       currentCourse = { id: courseId, title, color, emoji };
-
-      // Populate step-1 banner
-      document.getElementById('lc-title').textContent  = title;
-      document.getElementById('lc-emoji').textContent  = emoji;
-      document.getElementById('lc-icon').querySelector('circle').setAttribute('fill', '#' + color);
 
       // Reset to step 1
       showStep('plan');
@@ -1245,11 +1354,6 @@
     function goToConfirm() {
       if (!currentCourse) return;
 
-      // Populate confirm step
-      document.getElementById('cc-title').textContent = currentCourse.title;
-      document.getElementById('cc-emoji').textContent = currentCourse.emoji;
-      document.getElementById('cc-bg').setAttribute('fill', '#' + currentCourse.color);
-
       if (currentPlan === 'yearly') {
         document.getElementById('cs-plan').textContent   = 'Yearly — ₹10,000/year';
         document.getElementById('cs-charge').textContent = '₹10,000 + tax · 8 Apr 2026';
@@ -1268,11 +1372,6 @@
     function completePayment() {
       if (!currentCourse) return;
 
-      // Populate success step
-      document.getElementById('scc-name').textContent  = currentCourse.title;
-      document.getElementById('scc-emoji').textContent = currentCourse.emoji;
-      document.getElementById('scc-bg').setAttribute('fill', '#' + currentCourse.color);
-
       showStep('success');
 
       // Animate checkmark
@@ -1280,14 +1379,13 @@
         document.getElementById('check-wrap').classList.add('animate');
       }, 80);
 
-      // Mark course as unlocked
-      unlockedCourses.add(currentCourse.id);
+      // Membership purchase — unlock all locked courses
+      ['marketing', 'finance', 'operations'].forEach(id => unlockedCourses.add(id));
     }
 
     function startCourse() {
-      if (currentCourse) {
-        unlockCourseCard(currentCourse.id);
-      }
+      // Membership unlocks all courses — update all locked cards
+      ['marketing', 'finance', 'operations'].forEach(id => unlockCourseCard(id));
       closeSheet();
     }
 
@@ -1340,6 +1438,455 @@
       const planStep = document.getElementById('step-plan');
       if (planStep.style.display !== 'none') closeSheet();
     });
+  </script>
+
+  <!-- ════ INSPECTOR PANEL ════ -->
+  <aside class="insp-panel">
+
+    <div class="insp-top">
+      <div class="insp-logo">
+        <svg viewBox="0 0 18 18" width="14" height="14" fill="none"><circle cx="9" cy="9" r="7" stroke="#C5B0FF" stroke-width="1.8"/><circle cx="9" cy="9" r="2.5" fill="#C5B0FF"/><line x1="9" y1="2" x2="9" y2="5" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="9" y1="13" x2="9" y2="16" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="9" x2="5" y2="9" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="13" y1="9" x2="16" y2="9" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Inspector
+      </div>
+      <div class="insp-subtitle">Billiont Courses &nbsp;·&nbsp; 7 components</div>
+    </div>
+
+    <div class="insp-scroll">
+
+      <div class="insp-group-lbl">Main Screen</div>
+
+      <div class="insp-row" onmouseenter="insp_hl('comp-header')" onmouseleave="insp_clr()">
+        <span class="insp-dot"></span>
+        <span class="insp-name">Header Bar</span>
+        <button class="insp-btn" onclick="insp_copy('comp-header',this)">Copy</button>
+      </div>
+      <div class="insp-row" onmouseenter="insp_hl('comp-card-1')" onmouseleave="insp_clr()">
+        <span class="insp-dot"></span>
+        <span class="insp-name">Course Card · Ongoing</span>
+        <button class="insp-btn" onclick="insp_copy('comp-card-1',this)">Copy</button>
+      </div>
+      <div class="insp-row" onmouseenter="insp_hl('card-marketing')" onmouseleave="insp_clr()">
+        <span class="insp-dot"></span>
+        <span class="insp-name">Course Card · Locked</span>
+        <button class="insp-btn" onclick="insp_copy('card-marketing',this)">Copy</button>
+      </div>
+      <div class="insp-row" onmouseenter="insp_hl('comp-bottom-nav')" onmouseleave="insp_clr()">
+        <span class="insp-dot"></span>
+        <span class="insp-name">Bottom Navigation</span>
+        <button class="insp-btn" onclick="insp_copy('comp-bottom-nav',this)">Copy</button>
+      </div>
+
+      <div class="insp-group-lbl" style="margin-top:14px;">Premium Flow</div>
+
+      <div class="insp-row">
+        <span class="insp-dot" style="background:#F59E0B;"></span>
+        <span class="insp-name">Step 1 · Plan Selection</span>
+        <button class="insp-btn" onclick="insp_copy_sheet('step-plan',this)">Copy</button>
+      </div>
+      <div class="insp-row">
+        <span class="insp-dot" style="background:#F59E0B;"></span>
+        <span class="insp-name">Step 2 · Confirm &amp; Pay</span>
+        <button class="insp-btn" onclick="insp_copy_sheet('step-confirm',this)">Copy</button>
+      </div>
+      <div class="insp-row">
+        <span class="insp-dot" style="background:#22C55E;"></span>
+        <span class="insp-name">Step 3 · Success</span>
+        <button class="insp-btn" onclick="insp_copy_sheet('step-success',this)">Copy</button>
+      </div>
+
+      <div class="insp-hr"></div>
+
+      <div class="insp-group-lbl">Push to Figma</div>
+      <div class="insp-figma-box">
+        <div class="insp-figma-note">Downloads a ready-to-run Figma plugin that creates all 7 components with Auto Layout, correct colors &amp; typography.</div>
+        <button class="insp-dl-btn" onclick="insp_download_plugin()">
+          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+          Download Figma Plugin
+        </button>
+        <div id="insp-figma-hint" class="insp-figma-hint"></div>
+      </div>
+
+      <div class="insp-steps-box">
+        <div class="insp-steps-title">How to run plugin</div>
+        <div class="insp-steps-body">
+          1. Open Figma → Plugins<br>
+          2. Development → New Plugin<br>
+          3. Choose "Run once"<br>
+          4. Replace code.js content<br>
+          5. Run → components appear ✓
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <script>
+  /* ═══════════════════════════════
+     INSPECTOR
+  ═══════════════════════════════ */
+
+  function insp_hl(id) {
+    document.querySelectorAll('.insp-hl').forEach(e => e.classList.remove('insp-hl'));
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add('insp-hl');
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+  function insp_clr() {
+    document.querySelectorAll('.insp-hl').forEach(e => e.classList.remove('insp-hl'));
+  }
+
+  async function _insp_do_copy(el, btn) {
+    const orig = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+    el.classList.add('insp-hl');
+    try {
+      const dataUrl = await htmlToImage.toPng(el, {
+        pixelRatio: 2,
+        backgroundColor: '#ffffff',
+        style: { outline: 'none', boxShadow: 'none' }
+      });
+      const res  = await fetch(dataUrl);
+      const blob = await res.blob();
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      el.classList.remove('insp-hl');
+      btn.textContent = 'Copied!';
+      btn.style.cssText = 'background:#16A34A;color:#fff;';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.cssText = '';
+        btn.disabled = false;
+      }, 2200);
+    } catch(err) {
+      el.classList.remove('insp-hl');
+      btn.textContent = 'Failed';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+      console.warn('Copy error:', err);
+    }
+  }
+
+  async function insp_copy(id, btn) {
+    const el = document.getElementById(id);
+    if (el) await _insp_do_copy(el, btn);
+  }
+
+  async function insp_copy_sheet(stepId, btn) {
+    const step = document.getElementById(stepId);
+    if (!step) return;
+    /* Clone the step off-screen so overflow:hidden on .phone doesn't clip it */
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:480px;background:#fff;border-radius:0;overflow:visible;';
+    const clone = step.cloneNode(true);
+    clone.style.cssText = 'display:block !important; position:static !important; max-height:none !important;';
+    wrap.appendChild(clone);
+    document.body.appendChild(wrap);
+    await new Promise(r => setTimeout(r, 80));
+    await _insp_do_copy(clone, btn);
+    document.body.removeChild(wrap);
+  }
+
+  function insp_download_plugin() {
+    const hint = document.getElementById('insp-figma-hint');
+    hint.textContent = 'Generating...';
+    hint.className = 'insp-figma-hint';
+
+    const code = `/* ==========================================================
+   Billiont Courses — Figma Component Generator Plugin
+   1. Figma → Plugins → Development → New Plugin → "Run once"
+   2. Replace code.js with this entire file
+   3. Click Run — components appear with Auto Layout
+   ========================================================== */
+
+async function run() {
+  const F = figma;
+  const P = F.currentPage;
+
+  const fonts = [
+    {family:"Inter",style:"Regular"},{family:"Inter",style:"Medium"},
+    {family:"Inter",style:"SemiBold"},{family:"Lato",style:"Regular"},
+    {family:"Lato",style:"Bold"},{family:"Lato",style:"Black"},
+  ];
+  await Promise.all(fonts.map(f => F.loadFontAsync(f)));
+
+  function rgb(r,g,b){ return {r,g,b}; }
+  function solid(c){ return [{type:"SOLID",color:c}]; }
+  function shadow(c,a,y,rad){
+    return [{type:"DROP_SHADOW",color:{...c,a},offset:{x:0,y},radius:rad,
+      spread:0,visible:true,blendMode:"NORMAL"}];
+  }
+  const C = {
+    primary:  rgb(0.318,0.176,0.659),
+    pLight:   rgb(0.890,0.875,1.000),
+    dark:     rgb(0.157,0.157,0.157),
+    mid:      rgb(0.376,0.376,0.376),
+    bgLight:  rgb(0.969,0.965,1.000),
+    white:    rgb(1,1,1),
+    green:    rgb(0.086,0.627,0.522),
+    amber:    rgb(0.773,0.700,0.345),
+    teal:     rgb(0.180,0.369,0.431),
+    earthGr:  rgb(0.180,0.431,0.306),
+    earthBr:  rgb(0.369,0.227,0.180),
+    navy:     rgb(0.102,0.227,0.369),
+  };
+
+  function mkText(chars, size, style, color, align) {
+    const t = F.createText();
+    t.characters = String(chars);
+    t.fontSize = size;
+    t.fontName = (style==="bold"||style==="700") ? {family:"Lato",style:"Bold"}
+      : (style==="black"||style==="900") ? {family:"Lato",style:"Black"}
+      : (style==="semi"||style==="600") ? {family:"Inter",style:"SemiBold"}
+      : (style==="medium"||style==="500") ? {family:"Inter",style:"Medium"}
+      : {family:"Inter",style:"Regular"};
+    t.fills = solid(color||C.dark);
+    if (align) t.textAlignHorizontal = align;
+    return t;
+  }
+
+  function mkFrame(name, dir, gap, pl,pr,pt,pb, bg, radius) {
+    const f = F.createFrame();
+    f.name = name;
+    f.layoutMode = dir||"VERTICAL";
+    f.primaryAxisSizingMode = "AUTO";
+    f.counterAxisSizingMode = "AUTO";
+    f.itemSpacing = gap||0;
+    f.paddingLeft = pl||0; f.paddingRight = pr||0;
+    f.paddingTop = pt||0;  f.paddingBottom = pb||0;
+    f.fills = bg ? solid(bg) : [];
+    if (radius) f.cornerRadius = radius;
+    return f;
+  }
+
+  // ── Course Card ──
+  function courseCard(title, desc, sections, label, iconBg, locked) {
+    const card = mkFrame("Course Card / "+(locked?"Locked":"Ongoing"),
+      "VERTICAL",12,16,16,16,16,C.white,16);
+    card.counterAxisSizingMode = "FIXED";
+    card.resize(416,10);
+    card.effects = shadow(C.dark,0.07,2,10);
+    card.strokes = solid(rgb(0.89,0.87,1.0));
+    card.strokeWeight = 1;
+
+    const topRow = mkFrame("Top Row","HORIZONTAL",12);
+    topRow.counterAxisAlignItems = "MIN";
+    topRow.primaryAxisSizingMode = "FIXED";
+    topRow.counterAxisSizingMode = "AUTO";
+    topRow.resize(384,10);
+
+    const icon = F.createEllipse();
+    icon.name = "Icon"; icon.resize(52,52);
+    icon.fills = solid(iconBg||C.primary);
+    icon.layoutSizingHorizontal = "FIXED";
+    icon.layoutSizingVertical   = "FIXED";
+
+    const info = mkFrame("Info","VERTICAL",4);
+    info.layoutGrow = 1;
+    info.counterAxisSizingMode = "AUTO";
+    const t1 = mkText(title,13,"semi",C.dark);
+    t1.layoutSizingHorizontal = "FILL"; t1.textAutoResize = "HEIGHT";
+    const t2 = mkText(desc,11,"regular",C.mid);
+    t2.layoutSizingHorizontal = "FILL"; t2.textAutoResize = "HEIGHT";
+    info.appendChild(t1); info.appendChild(t2);
+    topRow.appendChild(icon); topRow.appendChild(info);
+    card.appendChild(topRow);
+
+    const meta = mkFrame("Meta","HORIZONTAL",0);
+    meta.primaryAxisSizingMode = "FIXED"; meta.counterAxisSizingMode = "AUTO";
+    meta.resize(384,10);
+    meta.primaryAxisAlignItems = "SPACE_BETWEEN";
+    meta.counterAxisAlignItems = "CENTER";
+    meta.appendChild(mkText(sections+" Section"+(sections>1?"s":""),11,"regular",C.primary));
+
+    const badge = mkFrame("Badge","HORIZONTAL",4,8,8,3,3,
+      locked ? C.pLight : rgb(0.87,0.98,0.93), 20);
+    badge.counterAxisAlignItems = "CENTER";
+    badge.appendChild(mkText(locked?"PREMIUM":label,9,"700",
+      locked?C.primary:C.green));
+    meta.appendChild(badge);
+    card.appendChild(meta);
+
+    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,10,10,
+      locked?rgb(0.76,0.76,0.76):C.primary,12);
+    cta.primaryAxisSizingMode = "FIXED"; cta.counterAxisSizingMode = "AUTO";
+    cta.resize(384,10); cta.primaryAxisAlignItems = "CENTER";
+    cta.appendChild(mkText(locked?"Locked":"View Course",13,"bold",C.white));
+    card.appendChild(cta);
+    return card;
+  }
+
+  // ── Bottom Nav ──
+  function bottomNav() {
+    const nav = mkFrame("Bottom Navigation","HORIZONTAL",0,0,0,8,8,C.white);
+    nav.primaryAxisSizingMode = "FIXED"; nav.counterAxisSizingMode = "AUTO";
+    nav.resize(480,10);
+    nav.primaryAxisAlignItems = "SPACE_BETWEEN";
+    nav.counterAxisAlignItems = "CENTER";
+    nav.effects = shadow(C.dark,0.06,-2,10);
+    ["Home","Courses","Library","Tools"].forEach((label,i) => {
+      const ni = mkFrame("Nav: "+label,"VERTICAL",4,16,16,8,8);
+      ni.counterAxisAlignItems = "CENTER"; ni.layoutGrow = 1;
+      ni.appendChild(mkText(label,10,i===1?"semi":"regular",
+        i===1?C.primary:C.mid));
+      nav.appendChild(ni);
+    });
+    return nav;
+  }
+
+  // ── Sheet Step 1: Plan Selection ──
+  function step1() {
+    const s = mkFrame("Sheet / Step 1 — Plan Selection",
+      "VERTICAL",16,16,16,20,20,C.white,24);
+    s.counterAxisSizingMode = "FIXED"; s.resize(416,10);
+    s.appendChild(mkText("Get Premium Access",17,"bold",C.dark));
+
+    const trial = mkFrame("Trial Note","HORIZONTAL",8,12,12,10,10,
+      rgb(0.94,0.94,1.0),10);
+    trial.counterAxisAlignItems = "MIN";
+    const tt = mkText("7 days free trial — try all premium courses at no cost.",11,"regular",C.primary);
+    tt.textAutoResize="HEIGHT"; tt.resize(340,10);
+    trial.appendChild(tt); s.appendChild(trial);
+
+    const plans = mkFrame("Plans","HORIZONTAL",10);
+    plans.primaryAxisSizingMode="FIXED"; plans.counterAxisSizingMode="AUTO";
+    plans.resize(384,10);
+
+    const yearly = mkFrame("Yearly","VERTICAL",6,14,14,14,14,C.primary,14);
+    yearly.layoutGrow=1;
+    yearly.effects=shadow(C.primary,0.35,4,16);
+    yearly.appendChild(mkText("Yearly Plan",11,"bold",C.white));
+    yearly.appendChild(mkText("₹10,000/year",16,"black",C.white));
+    yearly.appendChild(mkText("₹833/month",10,"regular",rgb(0.8,0.75,0.95)));
+    yearly.appendChild(mkText("Save ₹2,000 — 2 months free",10,"bold",rgb(0.95,0.85,0.4)));
+    plans.appendChild(yearly);
+
+    const monthly = mkFrame("Monthly","VERTICAL",6,14,14,14,14,rgb(0.97,0.97,1.0),14);
+    monthly.layoutGrow=1;
+    monthly.appendChild(mkText("Monthly Plan",11,"bold",C.primary));
+    monthly.appendChild(mkText("₹1,000/month",16,"black",C.dark));
+    monthly.appendChild(mkText("Cancel anytime",10,"regular",C.mid));
+    plans.appendChild(monthly);
+    s.appendChild(plans);
+
+    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,12,12,C.primary,14);
+    cta.primaryAxisSizingMode="FIXED"; cta.counterAxisSizingMode="AUTO";
+    cta.resize(384,10); cta.primaryAxisAlignItems="CENTER";
+    cta.appendChild(mkText("Start 7-Day Free Trial",14,"bold",C.white));
+    s.appendChild(cta);
+    return s;
+  }
+
+  // ── Sheet Step 2: Confirm & Pay ──
+  function step2() {
+    const s = mkFrame("Sheet / Step 2 — Confirm & Pay",
+      "VERTICAL",16,16,16,20,20,C.white,24);
+    s.counterAxisSizingMode="FIXED"; s.resize(416,10);
+    s.appendChild(mkText("Confirm Plan",17,"bold",C.dark));
+
+    const sum = mkFrame("Summary","VERTICAL",0,16,16,12,12,C.bgLight,12);
+    sum.counterAxisSizingMode="FIXED"; sum.resize(384,10);
+    [["Plan","Yearly — ₹10,000/year"],["Free trial","7 days · Starting today"],
+     ["Today you pay","₹0"],["First charge","₹10,000 + tax · 8 Apr 2026"],
+     ["Account","tanisha@example.com"]].forEach(([l,v],i)=>{
+      const row=mkFrame("Row"+i,"HORIZONTAL",0,0,0,10,10);
+      row.primaryAxisSizingMode="FIXED"; row.counterAxisSizingMode="AUTO";
+      row.resize(352,10); row.primaryAxisAlignItems="SPACE_BETWEEN";
+      row.appendChild(mkText(l,12,"regular",C.mid));
+      row.appendChild(mkText(v,12,"medium",C.dark));
+      sum.appendChild(row);
+    });
+    s.appendChild(sum);
+
+    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,12,12,C.primary,14);
+    cta.primaryAxisSizingMode="FIXED"; cta.counterAxisSizingMode="AUTO";
+    cta.resize(384,10); cta.primaryAxisAlignItems="CENTER";
+    cta.appendChild(mkText("Start Premium Membership",14,"bold",C.white));
+    s.appendChild(cta);
+    return s;
+  }
+
+  // ── Sheet Step 3: Success ──
+  function step3() {
+    const s = mkFrame("Sheet / Step 3 — Success",
+      "VERTICAL",14,16,16,36,36,C.white,24);
+    s.counterAxisSizingMode="FIXED"; s.resize(416,10);
+    s.primaryAxisAlignItems="CENTER"; s.counterAxisAlignItems="CENTER";
+
+    const check=F.createEllipse(); check.name="Check Circle";
+    check.resize(72,72);
+    check.fills=solid(rgb(0.85,0.98,0.89));
+    check.strokes=solid(rgb(0.13,0.77,0.37)); check.strokeWeight=2;
+    s.appendChild(check);
+
+    s.appendChild(mkText("You're now Premium!",20,"black",C.dark));
+    const sub=mkText("Subscription activated. All premium courses are now unlocked.",12,"regular",C.mid,"CENTER");
+    sub.textAutoResize="HEIGHT"; sub.resize(300,10);
+    s.appendChild(sub);
+
+    const cta1=mkFrame("Start Course","HORIZONTAL",0,16,16,12,12,C.primary,14);
+    cta1.primaryAxisSizingMode="FIXED"; cta1.counterAxisSizingMode="AUTO";
+    cta1.resize(384,10); cta1.primaryAxisAlignItems="CENTER";
+    cta1.appendChild(mkText("Start Course Now",14,"bold",C.white));
+    s.appendChild(cta1);
+
+    const cta2=mkFrame("Explore All","HORIZONTAL",0,16,16,10,10,C.bgLight,14);
+    cta2.strokes=solid(C.pLight); cta2.strokeWeight=1.5;
+    cta2.primaryAxisSizingMode="FIXED"; cta2.counterAxisSizingMode="AUTO";
+    cta2.resize(384,10); cta2.primaryAxisAlignItems="CENTER";
+    cta2.appendChild(mkText("Explore All Courses",13,"semi",C.primary));
+    s.appendChild(cta2);
+    return s;
+  }
+
+  // ── Assemble ──
+  const section = mkFrame("Billiont Courses — Design Components",
+    "HORIZONTAL",32,40,40,40,40,rgb(0.91,0.91,0.91));
+  section.counterAxisAlignItems = "MIN";
+  P.appendChild(section);
+
+  const cardsCol = mkFrame("Course Cards","VERTICAL",12);
+  cardsCol.appendChild(courseCard("Tasks vs People — Leading & Managing with Clarity","Learn the different leadership styles to manage people and tasks effectively",3,"Ongoing",C.amber,false));
+  cardsCol.appendChild(courseCard("Build a Great Team","Master people assessment and build high performing teams",1,"Ongoing",C.teal,false));
+  cardsCol.appendChild(courseCard("Marketing 101","Build a strong marketing strategy to grow revenue in a buyer's market",1,"Premium",C.earthGr,true));
+  cardsCol.appendChild(courseCard("Finance Fundamentals for SMEs","Understand cash flow, margins, and financial decisions that scale your business",2,"Premium",C.earthBr,true));
+  cardsCol.appendChild(courseCard("Operations That Scale","Design processes, reduce waste, and build systems that run without you",3,"Premium",C.navy,true));
+  section.appendChild(cardsCol);
+
+  const rightCol = mkFrame("Nav & Premium Flow","VERTICAL",20);
+  rightCol.appendChild(bottomNav());
+  rightCol.appendChild(step1());
+  rightCol.appendChild(step2());
+  rightCol.appendChild(step3());
+  section.appendChild(rightCol);
+
+  F.viewport.scrollAndZoomIntoView([section]);
+  F.closePlugin("✅ 9 components created with Auto Layout!");
+}
+
+run().catch(e => {
+  figma.notify("Plugin error: " + e.message, { error: true });
+  figma.closePlugin();
+});`;
+
+    const blob = new Blob([code], { type: 'text/javascript' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'billiont-figma-plugin.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    hint.textContent = 'Downloaded! Paste into Figma plugin editor and run.';
+    hint.className = 'insp-figma-hint ok';
+    setTimeout(() => {
+      hint.textContent = '';
+      hint.className = 'insp-figma-hint';
+    }, 6000);
+  }
   </script>
 </body>
 </html>
