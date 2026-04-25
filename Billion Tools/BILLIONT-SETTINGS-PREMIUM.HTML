@@ -152,7 +152,29 @@
     .divider { height: 0.5px; background: #E5E5EA; margin: 0 24px; }
     .divider-section { height: 8px; background: #f7f6ff; margin: 4px 0; }
 
-    /* ── Premium Membership Card ── */
+    /* ── Demo Switcher (outside phone) ── */
+    .demo-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: #282828; border-radius: 12px;
+      padding: 10px 16px; margin-bottom: 20px;
+    }
+    .demo-label {
+      font-family: 'Inter', sans-serif; font-size: 11px;
+      font-weight: 600; color: #9E9E9E;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      margin-right: 4px; white-space: nowrap;
+    }
+    .demo-btn {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      padding: 6px 14px; border-radius: 8px; border: none;
+      cursor: pointer; white-space: nowrap;
+    }
+    .demo-btn.s-active   { background: #512DA8; color: #fff; }
+    .demo-btn.s-expiring { background: #D97706; color: #fff; }
+    .demo-btn.s-expired  { background: #606060; color: #fff; }
+    .demo-btn.s-inactive { background: #3A3A3C; color: #9E9E9E; }
+
+    /* ── Premium Membership Card — Active ── */
     .membership-card {
       margin: 14px 16px 6px;
       border-radius: 16px;
@@ -164,7 +186,6 @@
       text-decoration: none;
       display: block;
     }
-
     .membership-card::before {
       content: '';
       position: absolute;
@@ -180,23 +201,15 @@
       justify-content: space-between;
       margin-bottom: 12px;
     }
-
     .mc-badge {
       display: inline-flex; align-items: center; gap: 6px;
       background: rgba(255,255,255,0.16);
       border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 20px;
-      padding: 4px 12px;
+      border-radius: 20px; padding: 4px 12px;
       font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 12px; color: #fff;
-      letter-spacing: 0.4px;
+      font-weight: 700; font-size: 12px; color: #fff; letter-spacing: 0.4px;
     }
-
-    .mc-badge-dot {
-      width: 7px; height: 7px;
-      background: #A3E635; border-radius: 50%; flex-shrink: 0;
-    }
-
+    .mc-badge-dot { width: 7px; height: 7px; background: #A3E635; border-radius: 50%; flex-shrink: 0; }
     .mc-plan-tag {
       font-family: 'Inter', sans-serif;
       font-size: 12px; font-weight: 600;
@@ -204,57 +217,92 @@
       background: rgba(255,255,255,0.12);
       padding: 3px 10px; border-radius: 20px;
     }
-
-    /* Validity row */
-    .mc-validity-row {
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .mc-validity-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px; color: rgba(255,255,255,0.6);
-    }
-
-    .mc-validity-date {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 15px; color: #fff;
-    }
-
-    /* Progress bar */
-    .mc-progress-track {
-      height: 4px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .mc-progress-fill {
-      height: 100%;
-      background: rgba(255,255,255,0.72);
-      border-radius: 2px;
-      width: 82%;
-    }
-
-    .mc-progress-hint {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px; color: rgba(255,255,255,0.45);
-      margin-top: 5px; text-align: right;
-    }
-
-    /* Manage link row */
+    .mc-validity-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .mc-validity-label { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); }
+    .mc-validity-date  { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 15px; color: #fff; }
+    .mc-progress-track { height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; overflow: hidden; }
+    .mc-progress-fill  { height: 100%; background: rgba(255,255,255,0.72); border-radius: 2px; width: 82%; }
+    .mc-progress-hint  { font-family: 'Inter', sans-serif; font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 5px; text-align: right; }
     .mc-manage-row {
-      display: flex; align-items: center; justify-content: flex-end;
-      gap: 5px;
-      margin-top: 14px;
-      padding-top: 12px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+      margin-top: 14px; padding-top: 12px;
       border-top: 1px solid rgba(255,255,255,0.14);
     }
+    .mc-manage-text { font-family: 'Lato', sans-serif; font-weight: 600; font-size: 13px; color: rgba(255,255,255,0.8); }
 
-    .mc-manage-text {
-      font-family: 'Lato', sans-serif;
-      font-weight: 600; font-size: 13px;
-      color: rgba(255,255,255,0.8);
+    /* ── Membership Card — Expiring ── */
+    .mc-expiring-card {
+      margin: 14px 16px 6px;
+      border-radius: 16px;
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      padding: 16px 18px 18px;
+      display: none;
+    }
+    .mce-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .mce-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #FEF3C7; border: 1px solid #FCD34D;
+      border-radius: 20px; padding: 4px 12px;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #92400E;
+    }
+    .mce-crown {
+      width: 34px; height: 34px; background: #512DA8; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .mce-title { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px; color: #282828; margin-bottom: 4px; }
+    .mce-desc  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; line-height: 1.45; }
+    .mce-desc strong { color: #D97706; font-weight: 600; }
+    .mce-countdown {
+      display: flex; align-items: center; gap: 6px;
+      background: #FEF3C7; border: 1px solid #FCD34D;
+      border-radius: 8px; padding: 7px 12px;
+      font-family: 'Inter', sans-serif; font-size: 12px; color: #92400E;
+      margin: 10px 0 14px; width: 100%;
+    }
+    .mce-countdown strong { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 14px; color: #B45309; }
+    .mce-footer { border-top: 1px solid rgba(245,158,11,0.25); padding-top: 12px; }
+    .mce-renew-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 44px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff; font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border: none; border-radius: 11px; cursor: pointer;
+      box-shadow: 0 3px 12px rgba(81,45,168,0.3);
+      text-decoration: none;
+    }
+
+    /* ── Membership Card — Expired ── */
+    .mc-expired-card {
+      margin: 14px 16px 6px;
+      border-radius: 16px;
+      background: #F9F9F9;
+      border: 1.5px solid #E5E5EA;
+      padding: 16px 18px 18px;
+      display: none;
+    }
+    .mcx-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .mcx-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #F3F3F3; border: 1px solid #D0D0D0;
+      border-radius: 20px; padding: 4px 12px;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #606060;
+    }
+    .mcx-dot { width: 7px; height: 7px; background: #9E9E9E; border-radius: 50%; }
+    .mcx-title { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px; color: #282828; margin-bottom: 4px; }
+    .mcx-desc  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; line-height: 1.45; }
+    .mcx-date  { font-family: 'Inter', sans-serif; font-size: 12px; color: #9E9E9E; margin-top: 8px; margin-bottom: 14px; }
+    .mcx-footer { border-top: 1px solid #E5E5EA; padding-top: 12px; }
+    .mcx-renew-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 44px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff; font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 15px;
+      border: none; border-radius: 11px; cursor: pointer;
+      box-shadow: 0 3px 12px rgba(81,45,168,0.3);
+      text-decoration: none;
     }
 
     /* ── Settings Row ── */
@@ -347,6 +395,15 @@
   </style>
 </head>
 <body>
+
+  <!-- Demo switcher (outside phone) -->
+  <div class="demo-bar">
+    <span class="demo-label">State:</span>
+    <button class="demo-btn s-active"   id="btn-active"   onclick="setMcState('active')">Active</button>
+    <button class="demo-btn s-inactive" id="btn-expiring" onclick="setMcState('expiring')">Expiring Soon</button>
+    <button class="demo-btn s-inactive" id="btn-expired"  onclick="setMcState('expired')">Expired</button>
+  </div>
+
   <div class="phone">
     <div class="screen">
 
@@ -430,8 +487,8 @@
 
         <div class="divider"></div>
 
-        <!-- ── Premium Membership Card ── -->
-        <a href="BILLIONT-PROFILE-PREMIUM.HTML" class="membership-card">
+        <!-- ── Membership Card: Active ── -->
+        <a href="BILLIONT-MANAGE-MEMBERSHIP.HTML" class="membership-card" id="mc-active">
           <div class="mc-top-row">
             <span class="mc-badge">
               <span class="mc-badge-dot"></span>
@@ -453,6 +510,51 @@
             <svg viewBox="0 0 24 24" width="15" height="15" fill="rgba(255,255,255,0.8)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
           </div>
         </a>
+
+        <!-- ── Membership Card: Expiring Soon ── -->
+        <div class="mc-expiring-card" id="mc-expiring">
+          <div class="mce-top">
+            <span class="mce-badge">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="#D97706"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+              Expiring Soon
+            </span>
+            <div class="mce-crown">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#FFD54F"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+            </div>
+          </div>
+          <div class="mce-title">Your Premium Plan is Ending</div>
+          <div class="mce-desc">Your Yearly plan expires on <strong>28 Dec 2026</strong>. Renew to keep access without interruption.</div>
+          <div class="mce-countdown">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#B45309"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+            <span><strong>24 days</strong> remaining on your current plan</span>
+          </div>
+          <div class="mce-footer">
+            <a href="BILLIONT-RENEW-MEMBERSHIP.HTML" class="mce-renew-btn">
+              Expiring Soon — Renew
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Membership Card: Expired ── -->
+        <div class="mc-expired-card" id="mc-expired">
+          <div class="mcx-top">
+            <span class="mcx-badge">
+              <span class="mcx-dot"></span>
+              Plan Expired
+            </span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          </div>
+          <div class="mcx-title">Your Premium Plan Has Expired</div>
+          <div class="mcx-desc">Renew now to regain access to all premium courses, tools, and your learning path.</div>
+          <div class="mcx-date">Expired on 28 Dec 2026 · Yearly Plan</div>
+          <div class="mcx-footer">
+            <a href="BILLIONT-RENEW-MEMBERSHIP.HTML" class="mcx-renew-btn">
+              Renew Membership
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+            </a>
+          </div>
+        </div>
 
         <div class="divider-section"></div>
 
@@ -574,6 +676,18 @@
     function updateLabel(toggleId, labelId) {
       const checked = document.getElementById(toggleId).checked;
       document.getElementById(labelId).textContent = checked ? 'On' : 'Off';
+    }
+
+    function setMcState(state) {
+      document.getElementById('mc-active').style.display   = state === 'active'   ? 'block' : 'none';
+      document.getElementById('mc-expiring').style.display = state === 'expiring' ? 'block' : 'none';
+      document.getElementById('mc-expired').style.display  = state === 'expired'  ? 'block' : 'none';
+
+      const map = { active: 's-active', expiring: 's-expiring', expired: 's-expired' };
+      ['active','expiring','expired'].forEach(s => {
+        const btn = document.getElementById('btn-' + s);
+        btn.className = 'demo-btn ' + (s === state ? map[s] : 's-inactive');
+      });
     }
   </script>
 </body>

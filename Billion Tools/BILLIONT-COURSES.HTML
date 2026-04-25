@@ -15,833 +15,346 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      padding: 32px 24px 48px;
-      gap: 32px;
+      padding: 32px 0 48px;
       font-family: 'Inter', sans-serif;
     }
 
     /* ── Phone Shell ── */
     .phone {
-      width: 480px;
-      height: 1013px;
-      background: #ffffff;
-      border-radius: 40px;
-      overflow: hidden;
-      position: relative;
+      width: 480px; height: 1013px;
+      background: #ffffff; border-radius: 40px;
+      overflow: hidden; position: relative;
       box-shadow: 0 30px 80px rgba(0,0,0,0.3);
       border: 1.5px solid #282828;
     }
-
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-    }
+    .screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
     /* ── Header ── */
-    .header {
-      background: #f7f6ff;
-      flex-shrink: 0;
-    }
+    .header { background: #f7f6ff; flex-shrink: 0; }
 
     .status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 10px 26px 4px;
     }
-
-    .status-time {
-      font-family: 'Lato', sans-serif;
-      font-weight: 600; font-size: 16px; color: #000;
-    }
-
+    .status-time { font-family: 'Lato', sans-serif; font-weight: 600; font-size: 16px; color: #000; }
     .status-right { display: flex; align-items: center; gap: 6px; }
 
     .header-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 20px 14px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 20px 12px;
     }
-
-    /* Search bar */
     .search-bar {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #fff;
-      border: 1.5px solid #E3DFFF;
-      border-radius: 24px;
-      padding: 9px 16px;
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1.5px solid #E3DFFF;
+      border-radius: 24px; padding: 9px 16px;
     }
-
     .search-bar input {
       border: none; outline: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px; color: #282828;
+      font-family: 'Inter', sans-serif; font-size: 14px; color: #282828;
       background: transparent; width: 100%;
     }
-
     .search-bar input::placeholder { color: #9E9E9E; }
-
     .hdr-icon {
       width: 30px; height: 30px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; flex-shrink: 0;
     }
 
+    /* ── Category Pills ── */
+    .cat-row {
+      display: flex; gap: 8px; align-items: center;
+      padding: 0 20px 14px; overflow-x: auto;
+      background: #f7f6ff;
+    }
+    .cat-row::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      display: inline-flex; align-items: center;
+      padding: 6px 16px; border-radius: 20px; border: none;
+      font-family: 'Lato', sans-serif; font-weight: 600; font-size: 13px;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .cat-pill.active { background: #512DA8; color: #fff; }
+    .cat-pill.inactive { background: #fff; color: #606060; border: 1.5px solid #E5E5EA; }
+
     /* ── Scroll Area ── */
     .scroll-area {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-bottom: 80px;
+      flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 80px;
     }
     .scroll-area::-webkit-scrollbar { display: none; }
     .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
 
     /* ── Page Header Row ── */
     .page-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 24px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px 10px;
     }
-
     .page-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 25px; color: #282828;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 25px; color: #282828;
     }
-
     .library-btn {
       display: flex; align-items: center; gap: 6px;
-      border: 1.5px solid #512DA8;
-      border-radius: 10px;
-      padding: 8px 14px;
-      background: transparent;
-      font-family: 'Lato', sans-serif;
-      font-weight: 600; font-size: 14px; color: #512DA8;
-      cursor: pointer;
+      border: 1.5px solid #512DA8; border-radius: 10px; padding: 7px 14px;
+      background: transparent; font-family: 'Lato', sans-serif;
+      font-weight: 600; font-size: 13px; color: #512DA8; cursor: pointer;
     }
 
-    /* ── Course Card ── */
-    .course-card {
-      background: #fff;
-      border: 1px solid #E5E5EA;
-      border-radius: 16px;
-      margin: 0 16px 14px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    /* ════════════════════════════════════
+       CONTINUE LEARNING CARD
+    ════════════════════════════════════ */
+    .continue-card {
+      margin: 0 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #2a1060 0%, #512DA8 55%, #7B52D4 100%);
+      padding: 18px 18px 16px;
+      position: relative; overflow: hidden;
     }
-
-    .card-body {
-      padding: 14px 14px 10px;
+    .continue-card::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
-
-    .card-top-row {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
+    .cc-label {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.55); letter-spacing: 0.8px; text-transform: uppercase;
       margin-bottom: 10px;
     }
-
-    /* Course icon — circular illustration */
-    .course-icon {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      overflow: hidden;
-      border: 2px solid #E3DFFF;
+    .cc-body { display: flex; gap: 14px; align-items: flex-start; }
+    .cc-thumb {
+      width: 52px; height: 52px; border-radius: 14px;
+      overflow: hidden; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .cc-info { flex: 1; }
+    .cc-title {
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 15px; color: #fff;
+      line-height: 1.3; margin-bottom: 4px;
+    }
+    .cc-meta {
+      font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.6);
+    }
+    .cc-progress-wrap { margin-top: 12px; }
+    .cc-progress-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 5px;
+    }
+    .cc-progress-label {
+      font-family: 'Inter', sans-serif; font-size: 11px; color: rgba(255,255,255,0.6);
+    }
+    .cc-progress-pct {
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #fff;
+    }
+    .cc-bar { height: 5px; background: rgba(255,255,255,0.18); border-radius: 3px; overflow: hidden; }
+    .cc-bar-fill { height: 100%; border-radius: 3px; background: rgba(255,255,255,0.8); width: 65%; }
+    .cc-footer { margin-top: 12px; display: flex; justify-content: flex-end; }
+    .cc-resume-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px; padding: 8px 16px;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 13px; color: #fff;
+      cursor: pointer; text-decoration: none;
     }
 
-    .card-info { flex: 1; }
+    /* ════════════════════════════════════
+       SECTION LABEL
+    ════════════════════════════════════ */
+    .section-label {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 4px 24px 10px;
+    }
+    .section-label-text {
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px; color: #282828;
+    }
+    .section-label-count {
+      font-family: 'Inter', sans-serif; font-size: 13px; color: #9E9E9E;
+    }
 
+    /* ════════════════════════════════════
+       COURSE CARD (FREE / ONGOING)
+    ════════════════════════════════════ */
+    .course-card {
+      background: #fff; border: 1px solid #EBEBEB;
+      border-radius: 16px; margin: 0 16px 12px;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .card-body { padding: 14px 14px 13px; }
+
+    .card-top-row {
+      display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px;
+    }
+    .course-thumb {
+      width: 58px; height: 58px; border-radius: 14px;
+      flex-shrink: 0; overflow: hidden; border: 1.5px solid #F0EDFF;
+    }
+    .card-info { flex: 1; min-width: 0; }
     .card-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 17px;
-      color: #282828; line-height: 1.25;
-      padding-right: 6px;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px;
+      color: #282828; line-height: 1.25; margin-bottom: 4px;
     }
-
     .card-desc {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px; color: #606060;
-      line-height: 1.4; margin-top: 4px;
+      font-family: 'Inter', sans-serif; font-size: 12px; color: #606060;
+      line-height: 1.4;
     }
-
     .card-info-icon {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      border: 1px solid #E5E5EA;
+      width: 26px; height: 26px; border-radius: 50%; border: 1px solid #E5E5EA;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; cursor: pointer;
     }
 
-    /* Meta row */
     .card-meta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 10px;
     }
-
-    .card-sections {
-      display: flex; align-items: center; gap: 6px;
+    .card-meta-left { display: flex; align-items: center; gap: 12px; }
+    .meta-chip {
+      display: flex; align-items: center; gap: 5px;
+      font-family: 'Inter', sans-serif; font-size: 12px; color: #606060;
     }
 
-    .sections-text {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px; color: #606060;
+    /* Status badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    }
+    .badge-ongoing { background: #FEF3C7; color: #D97706; }
+    .badge-done    { background: #E8F5E9; color: #2E7D32; }
+    .badge-dot     { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* Progress bar (inside card) */
+    .card-progress-wrap { margin-bottom: 10px; }
+    .card-progress-row {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;
+    }
+    .card-progress-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #9E9E9E; }
+    .card-progress-pct { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #512DA8; }
+    .card-bar { height: 4px; background: #F0EDFF; border-radius: 2px; overflow: hidden; }
+    .card-bar-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, #512DA8, #7B52D4);
     }
 
-    /* Status badge */
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 12px; border-radius: 20px;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 600;
-    }
-
-    .status-badge.ongoing {
-      background: #FEF3C7; color: #D97706;
-    }
-
-    .status-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: currentColor; flex-shrink: 0;
-    }
-
-    /* View Course button */
-    .view-course-btn {
+    /* View / Continue button */
+    .primary-btn {
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%;
-      height: 44px;
+      width: 100%; height: 44px;
       background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
-      color: #fff;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 15px;
-      border: none; border-radius: 12px;
-      cursor: pointer;
-      transition: opacity 0.15s;
+      color: #fff; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 15px;
+      border: none; border-radius: 11px; cursor: pointer; text-decoration: none;
     }
 
-    .view-course-btn:active { opacity: 0.88; }
+    /* ════════════════════════════════════
+       PREMIUM UPSELL BANNER
+    ════════════════════════════════════ */
+    .premium-banner {
+      margin: 6px 16px 14px;
+      border-radius: 14px;
+      background: #f7f6ff;
+      border: 1.5px solid #E3DFFF;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .pb-icon {
+      width: 42px; height: 42px; background: #EDE7F6;
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pb-info { flex: 1; }
+    .pb-title {
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 14px; color: #282828;
+      margin-bottom: 2px;
+    }
+    .pb-sub { font-family: 'Inter', sans-serif; font-size: 12px; color: #606060; }
+    .pb-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
+      color: #fff; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px;
+      border: none; border-radius: 10px; padding: 8px 14px; cursor: pointer;
+      white-space: nowrap; text-decoration: none;
+    }
 
-    /* Locked button */
-    .locked-btn {
+    /* ════════════════════════════════════
+       LOCKED COURSE CARD
+    ════════════════════════════════════ */
+    .locked-card {
+      background: #fff; border: 1px solid #EBEBEB;
+      border-radius: 16px; margin: 0 16px 12px;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      position: relative; cursor: pointer;
+      text-decoration: none; display: block;
+    }
+    .locked-card:hover { box-shadow: 0 4px 16px rgba(81,45,168,0.12); }
+
+    /* frosted overlay on locked card */
+    .locked-overlay {
+      position: absolute; inset: 0; pointer-events: none; border-radius: 16px;
+      background: rgba(248,246,255,0.38);
+    }
+
+    .lc-body { padding: 14px 14px 13px; }
+    .lc-top-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+    .lc-thumb {
+      width: 58px; height: 58px; border-radius: 14px;
+      flex-shrink: 0; overflow: hidden; border: 1.5px solid #F0EDFF;
+      opacity: 0.75;
+    }
+    .lc-info { flex: 1; min-width: 0; }
+    .lc-title {
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px;
+      color: #606060; line-height: 1.25; margin-bottom: 4px;
+    }
+    .lc-desc { font-family: 'Inter', sans-serif; font-size: 12px; color: #9E9E9E; line-height: 1.4; }
+    .lc-lock-icon {
+      width: 30px; height: 30px; background: #F0EDFF; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .lc-meta-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .lc-meta-left { display: flex; align-items: center; gap: 12px; }
+    .premium-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #EDE7F6; color: #512DA8;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 10px;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 0.4px;
+    }
+    .locked-cta {
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%;
-      height: 44px;
-      background: #F3F3F3;
-      color: #9E9E9E;
-      font-family: 'Lato', sans-serif;
-      font-weight: 600; font-size: 15px;
-      border: none; border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.15s;
+      width: 100%; height: 44px;
+      background: #F7F6FF; border: 1.5px solid #C5B3F0;
+      color: #512DA8; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 14px;
+      border-radius: 11px; cursor: pointer;
     }
 
-    .locked-btn:active { background: #E3DFFF; color: #512DA8; }
-
-    /* Unlocked state — replaces locked */
-    .unlocked-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%;
-      height: 44px;
-      background: #E8F5E9;
-      color: #2E7D32;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 15px;
-      border: none; border-radius: 12px;
-      cursor: pointer;
-    }
-
-    /* Premium tag on locked cards */
-    .premium-lock-tag {
-      display: none; /* shown only in non-premium mode */
-      align-items: center; gap: 4px;
-      background: #E3DFFF;
-      color: #512DA8;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 10px;
-      padding: 2px 8px; border-radius: 20px;
-      letter-spacing: 0.4px;
-    }
-
-    /* ── Bottom Nav ── */
+    /* ════════════════════════════════════
+       BOTTOM NAV
+    ════════════════════════════════════ */
     .bottom-nav {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 72px;
-      background: #fff;
-      border-top: 0.5px solid #E5E5EA;
-      display: flex;
-      align-items: flex-start;
-      padding-top: 10px;
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 72px; background: #fff; border-top: 0.5px solid #E5E5EA;
+      display: flex; align-items: flex-start; padding-top: 10px;
     }
-
     .nav-item {
-      flex: 1;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 4px;
-      cursor: pointer;
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 3px; cursor: pointer; text-decoration: none;
     }
-
-    .nav-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px; color: #606060;
-    }
-
+    .nav-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #606060; }
     .nav-label.active { color: #512DA8; }
 
-    /* ════════════════════════════════
-       OVERLAY + BOTTOM SHEET
-    ════════════════════════════════ */
-    .overlay {
-      position: absolute; inset: 0;
-      background: rgba(40,40,40,0.55);
-      z-index: 100;
-      display: none;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-    }
-
-    .bottom-sheet {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: #fff;
-      border-radius: 20px 20px 0 0;
-      z-index: 101;
-      display: none;
-      flex-direction: column;
-      transform: translateY(100%);
-      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
-      overflow: hidden;
-      box-shadow: 0 -4px 24px rgba(81,45,168,0.12);
-      max-height: 90%;
-    }
-
-    .bottom-sheet.show { transform: translateY(0); }
-
-    .sheet-handle {
-      width: 36px; height: 4px;
-      background: #D0CAEA; border-radius: 2px;
-      margin: 10px auto 0; flex-shrink: 0;
-    }
-
-    .sheet-scroll {
-      overflow-y: auto;
-      flex: 1;
-    }
-    .sheet-scroll::-webkit-scrollbar { display: none; }
-
-    /* ── Sheet: Step 1 — Plan Selection ── */
-    #step-plan {
-      padding: 0 0 4px;
-    }
-
-    .sheet-hdr {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px 10px;
-    }
-
-    .sheet-hdr-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 19px; color: #282828;
-    }
-
-    .sheet-close-btn {
-      width: 30px; height: 30px;
-      background: #E3DFFF; border: none;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; flex-shrink: 0;
-    }
-
-    /* Locked course banner inside sheet */
-    .locked-course-banner {
-      display: flex; align-items: center; gap: 12px;
-      background: #F7F6FF;
-      border: 1px solid #E3DFFF;
-      border-radius: 14px;
-      margin: 0 14px 14px;
-      padding: 12px 14px;
-    }
-
-    .lc-icon {
-      width: 46px; height: 46px;
-      border-radius: 50%; overflow: hidden;
-      flex-shrink: 0; border: 2px solid #E3DFFF;
-    }
-
-    .lc-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 14px; color: #282828;
-      line-height: 1.3;
-    }
-
-    .lc-sub {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px; color: #606060; margin-top: 2px;
-    }
-
-    /* Plan cards inside sheet */
-    .sheet-plans {
-      display: flex; flex-direction: column; gap: 10px;
-      padding: 0 14px 14px;
-    }
-
-    .splan-card {
-      border-radius: 14px;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: transform 0.1s;
-      position: relative;
-    }
-
-    .splan-card:active { transform: scale(0.99); }
-
-    .splan-yearly {
-      background: linear-gradient(135deg, #2a1060 0%, #512DA8 60%, #7B52D4 100%);
-      box-shadow: 0 4px 16px rgba(81,45,168,0.28);
-    }
-
-    .splan-monthly {
-      background: #fff;
-      border: 1.5px solid #E3DFFF;
-    }
-
-    .splan-monthly.selected {
-      border-color: #512DA8;
-      box-shadow: 0 2px 12px rgba(81,45,168,0.15);
-    }
-
-    .splan-top {
-      display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: 6px;
-    }
-
-    .splan-name-light {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 15px; color: #fff;
-    }
-
-    .splan-name-dark {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 15px; color: #282828;
-    }
-
-    .splan-recommended {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 10px;
-      color: #5D4037; background: #FCD34D;
-      padding: 3px 9px; border-radius: 20px;
-    }
-
-    .splan-radio {
-      width: 20px; height: 20px;
-      border-radius: 50%; border: 2px solid #512DA8;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .splan-radio.filled { background: #512DA8; border-color: #512DA8; }
-
-    .splan-price-row {
-      display: flex; align-items: baseline; gap: 3px;
-    }
-
-    .splan-price-light {
-      font-family: 'Lato', sans-serif;
-      font-weight: 900; font-size: 24px; color: #fff;
-    }
-
-    .splan-price-dark {
-      font-family: 'Lato', sans-serif;
-      font-weight: 900; font-size: 24px; color: #282828;
-    }
-
-    .splan-unit-light { font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); }
-    .splan-unit-dark  { font-family: 'Inter', sans-serif; font-size: 13px; color: #606060; }
-
-    .splan-detail-light { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
-    .splan-detail-dark  { font-family: 'Inter', sans-serif; font-size: 12px; color: #606060; margin-top: 2px; }
-
-    .splan-savings {
-      display: inline-block;
-      background: rgba(255,255,255,0.18);
-      color: #fff;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 11px;
-      padding: 3px 9px; border-radius: 20px;
-      margin-top: 8px;
-    }
-
-    .trial-note-text {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px; color: #512DA8; line-height: 1.4;
-    }
-
-    .trial-note-text strong {
-      font-weight: 600;
-    }
-
-    /* Sheet CTA */
-    .sheet-cta-wrap {
-      padding: 0 14px 12px;
-      flex-shrink: 0;
-    }
-
-    .sheet-cta-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; height: 52px;
-      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
-      color: #fff;
-      font-family: 'Lato', sans-serif;
-      font-weight: 800; font-size: 17px;
-      border: none; border-radius: 13px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
-      transition: opacity 0.15s;
-    }
-
-    .sheet-cta-btn:active { opacity: 0.88; }
-
-    .sheet-fine {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px; color: #9E9E9E;
-      text-align: center; margin-top: 6px;
-    }
-
-    /* ── Sheet: Step 2 — Confirm ── */
-    #step-confirm {
-      display: none;
-      flex-direction: column;
-    }
-
-    .confirm-course-row {
-      display: flex; align-items: center; gap: 12px;
-      background: #F7F6FF; border: 1px solid #E3DFFF;
-      border-radius: 14px; margin: 0 14px 14px;
-      padding: 12px 14px;
-    }
-
-    .cc-icon {
-      width: 46px; height: 46px;
-      border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      border: 2px solid #E3DFFF;
-    }
-
-    .cc-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 14px; color: #282828;
-    }
-
-    .cc-unlock-tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: #E8F5E9; color: #2E7D32;
-      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
-      padding: 2px 8px; border-radius: 20px; margin-top: 4px;
-    }
-
-    /* App card in confirm step */
-    .confirm-app-card {
-      display: flex; align-items: center; gap: 12px;
-      background: #F7F6FF; border: 1px solid #E3DFFF;
-      border-radius: 14px; margin: 0 14px 10px;
-      padding: 12px 14px;
-    }
-
-    .confirm-summary {
-      background: #F7F6FF; border: 1px solid #E3DFFF;
-      border-radius: 14px; margin: 0 14px 10px;
-      padding: 4px 14px;
-    }
-
-    .cs-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 9px 0;
-      border-bottom: 0.5px solid #E3DFFF;
-    }
-
-    .cs-row:last-child { border-bottom: none; }
-
-    .cs-label {
-      font-family: 'Inter', sans-serif; font-size: 13px; color: #606060;
-    }
-
-    .cs-value {
-      font-family: 'Lato', sans-serif; font-weight: 600;
-      font-size: 13px; color: #282828;
-    }
-
-    .cs-value.highlight { color: #512DA8; }
-
-    .confirm-terms {
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      color: #9E9E9E; line-height: 1.5;
-      margin: 0 14px 10px;
-    }
-
-    /* ── Sheet: Step 3 — Success ── */
-    #step-success {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 20px 32px;
-    }
-
-    .check-wrap {
-      width: 72px; height: 72px; margin-bottom: 14px;
-    }
-
-    .check-circle-bg  { fill: none; stroke: #E8F5E9; stroke-width: 6; }
-
-    .check-circle-ring {
-      fill: none; stroke: #4CAF50; stroke-width: 6;
-      stroke-linecap: round;
-      stroke-dasharray: 200; stroke-dashoffset: 200;
-      transform-origin: center; transform: rotate(-90deg);
-      transition: stroke-dashoffset 0.5s ease 0.1s;
-    }
-
-    .check-path {
-      fill: none; stroke: #4CAF50; stroke-width: 5;
-      stroke-linecap: round; stroke-linejoin: round;
-      stroke-dasharray: 55; stroke-dashoffset: 55;
-      transition: stroke-dashoffset 0.4s ease 0.55s;
-    }
-
-    .check-wrap.animate .check-circle-ring { stroke-dashoffset: 0; }
-    .check-wrap.animate .check-path        { stroke-dashoffset: 0; }
-
-    .success-title {
-      font-family: 'Lato', sans-serif; font-weight: 800;
-      font-size: 21px; color: #282828;
-      text-align: center; margin-bottom: 4px;
-    }
-
-    .success-sub {
-      font-family: 'Inter', sans-serif; font-size: 14px;
-      color: #606060; text-align: center; margin-bottom: 18px;
-    }
-
-    .success-course-card {
-      width: 100%;
-      background: #F7F6FF; border: 1px solid #E3DFFF;
-      border-radius: 14px; padding: 14px;
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .scc-icon {
-      width: 46px; height: 46px;
-      border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      border: 2px solid #E3DFFF;
-    }
-
-    .scc-name {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700; font-size: 14px; color: #282828;
-    }
-
-    .scc-unlocked {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: #E8F5E9; color: #2E7D32;
-      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
-      padding: 3px 9px; border-radius: 20px; margin-top: 4px;
-    }
-
-    .start-btn {
-      width: 100%; height: 52px;
-      background: linear-gradient(135deg, #512DA8 0%, #7B52D4 100%);
-      color: #fff;
-      font-family: 'Lato', sans-serif; font-weight: 800;
-      font-size: 17px; border: none; border-radius: 13px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(81,45,168,0.3);
-      margin-bottom: 10px;
-    }
-
-    .explore-all-btn {
-      width: 100%; height: 44px;
-      background: #F7F6FF; border: 1.5px solid #E3DFFF;
-      color: #512DA8;
-      font-family: 'Lato', sans-serif; font-weight: 700;
-      font-size: 15px; border-radius: 13px; cursor: pointer;
-    }
-
-    /* ══════════════════════════════════════
-       INSPECTOR PANEL
-    ══════════════════════════════════════ */
-    .insp-panel {
-      width: 278px;
-      background: #0F0F1E;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.07);
-      flex-shrink: 0;
-      align-self: flex-start;
-      position: sticky;
-      top: 32px;
-      max-height: calc(100vh - 64px);
-      display: flex;
-      flex-direction: column;
-    }
-    .insp-top {
-      padding: 16px 18px 13px;
-      background: #16162A;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      flex-shrink: 0;
-    }
-    .insp-logo {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'Lato', sans-serif;
-      font-weight: 800;
-      font-size: 13px;
-      color: #C5B0FF;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .insp-subtitle {
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      margin-top: 4px;
-    }
-    .insp-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 12px 20px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(81,45,168,0.4) transparent;
-    }
-    .insp-group-lbl {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.28);
-      text-transform: uppercase;
-      margin: 0 0 5px 6px;
-    }
-    .insp-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      margin-bottom: 2px;
-      transition: background 0.15s;
-    }
-    .insp-row:hover { background: rgba(255,255,255,0.05); }
-    .insp-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #512DA8;
-      flex-shrink: 0;
-    }
-    .insp-name {
-      flex: 1;
-      font-size: 11.5px;
-      color: rgba(255,255,255,0.75);
-    }
-    .insp-btn {
-      background: rgba(81,45,168,0.35);
-      border: none;
-      color: #C5B0FF;
-      font-family: 'Inter', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
-      flex-shrink: 0;
-    }
-    .insp-btn:hover { background: #512DA8; color: #fff; }
-    .insp-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-    .insp-hr {
-      height: 1px;
-      background: rgba(255,255,255,0.06);
-      margin: 13px 0;
-    }
-    .insp-figma-box {
-      background: rgba(81,45,168,0.1);
-      border: 1px solid rgba(81,45,168,0.22);
-      border-radius: 12px;
-      padding: 13px;
-    }
-    .insp-figma-note {
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.42);
-      line-height: 1.6;
-      margin-bottom: 11px;
-    }
-    .insp-dl-btn {
-      width: 100%;
-      background: #512DA8;
-      border: none;
-      color: #fff;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 9px 14px;
-      border-radius: 9px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      transition: background 0.15s;
-    }
-    .insp-dl-btn:hover { background: #6B46C1; }
-    .insp-figma-hint {
-      font-size: 10px;
-      color: rgba(255,255,255,0.32);
-      margin-top: 8px;
-      line-height: 1.55;
-      min-height: 14px;
-    }
-    .insp-figma-hint.ok { color: #4ADE80; }
-    .insp-steps-box {
-      margin-top: 10px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 10px;
-      padding: 11px 12px;
-    }
-    .insp-steps-title {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.28);
-      text-transform: uppercase;
-      margin-bottom: 7px;
-    }
-    .insp-steps-body {
-      font-size: 10px;
-      color: rgba(255,255,255,0.38);
-      line-height: 1.75;
-    }
-    /* Highlight ring on hover */
-    .insp-hl {
-      outline: 2px solid #7C3AED !important;
-      outline-offset: 1px;
-      box-shadow: 0 0 0 4px rgba(124,58,237,0.15) !important;
-    }
+    /* ═══════════════════════════════════
+       DIVIDER BETWEEN FREE / PREMIUM
+    ═══════════════════════════════════ */
+    .section-divider { height: 8px; background: #f7f6ff; margin: 4px 0; }
   </style>
-  <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
 </head>
 <body>
   <div class="phone">
     <div class="screen">
 
       <!-- ── Header ── -->
-      <div class="header" id="comp-header">
+      <div class="header">
         <div class="status-bar">
           <span class="status-time">9:41</span>
           <div class="status-right">
@@ -860,7 +373,6 @@
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9E9E9E" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <input type="text" placeholder="Search Courses" />
           </div>
-          <!-- Language -->
           <div class="hdr-icon" style="width:34px;height:34px;">
             <svg viewBox="0 0 34 34" width="34" height="34">
               <circle cx="17" cy="17" r="14" fill="#E3DFFF"/>
@@ -869,18 +381,25 @@
               <text x="30" y="22" font-family="sans-serif" font-size="10" font-weight="700" fill="#512DA8" text-anchor="middle">A</text>
             </svg>
           </div>
-          <!-- Font size -->
           <div class="hdr-icon">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
           </div>
-          <!-- Sound -->
           <div class="hdr-icon">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
           </div>
-          <!-- Settings -->
-          <div class="hdr-icon" style="width:32px;height:32px;">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          <div class="hdr-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#282828"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96a7.26 7.26 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.477.477 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
           </div>
+        </div>
+
+        <!-- ── Category Filter Pills ── -->
+        <div class="cat-row">
+          <button class="cat-pill active" onclick="filterCat(this)">All</button>
+          <button class="cat-pill inactive" onclick="filterCat(this)">Leadership</button>
+          <button class="cat-pill inactive" onclick="filterCat(this)">Marketing</button>
+          <button class="cat-pill inactive" onclick="filterCat(this)">Finance</button>
+          <button class="cat-pill inactive" onclick="filterCat(this)">Operations</button>
+          <button class="cat-pill inactive" onclick="filterCat(this)">Sales</button>
         </div>
       </div>
 
@@ -891,55 +410,101 @@
         <div class="page-header-row">
           <div class="page-title">Courses</div>
           <button class="library-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="#512DA8"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
             Library
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="#512DA8"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
           </button>
         </div>
 
-        <!-- ── Course 1 — Unlocked / Ongoing ── -->
-        <div class="course-card" id="comp-card-1">
+        <!-- ── Continue Learning Card ── -->
+        <div class="continue-card">
+          <div class="cc-label">Continue Learning</div>
+          <div class="cc-body">
+            <div class="cc-thumb">
+              <svg viewBox="0 0 52 52" width="52" height="52">
+                <rect width="52" height="52" fill="#C5B358"/>
+                <text x="26" y="34" font-size="24" text-anchor="middle">⚖️</text>
+              </svg>
+            </div>
+            <div class="cc-info">
+              <div class="cc-title">Tasks vs People — Leading &amp; Managing with Clarity</div>
+              <div class="cc-meta">Section 2 of 3 · 4h 20m total</div>
+            </div>
+          </div>
+          <div class="cc-progress-wrap">
+            <div class="cc-progress-row">
+              <span class="cc-progress-label">65% complete</span>
+              <span class="cc-progress-pct">Section 2 / 3</span>
+            </div>
+            <div class="cc-bar"><div class="cc-bar-fill"></div></div>
+          </div>
+          <div class="cc-footer">
+            <a href="#" class="cc-resume-btn">
+              Resume
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Free / Ongoing Courses ── -->
+        <div class="section-label">
+          <span class="section-label-text">My Courses</span>
+          <span class="section-label-count">2 enrolled</span>
+        </div>
+
+        <!-- Course 1 — Ongoing -->
+        <div class="course-card">
           <div class="card-body">
             <div class="card-top-row">
-              <div class="course-icon">
-                <svg viewBox="0 0 60 60" width="60" height="60">
-                  <circle cx="30" cy="30" r="30" fill="#C5B358"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle">⚖️</text>
+              <div class="course-thumb">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#C5B358"/>
+                  <text x="29" y="37" font-size="26" text-anchor="middle">⚖️</text>
                 </svg>
               </div>
               <div class="card-info">
-                <div class="card-title">Tasks vs People — Leading &amp; Managing with Clarity</div>
-                <div class="card-desc">Learn the different leadership styles to manage people and tasks effectively</div>
+                <div class="card-title">Tasks vs People — Leading &amp; Managing</div>
+                <div class="card-desc">Learn leadership styles to manage people and tasks effectively</div>
               </div>
               <div class="card-info-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               </div>
             </div>
             <div class="card-meta-row">
-              <div class="card-sections">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span class="sections-text">3 Sections</span>
+              <div class="card-meta-left">
+                <div class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  3 Sections
+                </div>
+                <div class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#9E9E9E"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                  4h 20m
+                </div>
               </div>
-              <span class="status-badge ongoing">
-                <span class="status-badge-dot"></span>
-                Ongoing
-              </span>
+              <span class="badge badge-ongoing"><span class="badge-dot"></span>Ongoing</span>
             </div>
-            <button class="view-course-btn">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-              View Course
+            <div class="card-progress-wrap">
+              <div class="card-progress-row">
+                <span class="card-progress-label">Progress</span>
+                <span class="card-progress-pct">65%</span>
+              </div>
+              <div class="card-bar"><div class="card-bar-fill" style="width:65%"></div></div>
+            </div>
+            <button class="primary-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              Continue Learning
             </button>
           </div>
         </div>
 
-        <!-- ── Course 2 — Unlocked / Ongoing ── -->
-        <div class="course-card" id="comp-card-2">
+        <!-- Course 2 — Ongoing -->
+        <div class="course-card">
           <div class="card-body">
             <div class="card-top-row">
-              <div class="course-icon">
-                <svg viewBox="0 0 60 60" width="60" height="60">
-                  <circle cx="30" cy="30" r="30" fill="#2E5E6E"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle">🤝</text>
+              <div class="course-thumb">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#2E5E6E"/>
+                  <text x="29" y="37" font-size="26" text-anchor="middle">🤝</text>
                 </svg>
               </div>
               <div class="card-info">
@@ -947,138 +512,190 @@
                 <div class="card-desc">Master people assessment and build high performing teams</div>
               </div>
               <div class="card-info-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               </div>
             </div>
             <div class="card-meta-row">
-              <div class="card-sections">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span class="sections-text">1 Section</span>
+              <div class="card-meta-left">
+                <div class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  1 Section
+                </div>
+                <div class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#9E9E9E"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                  2h 10m
+                </div>
               </div>
-              <span class="status-badge ongoing">
-                <span class="status-badge-dot"></span>
-                Ongoing
-              </span>
+              <span class="badge badge-ongoing"><span class="badge-dot"></span>Ongoing</span>
             </div>
-            <button class="view-course-btn">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-              View Course
+            <div class="card-progress-wrap">
+              <div class="card-progress-row">
+                <span class="card-progress-label">Progress</span>
+                <span class="card-progress-pct">30%</span>
+              </div>
+              <div class="card-bar"><div class="card-bar-fill" style="width:30%"></div></div>
+            </div>
+            <button class="primary-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              Continue Learning
             </button>
           </div>
         </div>
 
-        <!-- ── Course 3 — LOCKED ── -->
-        <div class="course-card" id="card-marketing">
-          <div class="card-body">
-            <div class="card-top-row">
-              <div class="course-icon" style="opacity:0.7;">
-                <svg viewBox="0 0 60 60" width="60" height="60">
-                  <circle cx="30" cy="30" r="30" fill="#2E6E4E"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle">📈</text>
+        <!-- ── Premium Divider ── -->
+        <div class="section-divider"></div>
+
+        <!-- ── Premium Upsell Banner ── -->
+        <div class="premium-banner">
+          <div class="pb-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+          </div>
+          <div class="pb-info">
+            <div class="pb-title">Unlock 3 Premium Courses</div>
+            <div class="pb-sub">Marketing, Finance, Operations &amp; more</div>
+          </div>
+          <a href="BILLIONT-SUBSCRIPTION-NEW-USER.HTML" class="pb-btn">
+            Get Premium
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </a>
+        </div>
+
+        <!-- Section label for premium -->
+        <div class="section-label">
+          <span class="section-label-text">Premium Courses</span>
+          <span class="section-label-count">3 courses</span>
+        </div>
+
+        <!-- ── Locked Course 1 — Marketing 101 ── -->
+        <a href="BILLIONT-SUBSCRIPTION-NEW-USER.HTML" class="locked-card">
+          <div class="locked-overlay"></div>
+          <div class="lc-body">
+            <div class="lc-top-row">
+              <div class="lc-thumb">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#2E6E4E"/>
+                  <text x="29" y="37" font-size="26" text-anchor="middle">📈</text>
                 </svg>
               </div>
-              <div class="card-info">
-                <div class="card-title">Marketing 101</div>
-                <div class="card-desc">Build a strong marketing strategy to grow revenue in a buyer's market</div>
+              <div class="lc-info">
+                <div class="lc-title">Marketing 101</div>
+                <div class="lc-desc">Build a strong marketing strategy to grow revenue in a buyer's market</div>
               </div>
-              <div class="card-info-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <div class="lc-lock-icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
               </div>
             </div>
-            <div class="card-meta-row">
-              <div class="card-sections">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span class="sections-text">1 Section</span>
+            <div class="lc-meta-row">
+              <div class="lc-meta-left">
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  1 Section
+                </div>
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                  1h 45m
+                </div>
               </div>
-              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
-                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+              <div class="premium-tag">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
                 PREMIUM
-              </span>
+              </div>
             </div>
-            <button class="locked-btn" id="btn-marketing"
-              onclick="openLockedSheet('marketing', 'Marketing 101', '2E6E4E', '📈')">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-              Locked
-            </button>
+            <div class="locked-cta">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Get Premium to Access
+            </div>
           </div>
-        </div>
+        </a>
 
-        <!-- ── Course 4 — LOCKED ── -->
-        <div class="course-card" id="card-finance">
-          <div class="card-body">
-            <div class="card-top-row">
-              <div class="course-icon" style="opacity:0.7;">
-                <svg viewBox="0 0 60 60" width="60" height="60">
-                  <circle cx="30" cy="30" r="30" fill="#5E3A2E"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle">💰</text>
+        <!-- ── Locked Course 2 — Finance Fundamentals ── -->
+        <a href="BILLIONT-SUBSCRIPTION-NEW-USER.HTML" class="locked-card">
+          <div class="locked-overlay"></div>
+          <div class="lc-body">
+            <div class="lc-top-row">
+              <div class="lc-thumb">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#5E3A2E"/>
+                  <text x="29" y="37" font-size="26" text-anchor="middle">💰</text>
                 </svg>
               </div>
-              <div class="card-info">
-                <div class="card-title">Finance Fundamentals for SMEs</div>
-                <div class="card-desc">Understand cash flow, margins, and financial decisions that scale your business</div>
+              <div class="lc-info">
+                <div class="lc-title">Finance Fundamentals for SMEs</div>
+                <div class="lc-desc">Understand cash flow, margins, and financial decisions that scale your business</div>
               </div>
-              <div class="card-info-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <div class="lc-lock-icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
               </div>
             </div>
-            <div class="card-meta-row">
-              <div class="card-sections">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span class="sections-text">2 Sections</span>
+            <div class="lc-meta-row">
+              <div class="lc-meta-left">
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  2 Sections
+                </div>
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                  3h 00m
+                </div>
               </div>
-              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
-                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+              <div class="premium-tag">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
                 PREMIUM
-              </span>
+              </div>
             </div>
-            <button class="locked-btn" id="btn-finance"
-              onclick="openLockedSheet('finance', 'Finance Fundamentals for SMEs', '5E3A2E', '💰')">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-              Locked
-            </button>
+            <div class="locked-cta">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Get Premium to Access
+            </div>
           </div>
-        </div>
+        </a>
 
-        <!-- ── Course 5 — LOCKED ── -->
-        <div class="course-card" id="card-operations">
-          <div class="card-body">
-            <div class="card-top-row">
-              <div class="course-icon" style="opacity:0.7;">
-                <svg viewBox="0 0 60 60" width="60" height="60">
-                  <circle cx="30" cy="30" r="30" fill="#1A3A5E"/>
-                  <text x="30" y="38" font-size="26" text-anchor="middle">⚙️</text>
+        <!-- ── Locked Course 3 — Operations That Scale ── -->
+        <a href="BILLIONT-SUBSCRIPTION-NEW-USER.HTML" class="locked-card">
+          <div class="locked-overlay"></div>
+          <div class="lc-body">
+            <div class="lc-top-row">
+              <div class="lc-thumb">
+                <svg viewBox="0 0 58 58" width="58" height="58">
+                  <rect width="58" height="58" rx="14" fill="#1A3A5E"/>
+                  <text x="29" y="37" font-size="26" text-anchor="middle">⚙️</text>
                 </svg>
               </div>
-              <div class="card-info">
-                <div class="card-title">Operations That Scale</div>
-                <div class="card-desc">Design processes, reduce waste, and build systems that run without you</div>
+              <div class="lc-info">
+                <div class="lc-title">Operations That Scale</div>
+                <div class="lc-desc">Design processes, reduce waste, and build systems that run without you</div>
               </div>
-              <div class="card-info-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#606060"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <div class="lc-lock-icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
               </div>
             </div>
-            <div class="card-meta-row">
-              <div class="card-sections">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#512DA8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span class="sections-text">3 Sections</span>
+            <div class="lc-meta-row">
+              <div class="lc-meta-left">
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  3 Sections
+                </div>
+                <div class="meta-chip" style="color:#9E9E9E;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#C5B3F0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                  5h 30m
+                </div>
               </div>
-              <span style="display:inline-flex;align-items:center;gap:4px;background:#E3DFFF;color:#512DA8;font-family:'Lato',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;">
-                <svg viewBox="0 0 24 24" width="10" height="10" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
+              <div class="premium-tag">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="#512DA8"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/></svg>
                 PREMIUM
-              </span>
+              </div>
             </div>
-            <button class="locked-btn" id="btn-operations"
-              onclick="openLockedSheet('operations', 'Operations That Scale', '1A3A5E', '⚙️')">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#9E9E9E"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-              Locked
-            </button>
+            <div class="locked-cta">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#7B52D4"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Get Premium to Access
+            </div>
           </div>
-        </div>
+        </a>
 
-      </div><!-- end scroll-area -->
+      </div><!-- /scroll-area -->
 
       <!-- ── Bottom Nav ── -->
-      <div class="bottom-nav" id="comp-bottom-nav">
+      <div class="bottom-nav">
         <a class="nav-item" href="BILLIONT-HOME-ACTIVE.HTML" style="text-decoration:none;">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#606060" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span class="nav-label">Home</span>
@@ -1097,771 +714,16 @@
         </div>
       </div>
 
-      <!-- ════ OVERLAY ════ -->
-      <div class="overlay" id="overlay"></div>
-
-      <!-- ════ BOTTOM SHEET ════ -->
-      <div class="bottom-sheet" id="bottom-sheet">
-        <div class="sheet-handle"></div>
-
-        <div class="sheet-scroll">
-
-          <!-- ── Step 1: Plan Selection ── -->
-          <div id="step-plan">
-
-            <div class="sheet-hdr">
-              <span class="sheet-hdr-title">Get Premium Access</span>
-              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-              </button>
-            </div>
-
-
-            <!-- Plan cards -->
-            <div class="sheet-plans">
-
-              <!-- Yearly — default selected -->
-              <div class="splan-card splan-yearly" id="sheet-card-yearly" onclick="selectSheetPlan('yearly')">
-                <div class="splan-top">
-                  <span class="splan-name-light">Yearly Plan</span>
-                  <span class="splan-recommended">RECOMMENDED</span>
-                </div>
-                <div class="splan-price-row">
-                  <span class="splan-price-light">₹10,000</span>
-                  <span class="splan-unit-light">/year</span>
-                </div>
-                <div class="splan-detail-light">₹833/month · + Applicable tax</div>
-                <div class="splan-savings">Save ₹2,000 — 2 months free</div>
-              </div>
-
-              <!-- Monthly -->
-              <div class="splan-card splan-monthly" id="sheet-card-monthly" onclick="selectSheetPlan('monthly')">
-                <div class="splan-top">
-                  <span class="splan-name-dark">Monthly Plan</span>
-                  <div class="splan-radio" id="sheet-radio-monthly"></div>
-                </div>
-                <div class="splan-price-row">
-                  <span class="splan-price-dark">₹1,000</span>
-                  <span class="splan-unit-dark">/month</span>
-                </div>
-                <div class="splan-detail-dark">+ Applicable tax · Cancel anytime</div>
-              </div>
-
-            </div>
-
-            <div class="sheet-cta-wrap">
-              <button class="sheet-cta-btn" onclick="goToConfirm()">
-                Subscribe
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-              </button>
-              <div class="sheet-fine" id="plan-fine">₹10,000/year · Billed annually · Cancel anytime</div>
-            </div>
-
-          </div><!-- end step-plan -->
-
-          <!-- ── Step 2: Confirm & Pay ── -->
-          <div id="step-confirm">
-
-            <div class="sheet-hdr">
-              <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="goBackToPlan()">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#282828"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-                <span style="font-family:'Inter',sans-serif;font-size:15px;color:#282828;">Back</span>
-              </button>
-              <span class="sheet-hdr-title">Confirm Plan</span>
-              <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Close">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="#512DA8"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-              </button>
-            </div>
-
-            <!-- App identity card -->
-            <div class="confirm-app-card">
-              <svg viewBox="0 0 60 60" width="46" height="46" style="border-radius:11px;flex-shrink:0;">
-                <rect width="60" height="60" rx="14" fill="#512DA8"/>
-                <polygon points="46,10 22,24 28,29" fill="#F16623"/>
-                <polygon points="46,10 28,29 26,44" fill="#E07818"/>
-                <polygon points="28,29 32,32 26,44" fill="#F16623" opacity="0.7"/>
-                <text x="7" y="52" font-family="Lato,sans-serif" font-weight="900" font-size="22" fill="#fff" letter-spacing="-1">BT</text>
-              </svg>
-              <div>
-                <div style="font-family:'Lato',sans-serif;font-weight:700;font-size:15px;color:#282828;">BillionTools Premium</div>
-                <div style="font-family:'Inter',sans-serif;font-size:12px;color:#606060;margin-top:3px;">Poornatha · SME Subscription</div>
-              </div>
-            </div>
-
-            <!-- Summary -->
-            <div class="confirm-summary">
-              <div class="cs-row">
-                <span class="cs-label">Plan</span>
-                <span class="cs-value" id="cs-plan">Yearly — ₹10,000/year</span>
-              </div>
-              <div class="cs-row">
-                <span class="cs-label">Starts on</span>
-                <span class="cs-value highlight">Today · 9 Apr 2026</span>
-              </div>
-              <div class="cs-row">
-                <span class="cs-label">Next billing</span>
-                <span class="cs-value" id="cs-charge">₹10,000 + tax · 9 Apr 2027</span>
-              </div>
-              <div class="cs-row">
-                <span class="cs-label">Account</span>
-                <span class="cs-value">tanisha@example.com</span>
-              </div>
-            </div>
-
-            <!-- Terms -->
-            <div class="confirm-terms">
-              Plan renews automatically until cancelled. Cancel anytime via Settings. Applicable taxes as per Government norms.
-            </div>
-
-            <div class="sheet-cta-wrap">
-              <button class="sheet-cta-btn" onclick="completePayment()">
-                Start Premium Membership
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-              </button>
-            </div>
-
-          </div><!-- end step-confirm -->
-
-          <!-- ── Step 3: Success ── -->
-          <div id="step-success">
-            <div class="check-wrap" id="check-wrap" style="margin:28px auto 14px;">
-              <svg viewBox="0 0 72 72" width="72" height="72">
-                <circle class="check-circle-bg" cx="36" cy="36" r="31"/>
-                <circle class="check-circle-ring" cx="36" cy="36" r="31"/>
-                <path class="check-path" d="M21 36 L31 46 L51 26"/>
-              </svg>
-            </div>
-            <div class="success-title">You're now Premium!</div>
-            <div class="success-sub" style="padding:0 20px;">Subscription activated. All premium courses are now unlocked.</div>
-
-            <div style="padding:16px 16px 0;">
-              <button class="start-btn" onclick="startCourse()">
-                Start Course Now
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" style="margin-left:6px;"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-              <button class="explore-all-btn" onclick="closeSheet()">Explore All Courses</button>
-            </div>
-            <div style="height:24px;"></div>
-          </div><!-- end step-success -->
-
-        </div><!-- end sheet-scroll -->
-      </div><!-- end bottom-sheet -->
-
-    </div>
-  </div>
+    </div><!-- /screen -->
+  </div><!-- /phone -->
 
   <script>
-    /* ── State ── */
-    let currentPlan    = 'yearly';
-    let currentCourse  = null;   // { id, title, emoji, color }
-    let unlockedCourses = new Set();
-
-    /* ────────────────────────────────────────
-       Open sheet for a locked course
-       If user is already premium → go straight to course
-    ──────────────────────────────────────── */
-    function openLockedSheet(courseId, title, color, emoji) {
-      // Premium check — if this course already unlocked via previous purchase
-      if (unlockedCourses.has(courseId)) {
-        startCourseDirectly(courseId);
-        return;
-      }
-
-      currentCourse = { id: courseId, title, color, emoji };
-
-      // Reset to step 1
-      showStep('plan');
-      resetPlanSelection();
-
-      // Show overlay + sheet
-      const overlay = document.getElementById('overlay');
-      const sheet   = document.getElementById('bottom-sheet');
-      overlay.style.display = 'block';
-      sheet.style.display   = 'flex';
-      requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('show')));
-    }
-
-    /* ────────────────────────────────────────
-       Plan selection toggle
-    ──────────────────────────────────────── */
-    function selectSheetPlan(plan) {
-      currentPlan = plan;
-      const yearlyCard  = document.getElementById('sheet-card-yearly');
-      const monthlyCard = document.getElementById('sheet-card-monthly');
-      const radioM      = document.getElementById('sheet-radio-monthly');
-      const fine        = document.getElementById('plan-fine');
-
-      if (plan === 'yearly') {
-        yearlyCard.style.opacity     = '1';
-        yearlyCard.style.boxShadow   = '0 4px 16px rgba(81,45,168,0.28)';
-        monthlyCard.classList.remove('selected');
-        radioM.classList.remove('filled');
-        radioM.innerHTML = '';
-        fine.textContent = '₹10,000/year · Billed annually · Cancel anytime';
-      } else {
-        yearlyCard.style.opacity   = '0.45';
-        yearlyCard.style.boxShadow = 'none';
-        monthlyCard.classList.add('selected');
-        radioM.classList.add('filled');
-        radioM.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-        fine.textContent = '₹1,000/month · Billed monthly · Cancel anytime';
-      }
-    }
-
-    function resetPlanSelection() {
-      currentPlan = 'yearly';
-      const yearlyCard  = document.getElementById('sheet-card-yearly');
-      const monthlyCard = document.getElementById('sheet-card-monthly');
-      const radioM      = document.getElementById('sheet-radio-monthly');
-      yearlyCard.style.opacity   = '1';
-      yearlyCard.style.boxShadow = '0 4px 16px rgba(81,45,168,0.28)';
-      monthlyCard.classList.remove('selected');
-      radioM.classList.remove('filled');
-      radioM.innerHTML = '';
-      document.getElementById('plan-fine').textContent = '₹10,000/year · Billed annually · Cancel anytime';
-    }
-
-    /* ────────────────────────────────────────
-       Step navigation
-    ──────────────────────────────────────── */
-    function showStep(step) {
-      document.getElementById('step-plan').style.display    = step === 'plan'    ? 'block' : 'none';
-      document.getElementById('step-confirm').style.display = step === 'confirm' ? 'flex'  : 'none';
-      document.getElementById('step-success').style.display = step === 'success' ? 'flex'  : 'none';
-      // Scroll sheet to top on each step change
-      document.querySelector('.sheet-scroll').scrollTop = 0;
-    }
-
-    function goToConfirm() {
-      if (!currentCourse) return;
-
-      if (currentPlan === 'yearly') {
-        document.getElementById('cs-plan').textContent   = 'Yearly — ₹10,000/year';
-        document.getElementById('cs-charge').textContent = '₹10,000 + tax · 8 Apr 2026';
-      } else {
-        document.getElementById('cs-plan').textContent   = 'Monthly — ₹1,000/month';
-        document.getElementById('cs-charge').textContent = '₹1,000 + tax · 8 Apr 2026';
-      }
-
-      showStep('confirm');
-    }
-
-    function goBackToPlan() {
-      showStep('plan');
-    }
-
-    function completePayment() {
-      if (!currentCourse) return;
-
-      showStep('success');
-
-      // Animate checkmark
-      setTimeout(() => {
-        document.getElementById('check-wrap').classList.add('animate');
-      }, 80);
-
-      // Membership purchase — unlock all locked courses
-      ['marketing', 'finance', 'operations'].forEach(id => unlockedCourses.add(id));
-    }
-
-    function startCourse() {
-      // Membership unlocks all courses — update all locked cards
-      ['marketing', 'finance', 'operations'].forEach(id => unlockCourseCard(id));
-      closeSheet();
-    }
-
-    function startCourseDirectly(courseId) {
-      // Already premium — just open the course (here we just notify)
-      alert('Opening course... (Premium member — direct access)');
-    }
-
-    function unlockCourseCard(courseId) {
-      const btn = document.getElementById('btn-' + courseId);
-      if (!btn) return;
-
-      // Replace locked button with unlocked
-      btn.outerHTML = `
-        <button class="view-course-btn" onclick="alert('Opening course...')">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-          Start Course
-        </button>`;
-
-      // Remove premium lock tag from the card's meta row
-      const card = document.getElementById('card-' + courseId);
-      if (card) {
-        const lockSpan = card.querySelector('.card-meta-row span');
-        if (lockSpan) lockSpan.remove();
-        // Remove opacity from icon
-        const icon = card.querySelector('.course-icon');
-        if (icon) icon.style.opacity = '1';
-      }
-    }
-
-    /* ────────────────────────────────────────
-       Close sheet
-    ──────────────────────────────────────── */
-    function closeSheet() {
-      const sheet   = document.getElementById('bottom-sheet');
-      const overlay = document.getElementById('overlay');
-
-      sheet.classList.remove('show');
-      setTimeout(() => {
-        sheet.style.display   = 'none';
-        overlay.style.display = 'none';
-        // Reset check animation for next open
-        document.getElementById('check-wrap').classList.remove('animate');
-        showStep('plan');
-      }, 380);
-    }
-
-    /* Tap overlay to close only on step-plan */
-    document.getElementById('overlay').addEventListener('click', function() {
-      const planStep = document.getElementById('step-plan');
-      if (planStep.style.display !== 'none') closeSheet();
-    });
-  </script>
-
-  <!-- ════ INSPECTOR PANEL ════ -->
-  <aside class="insp-panel">
-
-    <div class="insp-top">
-      <div class="insp-logo">
-        <svg viewBox="0 0 18 18" width="14" height="14" fill="none"><circle cx="9" cy="9" r="7" stroke="#C5B0FF" stroke-width="1.8"/><circle cx="9" cy="9" r="2.5" fill="#C5B0FF"/><line x1="9" y1="2" x2="9" y2="5" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="9" y1="13" x2="9" y2="16" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="9" x2="5" y2="9" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/><line x1="13" y1="9" x2="16" y2="9" stroke="#C5B0FF" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Inspector
-      </div>
-      <div class="insp-subtitle">Billiont Courses &nbsp;·&nbsp; 7 components</div>
-    </div>
-
-    <div class="insp-scroll">
-
-      <div class="insp-group-lbl">Main Screen</div>
-
-      <div class="insp-row" onmouseenter="insp_hl('comp-header')" onmouseleave="insp_clr()">
-        <span class="insp-dot"></span>
-        <span class="insp-name">Header Bar</span>
-        <button class="insp-btn" onclick="insp_copy('comp-header',this)">Copy</button>
-      </div>
-      <div class="insp-row" onmouseenter="insp_hl('comp-card-1')" onmouseleave="insp_clr()">
-        <span class="insp-dot"></span>
-        <span class="insp-name">Course Card · Ongoing</span>
-        <button class="insp-btn" onclick="insp_copy('comp-card-1',this)">Copy</button>
-      </div>
-      <div class="insp-row" onmouseenter="insp_hl('card-marketing')" onmouseleave="insp_clr()">
-        <span class="insp-dot"></span>
-        <span class="insp-name">Course Card · Locked</span>
-        <button class="insp-btn" onclick="insp_copy('card-marketing',this)">Copy</button>
-      </div>
-      <div class="insp-row" onmouseenter="insp_hl('comp-bottom-nav')" onmouseleave="insp_clr()">
-        <span class="insp-dot"></span>
-        <span class="insp-name">Bottom Navigation</span>
-        <button class="insp-btn" onclick="insp_copy('comp-bottom-nav',this)">Copy</button>
-      </div>
-
-      <div class="insp-group-lbl" style="margin-top:14px;">Premium Flow</div>
-
-      <div class="insp-row">
-        <span class="insp-dot" style="background:#F59E0B;"></span>
-        <span class="insp-name">Step 1 · Plan Selection</span>
-        <button class="insp-btn" onclick="insp_copy_sheet('step-plan',this)">Copy</button>
-      </div>
-      <div class="insp-row">
-        <span class="insp-dot" style="background:#F59E0B;"></span>
-        <span class="insp-name">Step 2 · Confirm &amp; Pay</span>
-        <button class="insp-btn" onclick="insp_copy_sheet('step-confirm',this)">Copy</button>
-      </div>
-      <div class="insp-row">
-        <span class="insp-dot" style="background:#22C55E;"></span>
-        <span class="insp-name">Step 3 · Success</span>
-        <button class="insp-btn" onclick="insp_copy_sheet('step-success',this)">Copy</button>
-      </div>
-
-      <div class="insp-hr"></div>
-
-      <div class="insp-group-lbl">Push to Figma</div>
-      <div class="insp-figma-box">
-        <div class="insp-figma-note">Downloads a ready-to-run Figma plugin that creates all 7 components with Auto Layout, correct colors &amp; typography.</div>
-        <button class="insp-dl-btn" onclick="insp_download_plugin()">
-          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-          Download Figma Plugin
-        </button>
-        <div id="insp-figma-hint" class="insp-figma-hint"></div>
-      </div>
-
-      <div class="insp-steps-box">
-        <div class="insp-steps-title">How to run plugin</div>
-        <div class="insp-steps-body">
-          1. Open Figma → Plugins<br>
-          2. Development → New Plugin<br>
-          3. Choose "Run once"<br>
-          4. Replace code.js content<br>
-          5. Run → components appear ✓
-        </div>
-      </div>
-
-    </div>
-  </aside>
-
-  <script>
-  /* ═══════════════════════════════
-     INSPECTOR
-  ═══════════════════════════════ */
-
-  function insp_hl(id) {
-    document.querySelectorAll('.insp-hl').forEach(e => e.classList.remove('insp-hl'));
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.add('insp-hl');
-      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  }
-  function insp_clr() {
-    document.querySelectorAll('.insp-hl').forEach(e => e.classList.remove('insp-hl'));
-  }
-
-  async function _insp_do_copy(el, btn) {
-    const orig = btn.textContent;
-    btn.textContent = '...';
-    btn.disabled = true;
-    el.classList.add('insp-hl');
-    try {
-      const dataUrl = await htmlToImage.toPng(el, {
-        pixelRatio: 2,
-        backgroundColor: '#ffffff',
-        style: { outline: 'none', boxShadow: 'none' }
+    function filterCat(btn) {
+      document.querySelectorAll('.cat-pill').forEach(p => {
+        p.className = 'cat-pill inactive';
       });
-      const res  = await fetch(dataUrl);
-      const blob = await res.blob();
-      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-      el.classList.remove('insp-hl');
-      btn.textContent = 'Copied!';
-      btn.style.cssText = 'background:#16A34A;color:#fff;';
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.style.cssText = '';
-        btn.disabled = false;
-      }, 2200);
-    } catch(err) {
-      el.classList.remove('insp-hl');
-      btn.textContent = 'Failed';
-      btn.disabled = false;
-      setTimeout(() => { btn.textContent = orig; }, 2000);
-      console.warn('Copy error:', err);
+      btn.className = 'cat-pill active';
     }
-  }
-
-  async function insp_copy(id, btn) {
-    const el = document.getElementById(id);
-    if (el) await _insp_do_copy(el, btn);
-  }
-
-  async function insp_copy_sheet(stepId, btn) {
-    const step = document.getElementById(stepId);
-    if (!step) return;
-    /* Clone the step off-screen so overflow:hidden on .phone doesn't clip it */
-    const wrap = document.createElement('div');
-    wrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:480px;background:#fff;border-radius:0;overflow:visible;';
-    const clone = step.cloneNode(true);
-    clone.style.cssText = 'display:block !important; position:static !important; max-height:none !important;';
-    wrap.appendChild(clone);
-    document.body.appendChild(wrap);
-    await new Promise(r => setTimeout(r, 80));
-    await _insp_do_copy(clone, btn);
-    document.body.removeChild(wrap);
-  }
-
-  function insp_download_plugin() {
-    const hint = document.getElementById('insp-figma-hint');
-    hint.textContent = 'Generating...';
-    hint.className = 'insp-figma-hint';
-
-    const code = `/* ==========================================================
-   Billiont Courses — Figma Component Generator Plugin
-   1. Figma → Plugins → Development → New Plugin → "Run once"
-   2. Replace code.js with this entire file
-   3. Click Run — components appear with Auto Layout
-   ========================================================== */
-
-async function run() {
-  const F = figma;
-  const P = F.currentPage;
-
-  const fonts = [
-    {family:"Inter",style:"Regular"},{family:"Inter",style:"Medium"},
-    {family:"Inter",style:"SemiBold"},{family:"Lato",style:"Regular"},
-    {family:"Lato",style:"Bold"},{family:"Lato",style:"Black"},
-  ];
-  await Promise.all(fonts.map(f => F.loadFontAsync(f)));
-
-  function rgb(r,g,b){ return {r,g,b}; }
-  function solid(c){ return [{type:"SOLID",color:c}]; }
-  function shadow(c,a,y,rad){
-    return [{type:"DROP_SHADOW",color:{...c,a},offset:{x:0,y},radius:rad,
-      spread:0,visible:true,blendMode:"NORMAL"}];
-  }
-  const C = {
-    primary:  rgb(0.318,0.176,0.659),
-    pLight:   rgb(0.890,0.875,1.000),
-    dark:     rgb(0.157,0.157,0.157),
-    mid:      rgb(0.376,0.376,0.376),
-    bgLight:  rgb(0.969,0.965,1.000),
-    white:    rgb(1,1,1),
-    green:    rgb(0.086,0.627,0.522),
-    amber:    rgb(0.773,0.700,0.345),
-    teal:     rgb(0.180,0.369,0.431),
-    earthGr:  rgb(0.180,0.431,0.306),
-    earthBr:  rgb(0.369,0.227,0.180),
-    navy:     rgb(0.102,0.227,0.369),
-  };
-
-  function mkText(chars, size, style, color, align) {
-    const t = F.createText();
-    t.characters = String(chars);
-    t.fontSize = size;
-    t.fontName = (style==="bold"||style==="700") ? {family:"Lato",style:"Bold"}
-      : (style==="black"||style==="900") ? {family:"Lato",style:"Black"}
-      : (style==="semi"||style==="600") ? {family:"Inter",style:"SemiBold"}
-      : (style==="medium"||style==="500") ? {family:"Inter",style:"Medium"}
-      : {family:"Inter",style:"Regular"};
-    t.fills = solid(color||C.dark);
-    if (align) t.textAlignHorizontal = align;
-    return t;
-  }
-
-  function mkFrame(name, dir, gap, pl,pr,pt,pb, bg, radius) {
-    const f = F.createFrame();
-    f.name = name;
-    f.layoutMode = dir||"VERTICAL";
-    f.primaryAxisSizingMode = "AUTO";
-    f.counterAxisSizingMode = "AUTO";
-    f.itemSpacing = gap||0;
-    f.paddingLeft = pl||0; f.paddingRight = pr||0;
-    f.paddingTop = pt||0;  f.paddingBottom = pb||0;
-    f.fills = bg ? solid(bg) : [];
-    if (radius) f.cornerRadius = radius;
-    return f;
-  }
-
-  // ── Course Card ──
-  function courseCard(title, desc, sections, label, iconBg, locked) {
-    const card = mkFrame("Course Card / "+(locked?"Locked":"Ongoing"),
-      "VERTICAL",12,16,16,16,16,C.white,16);
-    card.counterAxisSizingMode = "FIXED";
-    card.resize(416,10);
-    card.effects = shadow(C.dark,0.07,2,10);
-    card.strokes = solid(rgb(0.89,0.87,1.0));
-    card.strokeWeight = 1;
-
-    const topRow = mkFrame("Top Row","HORIZONTAL",12);
-    topRow.counterAxisAlignItems = "MIN";
-    topRow.primaryAxisSizingMode = "FIXED";
-    topRow.counterAxisSizingMode = "AUTO";
-    topRow.resize(384,10);
-
-    const icon = F.createEllipse();
-    icon.name = "Icon"; icon.resize(52,52);
-    icon.fills = solid(iconBg||C.primary);
-    icon.layoutSizingHorizontal = "FIXED";
-    icon.layoutSizingVertical   = "FIXED";
-
-    const info = mkFrame("Info","VERTICAL",4);
-    info.layoutGrow = 1;
-    info.counterAxisSizingMode = "AUTO";
-    const t1 = mkText(title,13,"semi",C.dark);
-    t1.layoutSizingHorizontal = "FILL"; t1.textAutoResize = "HEIGHT";
-    const t2 = mkText(desc,11,"regular",C.mid);
-    t2.layoutSizingHorizontal = "FILL"; t2.textAutoResize = "HEIGHT";
-    info.appendChild(t1); info.appendChild(t2);
-    topRow.appendChild(icon); topRow.appendChild(info);
-    card.appendChild(topRow);
-
-    const meta = mkFrame("Meta","HORIZONTAL",0);
-    meta.primaryAxisSizingMode = "FIXED"; meta.counterAxisSizingMode = "AUTO";
-    meta.resize(384,10);
-    meta.primaryAxisAlignItems = "SPACE_BETWEEN";
-    meta.counterAxisAlignItems = "CENTER";
-    meta.appendChild(mkText(sections+" Section"+(sections>1?"s":""),11,"regular",C.primary));
-
-    const badge = mkFrame("Badge","HORIZONTAL",4,8,8,3,3,
-      locked ? C.pLight : rgb(0.87,0.98,0.93), 20);
-    badge.counterAxisAlignItems = "CENTER";
-    badge.appendChild(mkText(locked?"PREMIUM":label,9,"700",
-      locked?C.primary:C.green));
-    meta.appendChild(badge);
-    card.appendChild(meta);
-
-    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,10,10,
-      locked?rgb(0.76,0.76,0.76):C.primary,12);
-    cta.primaryAxisSizingMode = "FIXED"; cta.counterAxisSizingMode = "AUTO";
-    cta.resize(384,10); cta.primaryAxisAlignItems = "CENTER";
-    cta.appendChild(mkText(locked?"Locked":"View Course",13,"bold",C.white));
-    card.appendChild(cta);
-    return card;
-  }
-
-  // ── Bottom Nav ──
-  function bottomNav() {
-    const nav = mkFrame("Bottom Navigation","HORIZONTAL",0,0,0,8,8,C.white);
-    nav.primaryAxisSizingMode = "FIXED"; nav.counterAxisSizingMode = "AUTO";
-    nav.resize(480,10);
-    nav.primaryAxisAlignItems = "SPACE_BETWEEN";
-    nav.counterAxisAlignItems = "CENTER";
-    nav.effects = shadow(C.dark,0.06,-2,10);
-    ["Home","Courses","Library","Tools"].forEach((label,i) => {
-      const ni = mkFrame("Nav: "+label,"VERTICAL",4,16,16,8,8);
-      ni.counterAxisAlignItems = "CENTER"; ni.layoutGrow = 1;
-      ni.appendChild(mkText(label,10,i===1?"semi":"regular",
-        i===1?C.primary:C.mid));
-      nav.appendChild(ni);
-    });
-    return nav;
-  }
-
-  // ── Sheet Step 1: Plan Selection ──
-  function step1() {
-    const s = mkFrame("Sheet / Step 1 — Plan Selection",
-      "VERTICAL",16,16,16,20,20,C.white,24);
-    s.counterAxisSizingMode = "FIXED"; s.resize(416,10);
-    s.appendChild(mkText("Get Premium Access",17,"bold",C.dark));
-
-
-    const plans = mkFrame("Plans","HORIZONTAL",10);
-    plans.primaryAxisSizingMode="FIXED"; plans.counterAxisSizingMode="AUTO";
-    plans.resize(384,10);
-
-    const yearly = mkFrame("Yearly","VERTICAL",6,14,14,14,14,C.primary,14);
-    yearly.layoutGrow=1;
-    yearly.effects=shadow(C.primary,0.35,4,16);
-    yearly.appendChild(mkText("Yearly Plan",11,"bold",C.white));
-    yearly.appendChild(mkText("₹10,000/year",16,"black",C.white));
-    yearly.appendChild(mkText("₹833/month",10,"regular",rgb(0.8,0.75,0.95)));
-    yearly.appendChild(mkText("Save ₹2,000 — 2 months free",10,"bold",rgb(0.95,0.85,0.4)));
-    plans.appendChild(yearly);
-
-    const monthly = mkFrame("Monthly","VERTICAL",6,14,14,14,14,rgb(0.97,0.97,1.0),14);
-    monthly.layoutGrow=1;
-    monthly.appendChild(mkText("Monthly Plan",11,"bold",C.primary));
-    monthly.appendChild(mkText("₹1,000/month",16,"black",C.dark));
-    monthly.appendChild(mkText("Cancel anytime",10,"regular",C.mid));
-    plans.appendChild(monthly);
-    s.appendChild(plans);
-
-    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,12,12,C.primary,14);
-    cta.primaryAxisSizingMode="FIXED"; cta.counterAxisSizingMode="AUTO";
-    cta.resize(384,10); cta.primaryAxisAlignItems="CENTER";
-    cta.appendChild(mkText("Subscribe",14,"bold",C.white));
-    s.appendChild(cta);
-    return s;
-  }
-
-  // ── Sheet Step 2: Confirm & Pay ──
-  function step2() {
-    const s = mkFrame("Sheet / Step 2 — Confirm & Pay",
-      "VERTICAL",16,16,16,20,20,C.white,24);
-    s.counterAxisSizingMode="FIXED"; s.resize(416,10);
-    s.appendChild(mkText("Confirm Plan",17,"bold",C.dark));
-
-    const sum = mkFrame("Summary","VERTICAL",0,16,16,12,12,C.bgLight,12);
-    sum.counterAxisSizingMode="FIXED"; sum.resize(384,10);
-    [["Plan","Yearly — ₹10,000/year"],["Starts on","Today · 9 Apr 2026"],
-     ["Next billing","₹10,000 + tax · 9 Apr 2027"],
-     ["Account","tanisha@example.com"]].forEach(([l,v],i)=>{
-      const row=mkFrame("Row"+i,"HORIZONTAL",0,0,0,10,10);
-      row.primaryAxisSizingMode="FIXED"; row.counterAxisSizingMode="AUTO";
-      row.resize(352,10); row.primaryAxisAlignItems="SPACE_BETWEEN";
-      row.appendChild(mkText(l,12,"regular",C.mid));
-      row.appendChild(mkText(v,12,"medium",C.dark));
-      sum.appendChild(row);
-    });
-    s.appendChild(sum);
-
-    const cta = mkFrame("CTA","HORIZONTAL",0,16,16,12,12,C.primary,14);
-    cta.primaryAxisSizingMode="FIXED"; cta.counterAxisSizingMode="AUTO";
-    cta.resize(384,10); cta.primaryAxisAlignItems="CENTER";
-    cta.appendChild(mkText("Start Premium Membership",14,"bold",C.white));
-    s.appendChild(cta);
-    return s;
-  }
-
-  // ── Sheet Step 3: Success ──
-  function step3() {
-    const s = mkFrame("Sheet / Step 3 — Success",
-      "VERTICAL",14,16,16,36,36,C.white,24);
-    s.counterAxisSizingMode="FIXED"; s.resize(416,10);
-    s.primaryAxisAlignItems="CENTER"; s.counterAxisAlignItems="CENTER";
-
-    const check=F.createEllipse(); check.name="Check Circle";
-    check.resize(72,72);
-    check.fills=solid(rgb(0.85,0.98,0.89));
-    check.strokes=solid(rgb(0.13,0.77,0.37)); check.strokeWeight=2;
-    s.appendChild(check);
-
-    s.appendChild(mkText("You're now Premium!",20,"black",C.dark));
-    const sub=mkText("Subscription activated. All premium courses are now unlocked.",12,"regular",C.mid,"CENTER");
-    sub.textAutoResize="HEIGHT"; sub.resize(300,10);
-    s.appendChild(sub);
-
-    const cta1=mkFrame("Start Course","HORIZONTAL",0,16,16,12,12,C.primary,14);
-    cta1.primaryAxisSizingMode="FIXED"; cta1.counterAxisSizingMode="AUTO";
-    cta1.resize(384,10); cta1.primaryAxisAlignItems="CENTER";
-    cta1.appendChild(mkText("Start Course Now",14,"bold",C.white));
-    s.appendChild(cta1);
-
-    const cta2=mkFrame("Explore All","HORIZONTAL",0,16,16,10,10,C.bgLight,14);
-    cta2.strokes=solid(C.pLight); cta2.strokeWeight=1.5;
-    cta2.primaryAxisSizingMode="FIXED"; cta2.counterAxisSizingMode="AUTO";
-    cta2.resize(384,10); cta2.primaryAxisAlignItems="CENTER";
-    cta2.appendChild(mkText("Explore All Courses",13,"semi",C.primary));
-    s.appendChild(cta2);
-    return s;
-  }
-
-  // ── Assemble ──
-  const section = mkFrame("Billiont Courses — Design Components",
-    "HORIZONTAL",32,40,40,40,40,rgb(0.91,0.91,0.91));
-  section.counterAxisAlignItems = "MIN";
-  P.appendChild(section);
-
-  const cardsCol = mkFrame("Course Cards","VERTICAL",12);
-  cardsCol.appendChild(courseCard("Tasks vs People — Leading & Managing with Clarity","Learn the different leadership styles to manage people and tasks effectively",3,"Ongoing",C.amber,false));
-  cardsCol.appendChild(courseCard("Build a Great Team","Master people assessment and build high performing teams",1,"Ongoing",C.teal,false));
-  cardsCol.appendChild(courseCard("Marketing 101","Build a strong marketing strategy to grow revenue in a buyer's market",1,"Premium",C.earthGr,true));
-  cardsCol.appendChild(courseCard("Finance Fundamentals for SMEs","Understand cash flow, margins, and financial decisions that scale your business",2,"Premium",C.earthBr,true));
-  cardsCol.appendChild(courseCard("Operations That Scale","Design processes, reduce waste, and build systems that run without you",3,"Premium",C.navy,true));
-  section.appendChild(cardsCol);
-
-  const rightCol = mkFrame("Nav & Premium Flow","VERTICAL",20);
-  rightCol.appendChild(bottomNav());
-  rightCol.appendChild(step1());
-  rightCol.appendChild(step2());
-  rightCol.appendChild(step3());
-  section.appendChild(rightCol);
-
-  F.viewport.scrollAndZoomIntoView([section]);
-  F.closePlugin("✅ 9 components created with Auto Layout!");
-}
-
-run().catch(e => {
-  figma.notify("Plugin error: " + e.message, { error: true });
-  figma.closePlugin();
-});`;
-
-    const blob = new Blob([code], { type: 'text/javascript' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url;
-    a.download = 'billiont-figma-plugin.js';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    hint.textContent = 'Downloaded! Paste into Figma plugin editor and run.';
-    hint.className = 'insp-figma-hint ok';
-    setTimeout(() => {
-      hint.textContent = '';
-      hint.className = 'insp-figma-hint';
-    }, 6000);
-  }
   </script>
 </body>
 </html>
